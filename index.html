@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="utf-8" />
+    <title>MK ostrom prototípus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="version" content="v2">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <main class="zones">
+            <!-- Ellenfél keze -->
+            <section class="zone" aria-labelledby="opponentKezCim">
+                <h2 id="opponentKezCim">Ellenfél keze <small class="pill" id="opponent-kezCount">0</small></h2>
+                <div id="opponent-kez" class="cards"></div>
+                <div id="opponent-kezEmpty" class="empty">Nincs kártya az ellenfél kezében.</div>
+            </section>
+            
+            
+            <!-- Ellenfél területe -->
+            <section class="zone" aria-labelledby="enemyJelenCim">
+                <h2 id="enemyJelenCim">Ellenfél – Jelen <small class="pill" id="opponent-jelenCount">0</small></h2>
+                <div class="jelen-wrap">
+                    <aside class="tower-panel" aria-labelledby="enemyTowerCim">
+                        <div class="tower-header">
+                            <span id="enemyTowerCim">Toronyszintek (Ellenfél)
+                            <small class="pill" id="opponent-toronyszintekCount">0</small>
+                        </div>
+                        <div id="opponent-toronyszintek" class="tower-stack enemy"></div>
+                        <div id="opponent-toronyszintekEmpty" class="empty">Nincs ellenfél toronyszint.</div>
+                    </aside>
+                    <div class="jelen-right">
+                        <div class="subzone">
+                            <h3 class="subzone-title">Sor <small class="pill" id="opponent-sorCount">0</small></h3>
+                            <div id="opponent-sor" class="cards"></div>
+                            <div id="opponent-sorEmpty" class="empty">Nincs lap a Sorban.</div>
+                        </div>
+                        <div class="subzone">
+                            <h3 class="subzone-title">Manőver <small class="pill" id="opponent-manoverCount">0</small></h3>
+                            <div id="opponent-manover" class="cards"></div>
+                            <div id="opponent-manoverEmpty" class="empty">Nincs lap a Manőverben.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Vezérlők -->
+            <section>
+                <div class="statusbar">
+                    <div class="mp" id="mpBox">MP: <span id="mp">10</div>
+                    <div class="aktualisFazis" id="aktualisFazisBox">Aktuális fázis: 
+                        <span id="aktualisFazis">Forduló kezdete    
+                    </div>
+                    <div class="controls">
+                        <button id="newGameBtn">Új játék</button>
+                        <button id="passBtn">Passz</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="zone" aria-labelledby="idofonalCim">
+                <h2 id="idofonalCim">Időfonal</h2>
+                <div id="idofonal" class="cards"></div>
+            </section>
+
+            <!-- Saját terület -->
+            <section class="zone" aria-labelledby="jelenCim">
+                <h2 id="jelenCim">Jelen <small class="pill" id="player-jelenCount">0</small></h2>
+                <div class="jelen-wrap">
+                    <aside class="tower-panel" aria-labelledby="towerCim">
+                        <div class="tower-header">
+                            <span id="towerCim">Toronyszintek
+                            <small class="pill" id="player-toronyszintekCount">0</small>
+                        </div>
+                        <div id="player-toronyszintek" class="tower-stack"></div>
+                        <div id="player-toronyszintekEmpty" class="empty">Nincs toronyszint.</div>
+                    </aside>
+                    <div class="jelen-right">
+                        <div class="subzone">
+                            <h3 class="subzone-title">Manőver <small class="pill" id="player-manoverCount">0</small></h3>
+                            <div id="player-manover" class="cards"></div>
+                            <div id="player-manoverEmpty" class="empty">Nincs lap a Manőverben.</div>
+                        </div>
+                        <div class="subzone">
+                            <h3 class="subzone-title">Sor <small class="pill" id="player-sorCount">0</small></h3>
+                            <div id="player-sor" class="cards"></div>
+                            <div id="player-sorEmpty" class="empty">Nincs lap a Sorban.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Kéz -->
+            <section class="zone" aria-labelledby="kezCim">
+                <h2 id="kezCim">Kéz <small class="pill" id="player-kezCount">0</small></h2>
+                <div id="player-kez" class="cards"></div>
+                <div id="player-kezEmpty" class="empty">Nincs kártya a kézben.</div>
+            </section>
+
+        </main>
+    </div>
+
+    
+    <script src="gameFlow.js"></script>
+    <script src="gameAction.js"></script>
+    <script src="gameUi.js"></script>
+    <script src="cardLibraryData.js"></script>
+    <script src="card.js"></script>
+    <script src="gameState.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
