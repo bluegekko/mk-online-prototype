@@ -5,11 +5,13 @@ gameUi = {
         cardDiv.dataset.cardId = card.id;
 
         mp_text = card.laptipus === "Toronyszint" ? (card.mp === 4 ? "" : card.mp + " MP " ) : card.mp + " MP " ;
+        alapszintmodositas = card.alapszintModositas ? card.alapszintModositas : 0
+        alapszint = card.alapszint + alapszintmodositas
         
         cardDiv.innerHTML = `
             <div class="card-header">${mp_text}${card.nev}</div>
             <div class="card-content">
-                ${card.alapszint ? `<div class="alapszint">Alapszint: ${card.alapszint}</div>` : ''}
+                ${card.alapszint ? `<div class="alapszint">Alapszint: ${alapszint}</div>` : ''}
                 ${card.fal != null ? `<div class="fal">FAL: ${card.fal}</div>` : ''}
             </div>
         `;
@@ -33,7 +35,8 @@ gameUi = {
             const button = document.createElement('button');
             button.textContent = 'Leidéz';
             const playerMp = gameState.state.playerAttributes[player].mp;
-            button.disabled = playerMp < card.mp;
+            // TODO celpontValidalas ellenorzese
+            button.disabled = playerMp < card.mp ;
             button.onclick = (e) => {
                 e.stopPropagation();
                 gameAction.playCardFromHand(player, card.id);

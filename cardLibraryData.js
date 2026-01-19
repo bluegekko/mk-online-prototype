@@ -1179,6 +1179,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "Úszás képzettséggel nem rendelkező kalandozók a manőver végén sérült helyzetbe fordulnak."
             }
         ]
@@ -1211,6 +1212,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "A manőver színhelyének FAL-a 2-vel nő a manőver végéig."
             },
             {
@@ -1249,6 +1251,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "X véletlenszerűen választott kalandozó visszatér Sorába."
             }
         ]
@@ -1280,6 +1283,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "Az ellenséges kalandozók asztrálja 1-gyel csökken."
             }
         ]
@@ -1370,6 +1374,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "Az első harci kör végén véget ér a sorelhagyó manőver."
             }
         ]
@@ -1389,6 +1394,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "Célpont felszerelés elveszíti képességeit."
             }
         ]
@@ -1444,6 +1450,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "A leidéző mentál próbadobást tesz. Sikeres dobás esetén +1 sebzés."
             }
         ]
@@ -1477,6 +1484,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "Játékosa Sorába 2 jelző Zombi kerül pihenő helyzetben."
             }
         ]
@@ -1508,6 +1516,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": [],
+                "ervenyesules" : true,
                 "szoveg": "Célpont kalandozó kap 1 alapszintet."
             }
         ]

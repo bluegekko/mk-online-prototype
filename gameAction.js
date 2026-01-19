@@ -26,8 +26,20 @@ gameAction = {
 
     // Kártya kijátszása kézből
     playCardFromHand: function(player, cardId) {
+        // TODO kell, hogy cardId legyen?
         const card = gameState.state.playerSpaces[player].kez.find(c => c.id === cardId);
+        console.log("lap kijátszása: ", card)
         if (!card || gameState.state.playerAttributes[player].mp < card.mp) return;
+
+        // Hatás célpont választás ellenőrzése
+        const hatas = card.hatasok?.find(h => h.ervenyesules === true);
+        if (hatas && gameEffect[hatas.szoveg]) {
+            const effect = gameEffect[hatas.szoveg];
+            if (effect.celpontValasztas) {
+                effect.celpontValasztas(card);
+                if (!card.celpont) return; // Ha nem sikerült célpontot választani
+            }
+        }
 
         gameState.state.playerAttributes[player].mp -= card.mp;
         kez = gameState.state.playerSpaces[player]['kez'];

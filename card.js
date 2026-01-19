@@ -13,11 +13,11 @@ cardFactory = {
             laptipus: laptipus,
             nev: nev,
             mp: mp,
-            nevesitett: nevesitett != null ? nevesitett : false,
+            nevesitett: nevesitett ? nevesitett : false,
             szinesito: szinesito,
             idotartam: idotartam,
             fazis: fazis,
-            hatasok: hatasok
+            hatasok: hatasok,
         };
     },
     
@@ -65,6 +65,12 @@ cardFactory = {
                 fázis: "Sor",
                 ...params
             }),
+            ervenyesul: function() {
+                const hatas = this.hatasok.find(h => h.ervenyesules === true);
+                if (hatas) {
+                    gameEffect[hatas.szoveg].ervenyesul(this);
+                }
+            }
         }; 
     },
 

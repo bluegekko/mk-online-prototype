@@ -5,6 +5,7 @@ window.gameState = {
         sor: { name: 'sor', displayName: 'Sor' },
         manover: { name: 'manover', displayName: 'Manőver' },
         toronyszintek: { name: 'toronyszintek', displayName: 'Torony' },
+        jelenlapok: { name: 'jelenLapok', displayName: '' },
         jovo: { name: 'jovo', displayName: 'Jövő' },
         mult: { name: 'mult', displayName: 'Múlt' },
         melyseg: { name: 'melyseg', displayName: 'Mélység' }
