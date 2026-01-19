@@ -67,6 +67,7 @@ cardFactory = {
             }),
             ervenyesul: function() {
                 const hatas = this.hatasok.find(h => h.ervenyesules === true);
+                console.log("érvényesülő hatás: " + hatas)
                 if (hatas) {
                     gameEffect[hatas.szoveg].ervenyesul(this);
                 }

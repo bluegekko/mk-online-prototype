@@ -1520,6 +1520,25 @@ cardLibrary = [
                 "szoveg": "Célpont kalandozó kap 1 alapszintet."
             }
         ]
+    },
+    {
+        "nev": "Zombi",
+        "mp": 0,
+        "laptipus": "Kalandozó",
+        "fokaszt": ["HARCOS"],
+        "alkaszt": ["Harcos"],
+        "alapszint": 1,
+        "jellem": null,
+        "pszi": false,
+        "szferak": [],
+        "kepzettsegek": [],
+        "tulajdonsagok": ["jelző"],
+        "alapkepessegek": {
+            "Fizikum": 7,
+            "Asztral": 5,
+            "Mental": 5
+        },
+        "hatasok": []
     }
     
 ];

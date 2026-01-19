@@ -25,5 +25,16 @@ gameEffect = {
             return false;
         }
     },
+    "Játékosa Sorába 2 jelző Zombi kerül pihenő helyzetben." : {
+        ervenyesul: function(card) {
+            for (let i = 0; i < 2; i++) {
+                const zombi = cardFactory.fromLibrary("Zombi");
+                zombi.tulajdonos = card.tulajdonos;
+                gameState.state.playerSpaces[card.tulajdonos]['sor'].push(zombi);
+            }
+        },
+
+        celpontValidalas: function(card) {return true;}
+    }
 
 }

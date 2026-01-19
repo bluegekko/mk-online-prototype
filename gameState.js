@@ -75,6 +75,7 @@ window.gameState = {
         // Kezdő kártyák kiosztása
         this.state.playerSpaces['player'].jovo = [
             cardFactory.fromLibrary("Határok feszegetése"),
+            cardFactory.fromLibrary("A túlvilág hívása"),
             cardFactory.fromLibrary("Ezüst Ököl stratéga"),
             cardFactory.fromLibrary("Ezüst Ököl stratéga"),
             cardFactory.fromLibrary("Beavatottak tanítója"),
