@@ -1,5 +1,5 @@
 gameAction = {
-    moveCard: function(fromSpace, toSpace, cardId) {
+    kartyaMozgatas: function(fromSpace, toSpace, cardId) {
         const cardIndex = fromSpace.findIndex(card => card.id === cardId);
         
         if (cardIndex !== -1) {
@@ -8,14 +8,14 @@ gameAction = {
         }
     },
 
-    drawCard: function(player) {
+    laphuzas: function(player) {
         if (gameState.state.playerSpaces[player].jovo.length === 0) {
             console.log(`Nincs több húzható lap ${player} Jövő pakijában!`);
             return false;
         }
     
         const drawnCard = gameState.state.playerSpaces[player].jovo[0];
-        this.moveCard(
+        this.kartyaMozgatas(
             gameState.state.playerSpaces[player]['jovo'],
             gameState.state.playerSpaces[player]['kez'],  
             drawnCard.id);
@@ -25,7 +25,7 @@ gameAction = {
     },
 
     // Kártya kijátszása kézből
-    playCardFromHand: function(player, cardId) {
+    leidezesKezbol: function(player, cardId) {
         // TODO kell, hogy cardId legyen?
         const card = gameState.state.playerSpaces[player].kez.find(c => c.id === cardId);
         console.log("lap kijátszása: ", card)

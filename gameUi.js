@@ -39,9 +39,26 @@ gameUi = {
             button.disabled = playerMp < card.mp ;
             button.onclick = (e) => {
                 e.stopPropagation();
-                gameAction.playCardFromHand(player, card.id);
+                gameAction.leidezesKezbol(player, card.id);
             };
             cardDiv.appendChild(button);
+        }
+
+        // Add buttons for activatable effects
+        if (card.hatasok) {
+            card.hatasok.forEach((hatas, index) => {
+                if (abilityFunctions.aktivizalhato(hatas)) {
+                    // TODO celpontValidalas ellenorzese    
+                    const effectButton = document.createElement('button');
+                    effectButton.textContent = hatas.kiirtnev || 'Hatás aktiválás';
+                    effectButton.className = 'effect-button';
+                    effectButton.onclick = (e) => {
+                        e.stopPropagation();
+                        // TODO: implement effect activation
+                    };
+                    cardDiv.appendChild(effectButton);
+                }
+            });
         }
 
         return cardDiv;

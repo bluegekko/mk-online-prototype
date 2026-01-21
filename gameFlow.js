@@ -76,7 +76,7 @@ gameFlow = {
                 
                 if (huzandoLapok > 0) {
                     for (let i = 0; i < huzandoLapok; i++) {
-                        gameAction.drawCard(player);
+                        gameAction.laphuzas(player);
                     }
                 }
             });

@@ -89,6 +89,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["harc_elotti"],
+                "kiirtnev": "Alapszintlopás",
                 "mp-ertek": 0,
                 "szoveg": "Kap 1 alapszintet. Célpont kalandozó veszít 1 alapszintet. A hatás a harc végéig tart."
             }
@@ -224,6 +225,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["allando", "harci", "egyszeri", "megszakito"],
+                "kiirtnev": "Beugrás",
                 "mp-ertek": 1,
                 "szoveg": "A képesség éber helyzetben aktivizálható, ha Sorban vagy harcban van. Frontemberként a csapatba kerül pihenő helyzetben."
             }
@@ -353,6 +355,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
+                "kiirtnev": "Sérítés",
                 "mp-ertek": 0,
                 "szoveg": "Célpont toroni kalandozó sérült helyzetbe fordul."
             }
@@ -476,6 +479,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["egyszeri"],
+                "kiirtnev": "Alapszintnövelés",
                 "mp-ertek": 0,
                 "szoveg": "Célpont salnarri kalandozó alapszintje 1-gyel nő a forduló végéig. A képesség pihenő és sérült helyzetben is aktivizálható."
             }
@@ -505,6 +509,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["harci", "megszakito"],
+                "kiirtnev": "Gyógyulás",
                 "mp-ertek": 0,
                 "szoveg": "A képesség harci körönként egyszer aktivizálható. Gyógyul 1 szintet, ha az előző harci körben nem gyógyult így."
             }
@@ -534,6 +539,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["elveszendo"],
+                "kiirtnev": "Varázslatvisszavétel",
                 "mp-érték": 0,
                 "szoveg": "Játékosa visszavesz 1 varázslat akciólapot Múltjából Kezébe."
             }
@@ -630,6 +636,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
+                "kiirtnev": "MP-nyerés",
                 "mp-érték": 0,
                 "szoveg": "A képesség aktivizálásának feltétele sérült helyzetbe forgatása. Játékosa kap 1 MP-t."
             }
@@ -664,6 +671,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["allando", "harci", "egyszeri", "ismetelheto"],
+                "kiirtnev": "Gyógyítás",
                 "mp-ertek": 0,
                 "szoveg": "A képesség Sorban is aktivizálható. Célpont Hajózás képzettséggel rendelkező kalandozó gyógyul 1 szintet."
             }
@@ -727,6 +735,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["megszakito", "elveszendo"],
+                "kiirtnev": "Semlegesítés",
                 "mp-ertek": 1,
                 "szoveg": "Semlegesít célpont 0 MP-igényű eseménylapot."
             }
@@ -790,6 +799,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
+                "kiirtnev": "Visszakeverés",
                 "mp-ertek": 0,
                 "szoveg": "Játékosa Múltjában lévő célpont hajó típusú hadszert visszekeveri Jövőjébe."
             }
@@ -824,6 +834,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["elveszendo"],
+                "kiirtnev": "Leidézés",
                 "mp-ertek": 0,
                 "szoveg": "Játékosa 1 MP-vel kevesebbért leidéz 1 legalább 4 MP-értékű Boszorkánymester kalandozó lapot."
             }
@@ -858,6 +869,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
+                "kiirtnev": "Elforgatás",
                 "mp-ertek": 2,
                 "szoveg": "Célpont kalandozó éber helyzetből pihenő helyzetbe fordul."
             }
@@ -916,6 +928,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["harci", "egyszeri", "elforgato"],
+                "kiirtnev": "Visszaküldés",
                 "mp-ertek": 3,
                 "szoveg": "Célpont kalandozó visszatér Sorába sérült helyzetben."
             }
@@ -972,6 +985,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["megszakito"],
+                "kiirtnev": "Elforgatás",
                 "koltseg": 6,
                 "szoveg": "A képesség aktivizálásának feltétele a feláldozása. Minden kalandozó pihenő helyzetbe fordul."
             }
@@ -1089,6 +1103,7 @@ cardLibrary = [
             {
                 "tipus": "laphatás",
                 "jelek": ["egyszeri", "megszakito"],
+                "kiirtnev": "Testőr",
                 "szoveg": "A laphatás játékosa kezdeményező sorelhagyó manővere során aktivizálható, ha a manőver színhelye. Az ellenfél Sorába 1 jelző Testőr kerül (HARCOS/Harcos, 2. alapszintű, F:9, A:5, M:5), akinek akadályoznia kell a manővert."
             }
         ]
@@ -1237,6 +1252,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["megszakito"],
+                "kiirtnev": "Gyógyítás megakadályozás",
                 "szoveg": "Célpont káosz vagy halál jellemű kalandozót célzó ellenséges gyógyító hatás nem gyógyít."
             }
         ]
@@ -1431,6 +1447,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["harc_elotti"],
+                "kiirtnev": "Alapszintnövelés",
                 "szoveg": "Célpont, Hajózás képzettséggel rendelkező kalandozó alapszintje 2-vel nő a forduló végéig, és mentálja 3-mal csökken."
             }
         ]

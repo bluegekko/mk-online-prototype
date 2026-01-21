@@ -1,6 +1,6 @@
 abilityFunctions = {
     aktivizalhato: function(hatas) {
-        return hatas.jelek.lenght === 0 || !hatas.jelek.includes("allando") || 
+        return (hatas.jelek.length !== 0 && !hatas.jelek.includes("allando")) || 
         hatas.jelek.includes("egyszeri") ||
         hatas.jelek.includes("elforgato") ||
         hatas.jelek.includes("elveszendo") ||
@@ -9,8 +9,23 @@ abilityFunctions = {
         hatas.jelek.includes("megszakito")
     },
 
-    sebesseg: function(hatas) {
+    folyamatos: function(hatas) {
         // TODO
+    },
+
+    idozitett: function(hatas) {
+        // TODO
+    },
+
+    sebesseg: function(hatas) {
+        if (!aktivizalhato(hatas)) {
+            return null;
+        }
+        if (hatas.jelek.includes("megszakito") || hatas.jelek.includes("harc_elotti")) {
+            return "gyors hatás"
+        } else {
+            return "mp-kötött"
+        }
     },
 
     fazis: function(hatas) {
