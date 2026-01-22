@@ -71,6 +71,8 @@ gameFlow = {
                 state.playerSpaces[player].sor.forEach(card => {
                     if (card.helyzet === "Pihenő") {
                         card.helyzet = "Éber";
+                    } else if (card.helyzet === "Sérült") {
+                        card.helyzet = "Pihenő";
                     }
                 });
 
@@ -140,7 +142,7 @@ gameFlow = {
     toronyszintFelfedese: {
         nev: "Toronyszint felfedése",
         kovetkezoFazis: function(state) {return gameFlow.akadalylapokAktivizalasa;},
-        fazisEleje: function(state) {},
+        fazisEleje: function(state) {gameFlow.idofonalNyitas(state, null)},
         fazisVege: function(state) {},
     },
 
@@ -153,21 +155,21 @@ gameFlow = {
                 return gameFlow.akadalyozoCsapatSorElhagyas;
             }
         },
-        fazisEleje: function(state) {},
+        fazisEleje: function(state) {gameFlow.idofonalNyitas(state, null)},
         fazisVege: function(state) {},
     },
 
     kuldetesFeltetelTeljesites: {
         nev: "Küldetés feltétel teljesítés",
         kovetkezoFazis: function(state) {return gameFlow.manoverekFazisa;},
-        fazisEleje: function(state) {},
+        fazisEleje: function(state) {gameFlow.idofonalNyitas(state, null)},
         fazisVege: function(state) {},
     },
 
     harcElokeszites: {
         nev: "Harc előkészítés",
         kovetkezoFazis: function(state) {return gameFlow.harciKorok;},
-        fazisEleje: function(state) {},
+        fazisEleje: function(state) {gameFlow.idofonalNyitas(state, null)},
         fazisVege: function(state) {},
     },
 
@@ -186,7 +188,7 @@ gameFlow = {
             }
             return gameFlow.manoverekFazisa;
         },
-        fazisEleje: function(state) {},
+        fazisEleje: function(state) {gameFlow.idofonalNyitas(state, null)},
         fazisVege: function(state) {},
     },
 }

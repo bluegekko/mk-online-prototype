@@ -5,5 +5,8 @@ helper = {
         } else {
             return 'player'
         }
-    }
+    },
+
+    ervenyesuloHatas: function(card) {return card.hatasok.find(h => h.ervenyesules === true);}
+
 }

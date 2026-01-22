@@ -1245,7 +1245,7 @@ cardLibrary = [
             {
                 "tipus": "képesség",
                 "jelek": ["megszakito"],
-                "kiirtnev": "Gyógyítás megakadályozás",
+                "kiirtnev": "Gyógyítás-megakadályozás",
                 "mp": 0,
                 "szoveg": "Célpont káosz vagy halál jellemű kalandozót célzó ellenséges gyógyító hatás nem gyógyít."
             }

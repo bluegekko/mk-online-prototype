@@ -48,13 +48,10 @@ gameAction = {
         if (!hatas) return;
         if (hatas.mp && gameState.state.playerAttributes[player].mp < hatas.mpErtek) return;
 
-        if (hatas && gameEffect[hatas.szoveg]) {
-            const effect = gameEffect[hatas.szoveg];
-            if (!gameEffect.celpontValasztas(hatas, player)) {
-                return;
-            }
+        if (!gameEffect.celpontValasztas(hatas, player)) {
+            return;
         }
-
+        
         console.log("Hatás aktiválása: ", hatas);
 
         gameFlow.idofonalNyitas(gameState.state, hatas)

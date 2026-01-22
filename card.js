@@ -50,7 +50,7 @@ cardFactory = {
                 laptipus: "Toronyszint",
                 prefix: "t",
                 idotartam: "Végleges",
-                fázis: "Sor",
+                fazis: "Sor",
                 ...params
             }),
             fal: params.fal,
@@ -62,7 +62,7 @@ cardFactory = {
             ...cardFactory.createBaseCard({
                 laptipus: "Eseménylap",
                 prefix: "e",
-                fázis: "Sor",
+                fazis: "Sor",
                 ...params
             }),
             ervenyesul: function() {
@@ -81,7 +81,7 @@ cardFactory = {
                 laptipus: "Akadálylap",
                 prefix: "ay",
                 idotartam: "Felhasználás",
-                fázis: "Sor",
+                fazis: "Sor",
                 ...params
             }),
             akadalytipus: params.akadalytipus,

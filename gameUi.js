@@ -36,7 +36,7 @@ gameUi = {
             button.textContent = 'Leidéz';
             const playerMp = gameState.state.playerAttributes[player].mp;
             // TODO celpontValidalas ellenorzese
-            button.disabled = playerMp < card.mp ;
+            button.disabled = playerMp < card.mp || !abilityFunctions.hasznalhatoAktualisFazisban(card) ;
             button.onclick = (e) => {
                 e.stopPropagation();
                 gameAction.leidezesKezbol(player, card.id);
@@ -52,6 +52,8 @@ gameUi = {
                     const effectButton = document.createElement('button');
                     effectButton.textContent = hatas.kiirtnev || 'Hatás aktiválás';
                     effectButton.className = 'effect-button';
+                    const playerMp = gameState.state.playerAttributes[player].mp;
+                    effectButton.disabled = playerMp < hatas.mp || !abilityFunctions.hasznalhatoAktualisFazisban(hatas);
                     effectButton.onclick = (e) => {
                         e.stopPropagation();
                         gameAction.hatasAktivizalas(player, hatas);
