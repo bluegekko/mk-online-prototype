@@ -11,6 +11,8 @@ window.gameState = {
         melyseg: { name: 'melyseg', displayName: 'Mélység' }
     },
 
+    jelenSpaces: ['sor', 'manover', 'toronyszintek', 'jelenlapok'],
+
     // Játékosok definíciója
     players: ['player', 'opponent'],
 
@@ -76,15 +78,13 @@ window.gameState = {
         this.state.playerSpaces['player'].jovo = [
             cardFactory.fromLibrary("Határok feszegetése"),
             cardFactory.fromLibrary("A túlvilág hívása"),
-            cardFactory.fromLibrary("Ezüst Ököl stratéga"),
+            cardFactory.fromLibrary("Salnarri kopjatörő"),
             cardFactory.fromLibrary("Ezüst Ököl stratéga"),
             cardFactory.fromLibrary("Beavatottak tanítója"),
             cardFactory.fromLibrary("Spaonter"),
             cardFactory.fromLibrary("Spaonter"),
             cardFactory.fromLibrary("Spaonter"),
         ];
-
-        this.state.playerSpaces['player'].jovo.forEach(card => card.tulajdonos = 'player')
 
         // Toronyszintek beállítása mindkét játékosnak
         this.players.forEach(player => {
@@ -94,6 +94,16 @@ window.gameState = {
                 cardFactory.fromLibrary("Pihenőszoba")
             ];
         });
+
+         this.players.forEach(player => {
+            Object.keys(this.baseSpaces).forEach(space => {
+                this.state.playerSpaces[player][space].forEach(card => {
+                    card.tulajdonos = player;
+                });
+            });
+        });
+
+
         console.log('Initial state:', this.state);
         console.log('Player cards:', this.state.playerSpaces.player.kez);
         console.log('Player tower:', this.state.playerSpaces.player.toronyszintek);

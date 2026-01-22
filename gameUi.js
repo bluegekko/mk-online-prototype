@@ -54,7 +54,7 @@ gameUi = {
                     effectButton.className = 'effect-button';
                     effectButton.onclick = (e) => {
                         e.stopPropagation();
-                        // TODO: implement effect activation
+                        gameAction.hatasAktivizalas(player, hatas);
                     };
                     cardDiv.appendChild(effectButton);
                 }
@@ -62,6 +62,15 @@ gameUi = {
         }
 
         return cardDiv;
+    },
+
+    createHatasElement: function(hatas) {
+        const hatasDiv = document.createElement('div');
+        hatasDiv.className = 'card hatas';
+        hatasDiv.innerHTML = `
+            <div class="card-header">${hatas.kiirtnev || 'Hatás'}</div>
+        `;
+        return hatasDiv;
     },
 
     render: function() {    
@@ -78,8 +87,13 @@ gameUi = {
             const hatasok = gameState.state.fazis.idofonal.hatasok;
             if (hatasok && hatasok.length > 0) {
                 hatasok.forEach(hatas => {
-                    const hatasElement = this.createCardElement(hatas, null, 'idofonal');
-                    idofonalContainer.appendChild(hatasElement);
+                    if (hatas.isCard) {
+                        const hatasElement = this.createCardElement(hatas, null, 'idofonal');
+                        idofonalContainer.appendChild(hatasElement);
+                    } else {
+                        const hatasElement = this.createHatasElement(hatas);
+                        idofonalContainer.appendChild(hatasElement);
+                    }
                 });
             }
             // TODO üres, de folyamatban lévő időfonal jelzése

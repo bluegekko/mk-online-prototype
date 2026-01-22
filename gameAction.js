@@ -32,20 +32,32 @@ gameAction = {
         if (!card || gameState.state.playerAttributes[player].mp < card.mp) return;
 
         // Hatás célpont választás ellenőrzése
-        const hatas = card.hatasok?.find(h => h.ervenyesules === true);
-        if (hatas && gameEffect[hatas.szoveg]) {
-            const effect = gameEffect[hatas.szoveg];
-            if (effect.celpontValasztas) {
-                effect.celpontValasztas(card);
-                if (!card.celpont) return; // Ha nem sikerült célpontot választani
-            }
-        }
+        gameEffect.celpontValasztas(card, player);
+        if (!card.celpont) return;
 
         gameState.state.playerAttributes[player].mp -= card.mp;
         kez = gameState.state.playerSpaces[player]['kez'];
         const cardIndex = kez.findIndex(card => card.id === cardId);
         kez.splice(cardIndex, 1);
         gameFlow.idofonalNyitas(gameState.state, card)
+        gameUi.render();
+    },
+
+    hatasAktivizalas: function(player, hatas) {
+        if (!hatas) return;
+        if (hatas.mp && gameState.state.playerAttributes[player].mp < hatas.mpErtek) return;
+
+        if (hatas && gameEffect[hatas.szoveg]) {
+            const effect = gameEffect[hatas.szoveg];
+            if (effect.celpontValasztas) {
+                effect.celpontValasztas(hatas);
+                if (!hatas.celpont) return; // Ha nem sikerült célpontot választani
+            }
+        }
+
+        console.log("Hatás aktiválása: ", hatas);
+
+        gameFlow.idofonalNyitas(gameState.state, hatas)
         gameUi.render();
     }
 }

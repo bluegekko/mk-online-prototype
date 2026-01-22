@@ -8,7 +8,7 @@ cardLibrary = [
         "szinesito": "A gianagi Hercegi Gárda tagja",
         "alapszint": 2,
         "jellem": "Élet",
-        "pszi": false,
+        "tulajdonsagok": [],
         "kepzettsegek": [
             "Építészet",
             "Hadrend",
@@ -36,7 +36,7 @@ cardLibrary = [
         "alkaszt": ["Varázsló"],
         "alapszint": 1,
         "jellem": "Élet",
-        "pszi": false,
+        "tulajdonsagok": [],
         "kepzettsegek": [
             "Alkímia",
             "Legendaismeret",
@@ -69,7 +69,7 @@ cardLibrary = [
         "alkaszt": ["Harcos"],
         "alapszint": 2,
         "jellem": "Élet",
-        "pszi": false,
+        "tulajdonsagok": [],
         "kepzettsegek": [
             "Hadrend",
             "Orvoslás",
@@ -90,7 +90,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["harc_elotti"],
                 "kiirtnev": "Alapszintlopás",
-                "mp-ertek": 0,
+                "mp": 0,
                 "szoveg": "Kap 1 alapszintet. Célpont kalandozó veszít 1 alapszintet. A hatás a harc végéig tart."
             }
         ]
@@ -104,7 +104,7 @@ cardLibrary = [
         "alkaszt": ["Pap"],
         "alapszint": 2,
         "jellem": "Élet",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "szferak": ["Élet", "Természet"],
         "kepzettsegek": [
             "Időjóslás",
@@ -138,7 +138,7 @@ cardLibrary = [
         "alkaszt": ["Fejvadász"],
         "alapszint": 5,
         "jellem": "Élet",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
             "Álöltözet",
             "Lefegyverzés",
@@ -171,7 +171,7 @@ cardLibrary = [
         "alkaszt": ["Pap"],
         "alapszint": 1,
         "jellem": "Rend",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "szferak": ["Élet", "Halál"],
         "kepzettsegek": [
             "Lélektan",
@@ -205,7 +205,7 @@ cardLibrary = [
         "alkaszt": ["Fejvadász"],
         "alapszint": 2,
         "jellem": "Rend",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
             "Álöltözet",
             "Orvtámadás",
@@ -226,7 +226,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["allando", "harci", "egyszeri", "megszakito"],
                 "kiirtnev": "Beugrás",
-                "mp-ertek": 1,
+                "mp": 1,
                 "szoveg": "A képesség éber helyzetben aktivizálható, ha Sorban vagy harcban van. Frontemberként a csapatba kerül pihenő helyzetben."
             }
         ]
@@ -240,7 +240,7 @@ cardLibrary = [
         "alkaszt": ["Harcművész"],
         "alapszint": 2,
         "jellem": "Rend",
-        "pszi": false,
+        "tulajdonsagok": [],
         "kepzettsegek": [
             "Élettan",
             "Orvoslás",
@@ -268,7 +268,7 @@ cardLibrary = [
         "alkaszt": ["Harcos"],
         "alapszint": 2,
         "jellem": "Rend",
-        "pszi": false,
+        "tulajdonsagok": [],
         "kepzettsegek": [
             "Herbalizmus",
             "Idomítás",
@@ -301,7 +301,7 @@ cardLibrary = [
         "alkaszt": ["Sámán"],
         "alapszint": 2,
         "jellem": "Rend",
-        "pszi": false,
+        "tulajdonsagok": [],
         "kepzettsegek": [
             "Időjóslás",
             "Hajózás",
@@ -334,7 +334,7 @@ cardLibrary = [
         "alkaszt": ["Paplovag"],
         "alapszint": 3,
         "jellem": "Rend",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "szferak": ["Lélek", "Természet"],
         "kepzettsegek": [
             "Taktika",
@@ -356,7 +356,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
                 "kiirtnev": "Sérítés",
-                "mp-ertek": 0,
+                "mp": 0,
                 "szoveg": "Célpont toroni kalandozó sérült helyzetbe fordul."
             }
         ]
@@ -370,7 +370,7 @@ cardLibrary = [
         "alkaszt": ["Varázsló"],
         "alapszint": 1,
         "jellem": "Rend",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
             "Drágakőmágia",
             "Mágiaismeret",
@@ -398,7 +398,6 @@ cardLibrary = [
         "alkaszt": ["Lovag"],
         "alapszint": 4,
         "jellem": "Káosz",
-        "pszi": false,
         "kepzettsegek": [
             "Hadrend",
             "Hadvezetés",
@@ -431,7 +430,6 @@ cardLibrary = [
         "alkaszt": ["Harcos"],
         "alapszint": 3,
         "jellem": "Káosz",
-        "pszi": false,
         "kepzettsegek": [
             "Belharc",
             "Pusztítás",
@@ -459,7 +457,6 @@ cardLibrary = [
         "alkaszt": ["Lovag"],
         "alapszint": 2,
         "jellem": "Káosz",
-        "pszi": false,
         "kepzettsegek": [
             "Hadrend",
             "Hadvezetés",
@@ -480,7 +477,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["egyszeri"],
                 "kiirtnev": "Alapszintnövelés",
-                "mp-ertek": 0,
+                "mp": 0,
                 "szoveg": "Célpont salnarri kalandozó alapszintje 1-gyel nő a forduló végéig. A képesség pihenő és sérült helyzetben is aktivizálható."
             }
         ]
@@ -494,7 +491,6 @@ cardLibrary = [
         "alkaszt": ["Fejvadász"],
         "alapszint": 4,
         "jellem": "Káosz",
-        "pszi": false,
         "kepzettsegek": [
             "Lesvetés",
             "Vallatás",
@@ -510,7 +506,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["harci", "megszakito"],
                 "kiirtnev": "Gyógyulás",
-                "mp-ertek": 0,
+                "mp": 0,
                 "szoveg": "A képesség harci körönként egyszer aktivizálható. Gyógyul 1 szintet, ha az előző harci körben nem gyógyult így."
             }
         ]
@@ -524,7 +520,7 @@ cardLibrary = [
         "alkaszt": ["Boszorkánymester"],
         "alapszint": 2,
         "jellem": "Káosz",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
             "Lesvetés",
             "Veszélyérzék",
@@ -540,7 +536,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elveszendo"],
                 "kiirtnev": "Varázslatvisszavétel",
-                "mp-érték": 0,
+                "mp": 0,
                 "szoveg": "Játékosa visszavesz 1 varázslat akciólapot Múltjából Kezébe."
             }
         ]
@@ -554,7 +550,7 @@ cardLibrary = [
         "alkaszt": ["Tűzvarázsló"],
         "alapszint": 4,
         "jellem": "Káosz",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "szferak": ["Lélek", "Természet"],
         "kepzettsegek": [
             "Démonológia",
@@ -588,7 +584,6 @@ cardLibrary = [
         "alkaszt": ["Tolvaj"],
         "alapszint": 1,
         "jellem": "Káosz",
-        "pszi": false,
         "kepzettsegek": [
             "Álöltözet",
             "Lopózás",
@@ -616,7 +611,7 @@ cardLibrary = [
         "alkaszt": ["Boszorkány"],
         "alapszint": 3,
         "jellem": "Káosz",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
             "Legendaismeret",
             "Méregkeverés",
@@ -637,7 +632,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
                 "kiirtnev": "MP-nyerés",
-                "mp-érték": 0,
+                "mp": 0,
                 "szoveg": "A képesség aktivizálásának feltétele sérült helyzetbe forgatása. Játékosa kap 1 MP-t."
             }
         ]
@@ -651,7 +646,6 @@ cardLibrary = [
         "alkaszt": ["Harcos"],
         "alapszint": 2,
         "jellem": "Halál",
-        "pszi": false,
         "kepzettsegek": [
             "Hajózás",
             "Úszás",
@@ -672,7 +666,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["allando", "harci", "egyszeri", "ismetelheto"],
                 "kiirtnev": "Gyógyítás",
-                "mp-ertek": 0,
+                "mp": 0,
                 "szoveg": "A képesség Sorban is aktivizálható. Célpont Hajózás képzettséggel rendelkező kalandozó gyógyul 1 szintet."
             }
         ]
@@ -686,7 +680,7 @@ cardLibrary = [
         "alkaszt": ["Pap"],
         "alapszint": 2,
         "jellem": "Halál",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "szferak": ["Halál", "Lélek"],
         "kepzettsegek": [
             "Démonológia",
@@ -715,7 +709,7 @@ cardLibrary = [
         "alkaszt": ["Fejvadász"],
         "alapszint": 3,
         "jellem": "Halál",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
             "Álöltözet",
             "Orvtámadás",
@@ -736,7 +730,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["megszakito", "elveszendo"],
                 "kiirtnev": "Semlegesítés",
-                "mp-ertek": 1,
+                "mp": 1,
                 "szoveg": "Semlegesít célpont 0 MP-igényű eseménylapot."
             }
         ]
@@ -750,7 +744,7 @@ cardLibrary = [
         "alkaszt": ["Pap", "Tűzvarázsló"],
         "alapszint": 1,
         "jellem": "Halál",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "szferak": ["Lélek", "Természet"],
         "kepzettsegek": [
             "Démonológia",
@@ -784,7 +778,6 @@ cardLibrary = [
         "alkaszt": ["Harcos"],
         "alapszint": 3,
         "jellem": "Halál",
-        "pszi": false,
         "kepzettsegek": [
             "Építészet",
             "Hajózás",
@@ -800,7 +793,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
                 "kiirtnev": "Visszakeverés",
-                "mp-ertek": 0,
+                "mp": 0,
                 "szoveg": "Játékosa Múltjában lévő célpont hajó típusú hadszert visszekeveri Jövőjébe."
             }
         ]
@@ -814,7 +807,7 @@ cardLibrary = [
         "alkaszt": ["Boszorkánymester"],
         "alapszint": 2,
         "jellem": "Halál",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
             "Démonológia",
             "Mágiaismeret",
@@ -835,7 +828,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elveszendo"],
                 "kiirtnev": "Leidézés",
-                "mp-ertek": 0,
+                "mp": 0,
                 "szoveg": "Játékosa 1 MP-vel kevesebbért leidéz 1 legalább 4 MP-értékű Boszorkánymester kalandozó lapot."
             }
         ]
@@ -849,7 +842,7 @@ cardLibrary = [
         "alkaszt": ["Boszorkány"],
         "alapszint": 1,
         "jellem": "Halál",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
             "Legendaismeret",
             "Méregkeverés",
@@ -870,7 +863,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
                 "kiirtnev": "Elforgatás",
-                "mp-ertek": 2,
+                "mp": 2,
                 "szoveg": "Célpont kalandozó éber helyzetből pihenő helyzetbe fordul."
             }
         ]
@@ -884,7 +877,7 @@ cardLibrary = [
         "alkaszt": ["Pap", "Boszorkánymester"],
         "alapszint": 2,
         "jellem": "Halál",
-        "pszi": true,
+        "tulajdonsagok": ["pszi"],
         "szferak": ["Halál", "Lélek"],
         "kepzettsegek": [
             "Démonológia",
@@ -913,7 +906,6 @@ cardLibrary = [
         "alkaszt": ["Tolvaj"],
         "alapszint": 2,
         "jellem": "Halál",
-        "pszi": false,
         "kepzettsegek": [
             "Álöltözet",
             "Lopózás",
@@ -929,7 +921,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["harci", "egyszeri", "elforgato"],
                 "kiirtnev": "Visszaküldés",
-                "mp-ertek": 3,
+                "mp": 3,
                 "szoveg": "Célpont kalandozó visszatér Sorába sérült helyzetben."
             }
         ]
@@ -986,7 +978,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["megszakito"],
                 "kiirtnev": "Elforgatás",
-                "koltseg": 6,
+                "mp": 6,
                 "szoveg": "A képesség aktivizálásának feltétele a feláldozása. Minden kalandozó pihenő helyzetbe fordul."
             }
         ]
@@ -1104,6 +1096,7 @@ cardLibrary = [
                 "tipus": "laphatás",
                 "jelek": ["egyszeri", "megszakito"],
                 "kiirtnev": "Testőr",
+                "mp": 0,
                 "szoveg": "A laphatás játékosa kezdeményező sorelhagyó manővere során aktivizálható, ha a manőver színhelye. Az ellenfél Sorába 1 jelző Testőr kerül (HARCOS/Harcos, 2. alapszintű, F:9, A:5, M:5), akinek akadályoznia kell a manővert."
             }
         ]
@@ -1253,6 +1246,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["megszakito"],
                 "kiirtnev": "Gyógyítás megakadályozás",
+                "mp": 0,
                 "szoveg": "Célpont káosz vagy halál jellemű kalandozót célzó ellenséges gyógyító hatás nem gyógyít."
             }
         ]
@@ -1448,6 +1442,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["harc_elotti"],
                 "kiirtnev": "Alapszintnövelés",
+                "mp": 0,
                 "szoveg": "Célpont, Hajózás képzettséggel rendelkező kalandozó alapszintje 2-vel nő a forduló végéig, és mentálja 3-mal csökken."
             }
         ]
@@ -1546,10 +1541,8 @@ cardLibrary = [
         "alkaszt": ["Harcos"],
         "alapszint": 1,
         "jellem": null,
-        "pszi": false,
-        "szferak": [],
-        "kepzettsegek": [],
         "tulajdonsagok": ["jelző"],
+        "kepzettsegek": [],
         "alapkepessegek": {
             "Fizikum": 7,
             "Asztral": 5,

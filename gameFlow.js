@@ -3,7 +3,11 @@ gameFlow = {
         if(state.fazis.idofonal.folyamatban){
             if (state.fazis.idofonal.hatasok.length > 0) {
                 aktualisHatas = state.fazis.idofonal.hatasok.pop();
-                aktualisHatas.ervenyesul();
+                if (aktualisHatas.isCard) {
+                    aktualisHatas.ervenyesul();
+                } else {
+                    gameEffect[aktualisHatas.szoveg].ervenyesul(aktualisHatas);
+                }
                 return;
             } else {
                 gameFlow.idofonalZaras(state)
