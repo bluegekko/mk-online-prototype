@@ -28,11 +28,11 @@ gameEffect = {
         const kivalasztas = gameState.state.playerAttributes[player].kivalasztas;
         if (hatas.isCard){
             ervenyesuloHatas = hatas.hatasok.find(h => h.ervenyesules === true);
+            if (!ervenyesuloHatas) return true;
             if (gameEffect[ervenyesuloHatas.szoveg].celpontValidalas(kivalasztas)) {
                 hatas.celpont = [...kivalasztas];
                 return true;
             }
-
         } else {
             if (gameEffect[hatas.szoveg].celpontValidalas(kivalasztas)) {
                 hatas.celpont = [...kivalasztas];
@@ -56,6 +56,7 @@ gameEffect = {
             return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
         },
     },
+
     "Játékosa Sorába 2 jelző Zombi kerül pihenő helyzetben." : {
         ervenyesul: function(card) {
             for (let i = 0; i < 2; i++) {

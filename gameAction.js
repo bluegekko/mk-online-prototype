@@ -32,8 +32,9 @@ gameAction = {
         if (!card || gameState.state.playerAttributes[player].mp < card.mp) return;
 
         // Hatás célpont választás ellenőrzése
-        gameEffect.celpontValasztas(card, player);
-        if (!card.celpont) return;
+        if (!gameEffect.celpontValasztas(card, player)) {
+            return;
+        }
 
         gameState.state.playerAttributes[player].mp -= card.mp;
         kez = gameState.state.playerSpaces[player]['kez'];
@@ -49,9 +50,8 @@ gameAction = {
 
         if (hatas && gameEffect[hatas.szoveg]) {
             const effect = gameEffect[hatas.szoveg];
-            if (effect.celpontValasztas) {
-                effect.celpontValasztas(hatas);
-                if (!hatas.celpont) return; // Ha nem sikerült célpontot választani
+            if (!gameEffect.celpontValasztas(hatas, player)) {
+                return;
             }
         }
 
