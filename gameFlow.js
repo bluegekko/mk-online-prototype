@@ -85,7 +85,7 @@ gameFlow = {
         if (manoverState.sikeresJatekos === player && manoverState.aktualisManover == "ostrom") {
             console.log("sikeresség aktiválva")
             gameAction.kartyaMozgatasJatekter(
-                helper.ellenfel(player), 'toronyszintek', 'mult', manoverState.szinhely.id);
+                helper.ellenfel(player), 'toronyszintek', 'mult', manoverState.szinhely);
             
         }
 
