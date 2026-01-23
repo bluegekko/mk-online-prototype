@@ -4,6 +4,9 @@ gameUi = {
         cardDiv.className = `card ${card.laptipus.toLowerCase()}`;
         cardDiv.dataset.cardId = card.id;
 
+        player = player ? player : card.tulajdonos
+        const playerMp = gameState.state.playerAttributes[player].mp;
+
         mp_text = card.laptipus === "Toronyszint" ? (card.mp === 4 ? "" : card.mp + " MP " ) : card.mp + " MP " ;
         alapszintmodositas = card.alapszintModositas ? card.alapszintModositas : 0
         alapszint = card.alapszint + alapszintmodositas
@@ -13,6 +16,7 @@ gameUi = {
             <div class="card-content">
                 ${card.alapszint ? `<div class="alapszint">Alapszint: ${alapszint}</div>` : ''}
                 ${card.fal != null ? `<div class="fal">FAL: ${card.fal}</div>` : ''}
+                ${card.helyzet ? `<div class="helyzet">Helyzet: ${card.helyzet}</div>` : ''}
             </div>
         `;
 
@@ -34,7 +38,6 @@ gameUi = {
         if (space === 'kez') {
             const button = document.createElement('button');
             button.textContent = 'Leidéz';
-            const playerMp = gameState.state.playerAttributes[player].mp;
             // TODO celpontValidalas ellenorzese
             button.disabled = playerMp < card.mp || !abilityFunctions.hasznalhatoAktualisFazisban(card) ;
             button.onclick = (e) => {
@@ -44,16 +47,33 @@ gameUi = {
             cardDiv.appendChild(button);
         }
 
+        if (space === 'toronyszintek' && player === helper.ellenfel('player')) {
+            const ellenfelToronyszintek = gameState.state.playerSpaces[player]['toronyszintek'];
+            if (ellenfelToronyszintek.length > 0 && ellenfelToronyszintek[0] === card) {
+                const ostromButton = document.createElement('button');
+                ostromButton.textContent = 'Ostrom';
+                ostromButton.disabled = 
+                        playerMp < 2 
+                ostromButton.onclick = (e) => {
+                    e.stopPropagation();
+                    gameAction.ostrom('player', card);
+                };
+                cardDiv.appendChild(ostromButton);
+            }
+        }
+
         // Add buttons for activatable effects
         if (card.hatasok) {
             card.hatasok.forEach((hatas, index) => {
                 if (abilityFunctions.aktivizalhato(hatas)) {
-                    // TODO celpontValidalas ellenorzese    
                     const effectButton = document.createElement('button');
                     effectButton.textContent = hatas.kiirtnev || 'Hatás aktiválás';
                     effectButton.className = 'effect-button';
-                    const playerMp = gameState.state.playerAttributes[player].mp;
-                    effectButton.disabled = playerMp < hatas.mp || !abilityFunctions.hasznalhatoAktualisFazisban(hatas);
+                    effectButton.disabled = 
+                        playerMp < hatas.mp 
+                        || !abilityFunctions.hasznalhatoAktualisFazisban(hatas) 
+                        || hatas.tipus == "képesség" && !gameState.jelenSpaces.includes(space) 
+                        || !gameEffect[hatas.szoveg].celpontValidalas(kivalasztas);
                     effectButton.onclick = (e) => {
                         e.stopPropagation();
                         gameAction.hatasAktivizalas(player, hatas);

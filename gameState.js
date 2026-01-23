@@ -22,14 +22,7 @@ window.gameState = {
         playerAttributes: {},
         fazis: {
             aktualisFazis: gameFlow.forduloKezdete,
-            manover: {
-                aktualisManover : null,
-                folyamatban: false,
-                kezdemenyezoJatekos: null,
-                manoverSzinhely: null,
-                kuldetesFolytatas: true,
-                harciKorokVege: false,
-            },
+            manover: helper.resetManoverState(),
             idofonal: {
                 hatasok: [],
                 folyamatban: true,
@@ -44,14 +37,7 @@ window.gameState = {
         // Initialize state.fazis
         this.state.fazis = {
             aktualisFazis: gameFlow.forduloKezdete,
-            manover: {
-                aktualisManover: null,
-                folyamatban: false,
-                kezdemenyezoJatekos: null,
-                manoverSzinhely: null,
-                kuldetesFolytatas: true,
-                harciKorokVege: false,
-            },
+            manover: helper.resetManoverState(),
             idofonal: {
                 hatasok: [],
                 folyamatban: true,
@@ -72,6 +58,9 @@ window.gameState = {
             this.state.playerAttributes[player] = {};
             this.state.playerAttributes[player].mp = 6;
             this.state.playerAttributes[player].kivalasztas = [];
+            this.state.playerAttributes[player].kuldetesFolytatas = true;
+            this.state.playerAttributes[player].harciKorokVege = false;
+            this.state.playerAttributes[player].akadalyozas = false;
         });
 
         // Kezdő kártyák kiosztása

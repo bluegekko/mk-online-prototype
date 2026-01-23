@@ -23,12 +23,24 @@ gameEffect = {
         return false;
     },
 
+    sebzoAkciolapCelpontValidalas: function(celpontok) {
+        return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
+    },
+
     celpontValasztas: function(hatas, player) {
         console.log("celpont valasztas: ", hatas)
         const kivalasztas = gameState.state.playerAttributes[player].kivalasztas;
         if (hatas.isCard){
             ervenyesuloHatas = hatas.hatasok.find(h => h.ervenyesules === true);
-            if (!ervenyesuloHatas) return true;
+            if (!ervenyesuloHatas) {
+                if (hatas.sebzes) {
+                    if (!sebzoAkciolapCelpontValidalas) return false;
+                    hatas.celpont = [...kivalasztas];
+                    return true;
+                } else {
+                    return true;
+                }
+            }
             if (gameEffect[ervenyesuloHatas.szoveg].celpontValidalas(kivalasztas)) {
                 hatas.celpont = [...kivalasztas];
                 return true;
@@ -62,6 +74,7 @@ gameEffect = {
             for (let i = 0; i < 2; i++) {
                 const zombi = cardFactory.fromLibrary("Zombi");
                 zombi.tulajdonos = card.tulajdonos;
+                zombi.helyzet = "Éber";
                 gameState.state.playerSpaces[card.tulajdonos]['sor'].push(zombi);
             }
         },
@@ -82,5 +95,21 @@ gameEffect = {
             const card = celpontok[0];
             return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó' && gameEffect.vanParameter(card, 'salnar');
         },
+    },
+    "A képesség aktivizálásának feltétele a feláldozása. Minden kalandozó pihenő helyzetbe fordul." : {
+        ervenyesul: function(hatas) {
+            for (const player of gameState.players) {
+                for (const space of gameState.jelenSpaces) {
+                    const cards = gameState.state.playerSpaces[player][space];
+                    cards.forEach(card => {
+                        if (card.laptipus === 'Kalandozó') {
+                            card.helyzet = 'pihenő';
+                        }
+                    });
+                }
+            }
+        },
+
+        celpontValidalas: function(celpontok) {return true;}
     }
 }

@@ -40,6 +40,7 @@ cardFactory = {
             alapkepessegek: params.alapkepessegek,
             ervenyesul: function() {
                 gameState.state.playerSpaces[this.tulajdonos]['sor'].push(this);
+                this.helyzet = "Éber";
             }
         }; 
     },
@@ -66,7 +67,7 @@ cardFactory = {
                 ...params
             }),
             ervenyesul: function() {
-                const hatas = this.hatasok.find(h => h.ervenyesules === true);
+                const hatas = helper.ervenyesuloHatas(this);
                 console.log("érvényesülő hatás: " + hatas)
                 if (hatas) {
                     gameEffect[hatas.szoveg].ervenyesul(this);
@@ -101,6 +102,13 @@ cardFactory = {
             fokaszt: params.fokaszt,
             alkaszt: params.alkaszt,
             sebzes: params.sebzes,
+            ervenyesul: function() {
+                const hatas = helper.ervenyesuloHatas(this);
+                console.log("érvényesülő hatás: " + hatas)
+                if (hatas) {
+                    gameEffect[hatas.szoveg].ervenyesul(this);
+                }
+            }
         }; 
     },
 

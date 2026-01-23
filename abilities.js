@@ -46,6 +46,7 @@ abilityFunctions = {
         if (hatas.isCard) {
             fazis = hatas.fazis ? hatas.fazis : abilityFunctions.fazis(helper.ervenyesuloHatas(hatas));
             sebesseg = helper.ervenyesuloHatas(hatas) ? abilityFunctions.sebesseg(helper.ervenyesuloHatas(hatas)) : "mp-kötött";
+            // TODO Tömegek dühének kioltása
             jelek = helper.ervenyesuloHatas(hatas) ? helper.ervenyesuloHatas(hatas).jelek : []
             akciolap = hatas.laptipus == "Akciólap"
         } else {
