@@ -142,4 +142,17 @@ gameEffect = {
         celpontValidalas: function(celpontok) {return true;}
     },
 
+    "Célpont felszerelés elveszíti képességeit." : {
+        ervenyesul: function(hatas) {
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            hatas.celpont[0].hatasok = hatas.celpont[0].hatasok.filter(h => h.tipus === 'laphatás');
+        },
+
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            return gameEffect.jelenbenVan(card) && helper.isFelszereles(card);
+        },
+    }
+
 }
