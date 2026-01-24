@@ -4,6 +4,7 @@
         // Vezérlő gombok eseménykezelői
         document.getElementById('newGameBtn').addEventListener('click', ujJatek);
         document.getElementById('passBtn').addEventListener('click', passz);
+        document.getElementById('addCardBtn').addEventListener('click', kartyaHozzaadas);
         
         // Billentyűzet eseménykezelő
         document.addEventListener('keydown', (e) => {
@@ -24,6 +25,15 @@
     function passz() {
         gameFlow.duplapassz(gameState.state);
         gameUi.render();
+    }
+
+    // Kártya hozzáadása kézhez
+    function kartyaHozzaadas() {
+        const input = document.getElementById('cardNameInput');
+        const cardName = input.value.trim();
+        if (cardName) {
+            gameAction.kartyaHozzaadas(cardName, 'player', 'kez')
+        }
     }
 
     // Játék inicializálása amikor az oldal betöltődött

@@ -87,15 +87,13 @@ gameEffect = {
     "Játékosa Sorába 2 jelző Zombi kerül pihenő helyzetben." : {
         ervenyesul: function(card) {
             for (let i = 0; i < 2; i++) {
-                const zombi = cardFactory.fromLibrary("Zombi");
-                zombi.tulajdonos = card.tulajdonos;
-                zombi.helyzet = "Éber";
-                gameState.state.playerSpaces[card.tulajdonos]['sor'].push(zombi);
+                gameAction.kartyaHozzaadas("Zombi", card.tulajdonos, 'sor');
             }
         },
 
         celpontValidalas: function(card) {return true;}
     },
+
     "Célpont salnarri kalandozó alapszintje 1-gyel nő a forduló végéig. A képesség pihenő és sérült helyzetben is aktivizálható." : {
         ervenyesul: function(hatas) {
             if (!this.celpontValidalas(hatas.celpont)) return;
@@ -111,6 +109,7 @@ gameEffect = {
             return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó' && gameEffect.vanParameter(card, 'salnar');
         },
     },
+
     "A képesség aktivizálásának feltétele a feláldozása. Minden kalandozó pihenő helyzetbe fordul." : {
         ervenyesul: function(hatas) {
             for (const player of gameState.players) {
@@ -126,5 +125,21 @@ gameEffect = {
         },
 
         celpontValidalas: function(celpontok) {return true;}
-    }
+    },
+
+    "Az ellenséges kalandozók asztrálja 1-gyel csökken." : {
+        ervenyesul: function(hatas) {
+            const ellenfel = helper.ellenfel(hatas.tulajdonos);
+            for (const space of gameState.jelenSpaces) {
+                gameState.state.playerSpaces[ellenfel][space].forEach(card => {
+                    if (card.laptipus === 'Kalandozó') {
+                        card.asztralModositas = (card.asztralModositas || 0) - 1;
+                    }
+                });
+            }
+        },
+
+        celpontValidalas: function(celpontok) {return true;}
+    },
+
 }

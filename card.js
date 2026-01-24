@@ -105,12 +105,12 @@ cardFactory = {
             ervenyesul: function() {
                 const hatas = helper.ervenyesuloHatas(this);
                 console.log("érvényesülő hatás: " + hatas)
-                if (hatas) {
-                    gameEffect[hatas.szoveg].ervenyesul(this);
-                }
                 if (this.sebzesCelpont) {
                     this.sebzesCelpont.sebzes = (this.sebzesCelpont.sebzes || 0) + this.sebzes;
                     console.log("sebzés", this.sebzesCelpont.sebzes)
+                }
+                if (hatas) {
+                    gameEffect[hatas.szoveg].ervenyesul(this);
                 }
             }
         }; 

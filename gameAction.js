@@ -34,6 +34,19 @@ gameAction = {
         return true;
     },
 
+    // Kártya hozzáadása kézhez
+    kartyaHozzaadas: function (nev, player, space) {
+        const card = cardFactory.fromLibrary(nev);
+        if (card) {
+            card.tulajdonos = player;
+            gameState.state.playerSpaces[player][space].push(card);
+            if (card.laptipus === 'Kalandozó' && (space == 'manover' || space == 'sor')) {
+                card.helyzet = 'Éber';
+            }    
+            gameUi.render();
+        }
+    },
+
     // Kártya kijátszása kézből
     leidezesKezbol: function(player, cardId) {
         // TODO kell, hogy cardId legyen?

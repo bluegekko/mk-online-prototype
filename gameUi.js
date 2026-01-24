@@ -23,6 +23,7 @@ gameUi = {
         const kivalasztas = gameState.state.playerAttributes['player'].kivalasztas;
         if (kivalasztas.includes(card)) {
             cardDiv.classList.add('selected');
+            console.log("kivalasztott", card)
         }
         
         cardDiv.onclick = () => {
