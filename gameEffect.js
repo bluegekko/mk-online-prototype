@@ -24,22 +24,37 @@ gameEffect = {
     },
 
     sebzoAkciolapCelpontValidalas: function(celpontok) {
-        return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
+        if (celpontok.length === 0) return false;
+        celpont = celpontok[0];
+        return gameEffect.jelenbenVan(celpont) && celpont.laptipus === 'Kalandozó';
+    },
+
+    kasztValidalas: function(leidezo, card) {
+        return true;
+    },
+
+    feltetelValidalas: function(hatas, player) {
+         if (hatas.isCard && hatas.laptipus === 'Akciólap') {
+            const leidezo = gameState.state.playerAttributes[player].leidezo;
+            if (leidezo && leidezo.helyzet !== 'Éber') return false;
+            if (!this.kasztValidalas(leidezo, hatas)) return false;
+         }
+         return true;
     },
 
     celpontValasztas: function(hatas, player) {
         console.log("celpont valasztas: ", hatas)
-        const kivalasztas = gameState.state.playerAttributes[player].kivalasztas;
+        kivalasztas = gameState.state.playerAttributes[player].kivalasztas;
         if (hatas.isCard){
-            ervenyesuloHatas = hatas.hatasok.find(h => h.ervenyesules === true);
+            if (hatas.laptipus === 'Akciólap' && hatas.sebzes !== undefined) {
+                    if (!gameEffect.sebzoAkciolapCelpontValidalas(kivalasztas)) return false;
+                    hatas.sebzesCelpont = kivalasztas[0];
+                    kivalasztas = kivalasztas.slice(1);
+            }
+
+            ervenyesuloHatas = helper.ervenyesuloHatas(hatas);
             if (!ervenyesuloHatas) {
-                if (hatas.sebzes) {
-                    if (!sebzoAkciolapCelpontValidalas) return false;
-                    hatas.celpont = [...kivalasztas];
-                    return true;
-                } else {
-                    return true;
-                }
+                return true;
             }
             if (gameEffect[ervenyesuloHatas.szoveg].celpontValidalas(kivalasztas)) {
                 hatas.celpont = [...kivalasztas];

@@ -73,7 +73,7 @@ gameUi = {
                         playerMp < hatas.mp 
                         || !abilityFunctions.hasznalhatoAktualisFazisban(hatas) 
                         || hatas.tipus == "képesség" && !gameState.jelenSpaces.includes(space) 
-                        || !gameEffect[hatas.szoveg].celpontValidalas(kivalasztas);
+                        || (gameEffect[hatas.szoveg] && !gameEffect[hatas.szoveg].celpontValidalas(kivalasztas));
                     effectButton.onclick = (e) => {
                         e.stopPropagation();
                         gameAction.hatasAktivizalas(player, hatas);
@@ -81,6 +81,32 @@ gameUi = {
                     cardDiv.appendChild(effectButton);
                 }
             });
+        }
+
+        // Leidéző gomb
+        if (card.laptipus === 'Kalandozó' && (space === 'sor' || space === 'manover')) {
+            const leidezoButton = document.createElement('button');
+            leidezoButton.textContent = 'Leidéző';
+            leidezoButton.className = 'leidezo-button';
+            
+            const aktualisLeidezo = gameState.state.playerAttributes[player].leidezo;
+            const isLeidezo = aktualisLeidezo === card;
+            
+            if (isLeidezo) {
+                leidezoButton.classList.add('active');
+                cardDiv.classList.add('leidezo');
+            }
+            
+            leidezoButton.onclick = (e) => {
+                e.stopPropagation();
+                if (aktualisLeidezo === card) {
+                    gameState.state.playerAttributes[player].leidezo = null;
+                } else {
+                    gameState.state.playerAttributes[player].leidezo = card;
+                }
+                gameUi.render();
+            };
+            cardDiv.appendChild(leidezoButton);
         }
 
         return cardDiv;

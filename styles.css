@@ -217,3 +217,20 @@ button:disabled {
     border-color: #7aa2f7; 
     box-shadow: 0 0 12px rgba(122,162,247,0.35); 
 }
+
+.leidezo-button {
+    background: #2a4a5a;
+    border-color: #3a5a6a;
+}
+
+.leidezo-button.active {
+    background: #4a7a8a;
+    border-color: #5a8a9a;
+    box-shadow: 0 0 8px rgba(74, 122, 138, 0.5);
+}
+
+.card.leidezo {
+    border-color: #4a7a8a;
+    background: #1a3a4a;
+    box-shadow: 0 0 12px rgba(74, 122, 138, 0.4);
+}

@@ -60,7 +60,8 @@ window.gameState = {
             this.state.playerAttributes[player].kivalasztas = [];
             this.state.playerAttributes[player].kuldetesFolytatas = true;
             this.state.playerAttributes[player].harciKorokVege = false;
-            this.state.playerAttributes[player].akadalyozas = false;
+            this.state.playerAttributes[player].akadalyozas = true;
+            this.state.playerAttributes[player].leidezo = null;
         });
 
         // Kezdő kártyák kiosztása
@@ -69,8 +70,13 @@ window.gameState = {
             cardFactory.fromLibrary("A túlvilág hívása"),
             cardFactory.fromLibrary("Salnarri kopjatörő"),
             cardFactory.fromLibrary("Ezüst Ököl stratéga"),
-            cardFactory.fromLibrary("Beavatottak tanítója"),
+            cardFactory.fromLibrary("Lángtáncoltatás"),
             cardFactory.fromLibrary("Spaonter"),
+            cardFactory.fromLibrary("Spaonter"),
+            cardFactory.fromLibrary("Spaonter"),
+        ];
+
+        this.state.playerSpaces['opponent'].manover = [
             cardFactory.fromLibrary("Spaonter"),
             cardFactory.fromLibrary("Spaonter"),
         ];

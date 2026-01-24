@@ -1,5 +1,7 @@
 gameAction = {
     kartyaMozgatasJatekter: function(player, fromSpaceNev, toSpaceNev, card) {
+        // TODO múlt, mélység, kéz, jövő, cserepakli mindig tulajdonoshoz menjen
+        // TODO jelző lapok megszűnnek, ha jelenből kikerülnek
         this.kartyaMozgatas(
             gameState.state.playerSpaces[player][fromSpaceNev],
             gameState.state.playerSpaces[player][toSpaceNev],  
@@ -35,15 +37,20 @@ gameAction = {
     // Kártya kijátszása kézből
     leidezesKezbol: function(player, cardId) {
         // TODO kell, hogy cardId legyen?
-        const card = gameState.state.playerSpaces[player].kez.find(c => c.id === cardId);
+        card = gameState.state.playerSpaces[player].kez.find(c => c.id === cardId);
         console.log("lap kijátszása: ", card)
         if (!card || gameState.state.playerAttributes[player].mp < card.mp) return;
+
+        if (!gameEffect.feltetelValidalas(card, player)) return;
 
         // Hatás célpont választás ellenőrzése
         if (!gameEffect.celpontValasztas(card, player)) {
             return;
         }
 
+        if (card.laptipus == "Akciólap") {
+            card.leidezo = gameState.state.playerAttributes[player].leidezo;
+        }
         gameState.state.playerAttributes[player].mp -= card.mp;
         kez = gameState.state.playerSpaces[player]['kez'];
         const cardIndex = kez.findIndex(card => card.id === cardId);

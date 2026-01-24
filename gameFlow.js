@@ -5,7 +5,7 @@ gameFlow = {
         const aktualisFazis = fazis.aktualisFazis;
         const manoverState = fazis.manover;
         
-        if(idofonal.folyamatban){
+        if (idofonal.folyamatban) {
             if (idofonal.hatasok.length > 0) {
                 aktualisHatas = idofonal.hatasok.pop();
                 console.log(aktualisHatas)
@@ -28,6 +28,7 @@ gameFlow = {
             gameFlow.kovetkezoFazis();
             return;
         }
+        // TODO harci körök vége mindkét játékostól
         if (aktualisFazis.nev = 'Harci körök' && manoverState.harciKorokVege) {
             gameFlow.kovetkezoFazis();
             return;
@@ -42,11 +43,9 @@ gameFlow = {
     },
 
     kovetkezoFazis: function() {
-        // TODO implement
         gameState.state.fazis.aktualisFazis.fazisVege();
         gameFlow.idofonalZaras();
         gameState.state.fazis.aktualisFazis = gameState.state.fazis.aktualisFazis.kovetkezoFazis();
-        // TODO implement
         gameState.state.fazis.aktualisFazis.fazisEleje();
     },
 
@@ -58,21 +57,24 @@ gameFlow = {
     idofonalZaras: function() {
         gameState.state.fazis.idofonal.folyamatban = false;
         
-        if (!gameState.state.fazis.manover.folyamatban) {
-            gameState.players.forEach(player => {
-                gameState.jelenSpaces.forEach(space => {
-                    gameState.state.playerSpaces[player][space].forEach(card => {
-                        if (card.laptipus === 'Kalandozó') {
-                            const sebzes = card.sebzes || 0;
-                            if (sebzes > 0) {
-                                card.helyzet = 'Sérült';
-                                card.sebzes = 0;
-                            }
+        
+        gameState.players.forEach(player => {
+            gameState.jelenSpaces.forEach(space => {
+                gameState.state.playerSpaces[player][space].forEach(card => {
+                    if (card.laptipus === 'Kalandozó') {
+                        const sebzes = card.sebzes || 0;
+                        if (sebzes >= card.alapszint + (card.alapszintModositas || 0)) {
+                            // TODO nevesítés
+                            gameAction.kartyaMozgatasJatekter(player, space, 'mult', card);
+                        } else if (sebzes > 0 && !gameState.state.fazis.manover.folyamatban) {
+                            card.helyzet = 'Sérült';
+                            card.sebzes = 0;
                         }
-                    });
+                    }
                 });
             });
-        }
+        });
+        
     },
 
     manoverVege: function(player) {
@@ -82,12 +84,13 @@ gameFlow = {
             gameAction.kartyaMozgatasJatekter(player, 'manover', 'sor', card)
         });
 
-        if (manoverState.sikeresJatekos === player && manoverState.aktualisManover == "ostrom") {
+        if (manoverState.sikeresJatekos === player && manoverState.kezdemenyezoJatekos === player && manoverState.aktualisManover == "ostrom") {
             console.log("sikeresség aktiválva")
             gameAction.kartyaMozgatasJatekter(
                 helper.ellenfel(player), 'toronyszintek', 'mult', manoverState.szinhely);
-            
         }
+
+        // TODO építmény bevétel
 
         gameState.state.fazis.manover = helper.resetManoverState();
     },
@@ -184,14 +187,19 @@ gameFlow = {
             }
         },
         fazisEleje: function() {},
-        fazisVege: function() {},
+        fazisVege: function() {
+            // TODO manőver vége, ha üres a csapat
+            // TODO manőver vége, ha üres az akadályozó csapat, és ilyenkor sikeres
+        },
     },
 
     toronyszintFelfedese: {
         nev: "Toronyszint felfedése",
         kovetkezoFazis: function() {return gameFlow.akadalylapokAktivizalasa;},
         fazisEleje: function() {gameFlow.idofonalNyitas(null)},
-        fazisVege: function() {},
+        fazisVege: function() {
+            // TODO manőver vége, ha üres a csapat
+        },
     },
 
     akadalylapokAktivizalasa: {
@@ -201,6 +209,7 @@ gameFlow = {
             const aktualisManover = manoverState.aktualisManover;
             const kezdemenyezoJatekos = manoverState.kezdemenyezoJatekos;
             const playerAttributes = gameState.state.playerAttributes;
+
             if (aktualisManover === 'küldetés') {
                 return gameFlow.kuldetesFeltetelTeljesites;
             } else if (playerAttributes[helper.ellenfel(kezdemenyezoJatekos)].akadalyozas) {
@@ -241,6 +250,7 @@ gameFlow = {
                 
                 gameFlow.manoverVege(kezdemenyezoJatekos);
             }
+            // TODO manőver vége, ha üres a csapat
         },
     },
 
@@ -248,14 +258,18 @@ gameFlow = {
         nev: "Küldetés feltétel teljesítés",
         kovetkezoFazis: function() {return gameFlow.manoverekFazisa;},
         fazisEleje: function() {gameFlow.idofonalNyitas(null)},
-        fazisVege: function() {},
+        fazisVege: function() {
+            // TODO manőver vége manőverező játékos
+        },
     },
 
     harcElokeszites: {
         nev: "Harc előkészítés",
         kovetkezoFazis: function() {return gameFlow.harciKorok;},
         fazisEleje: function() {gameFlow.idofonalNyitas(null)},
-        fazisVege: function() {},
+        fazisVege: function() {
+            // TODO hadrend állítás
+        },
     },
 
     harciKorok: {
@@ -275,7 +289,13 @@ gameFlow = {
             }
             return gameFlow.manoverekFazisa;
         },
-        fazisEleje: function() {gameFlow.idofonalNyitas(null)},
-        fazisVege: function() {},
+        fazisEleje: function() {
+            // TODO csapatszint összehasonlítás
+            gameFlow.idofonalNyitas(null)
+        },
+        fazisVege: function() {
+            // TODO manőver vége vesztes játékos
+            // TODO manőver vége kezdeményező játékos, ha nem megy tovább
+        },
     },
 }
