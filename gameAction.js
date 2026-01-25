@@ -72,7 +72,7 @@ gameAction = {
         gameUi.render();
     },
 
-    hatasAktivizalas: function(player, hatas) {
+    hatasAktivizalas: function(player, card, hatas) {
         if (!hatas) return;
         if (hatas.mp && gameState.state.playerAttributes[player].mp < helper.getValue(hatas.mp)) return;
 
@@ -82,6 +82,7 @@ gameAction = {
         
         console.log("Hatás aktiválása: ", hatas);
         gameState.state.playerAttributes[player].mp -= helper.getValue(hatas.mp);
+        hatas.forras = card;
 
         gameFlow.idofonalNyitas(hatas)
         gameUi.render();

@@ -27,6 +27,7 @@ window.gameState = {
                 hatasok: [],
                 folyamatban: true,
             },
+            idotartamosHatasok: [],
             prioritas: 'player',
             legutobbiMpKotottManover: null,
         }
@@ -42,6 +43,7 @@ window.gameState = {
                 hatasok: [],
                 folyamatban: true,
             },
+            idotartamosHatasok: [],
             prioritas: 'player',
             legutobbiMpKotottManover: null,
         };

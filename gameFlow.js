@@ -293,6 +293,13 @@ gameFlow = {
             gameFlow.idofonalNyitas(null)
         },
         fazisVege: function() {
+            const idotartamosHatasok = gameState.state.fazis.idotartamosHatasok;
+            for (let i = idotartamosHatasok.length - 1; i >= 0; i--) {
+                if (idotartamosHatasok[i].idotartam === 'Harc') {
+                    idotartamosHatasok[i].torles();
+                    idotartamosHatasok.splice(i, 1);
+                }
+            }
             // TODO manőver vége vesztes játékos
             // TODO manőver vége kezdeményező játékos, ha nem megy tovább
         },

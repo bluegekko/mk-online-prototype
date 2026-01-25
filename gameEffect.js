@@ -4,6 +4,18 @@ gameEffect = {
         return card.szinesito && card.szinesito.toLowerCase().includes(parameterKicsi) || card.nev && card.nev.toLowerCase().includes(parameterKicsi);
     },
 
+    ertekTorles: function(card, ertek, modosito) {
+        const index = card[ertek].modositas.indexOf(modosito);
+        if (index !== -1) card[ertek].modositas.splice(modosito, 1);
+    },
+
+    ertekTorlesRegisztralas: function(card, ertek, modosito, idotartam) {
+        gameState.state.fazis.idotartamosHatasok.push({
+            idotartam: idotartam,
+            torles: () => gameEffect.ertekTorles(card, ertek, modosito)
+        });
+    },
+
     jelenbenVan: function(card) {
         // TODO currentspace referencia
         for (player of gameState.players) {
@@ -183,16 +195,22 @@ gameEffect = {
 
     "Kap 1 alapszintet. Célpont kalandozó veszít 1 alapszintet. A hatás a harc végéig tart.": {
         ervenyesul: function(hatas) {
-            // TODO időtartam
-            // TODO forrás?
             if (!this.celpontValidalas(hatas.celpont)) return;
             
             const forras = hatas.forras;
-            if (!forras.alapszint.modositas) forras.alapszint.modositas = [];
-            forras.alapszint.modositas.push({ertek: 1});
+            const celpont = hatas.celpont[0];
+            const forrasMod = {ertek: 1};
+            const celpontMod = {ertek: -1};
             
-            if (!hatas.celpont[0].alapszint.modositas) hatas.celpont[0].alapszint.modositas = [];
-            hatas.celpont[0].alapszint.modositas.push({ertek: -1});
+            if (!forras.alapszint.modositas) forras.alapszint.modositas = [];
+            forras.alapszint.modositas.push(forrasMod);
+            
+            if (!celpont.alapszint.modositas) hatas.celpont[0].alapszint.modositas = [];
+            celpont.alapszint.modositas.push(celpontMod);
+
+            gameEffect.ertekTorlesRegisztralas(forras, "alapszint", forrasMod, 'Harc');
+            gameEffect.ertekTorlesRegisztralas(celpont, "alapszint", celpontMod, 'Harc')
+            
         },
 
         celpontValidalas: function(celpontok) {
@@ -201,5 +219,7 @@ gameEffect = {
             return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
         },
     },
+
+     "Kap 1 fizikumot. Célpont kalandozó veszít 1 asztrált. A hatás a harc végéig tart.": {},
 
 }
