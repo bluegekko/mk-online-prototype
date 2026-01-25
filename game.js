@@ -12,6 +12,10 @@
                 e.preventDefault();
                 passz();
             }
+            if (e.code === 'Enter' && document.activeElement.id === 'cardNameInput') {
+                e.preventDefault();
+                kartyaHozzaadas();
+            }
         });
     }
 
@@ -34,6 +38,8 @@
         if (cardName) {
             gameAction.kartyaHozzaadas(cardName, 'player', 'kez')
         }
+        input.value = '';
+        gameUi.render();
     }
 
     // Játék inicializálása amikor az oldal betöltődött

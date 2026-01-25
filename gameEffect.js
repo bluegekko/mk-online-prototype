@@ -74,7 +74,8 @@ gameEffect = {
             console.log("hatas ervenyesules: ", card)
             if (!this.celpontValidalas(card.celpont)) return; // semlegesítésnek számít
             console.log("hatas celpontja: ", card.celpont[0])
-            card.celpont[0].alapszintModositas = (card.celpont.alapszintModositas || 0) + 1;
+            if (!card.alapszint.modositas) card.alapszint.modositas = [];
+            card.alapszint.modositas.push({ertek: 1});
         },
 
         celpontValidalas: function(celpontok) {
@@ -87,7 +88,8 @@ gameEffect = {
     "Játékosa Sorába 2 jelző Zombi kerül pihenő helyzetben." : {
         ervenyesul: function(card) {
             for (let i = 0; i < 2; i++) {
-                gameAction.kartyaHozzaadas("Zombi", card.tulajdonos, 'sor');
+                card = gameAction.kartyaHozzaadas("Zombi", card.tulajdonos, 'sor');
+                card.helyzet = "Pihenő";
             }
         },
 
@@ -98,7 +100,8 @@ gameEffect = {
         ervenyesul: function(hatas) {
             if (!this.celpontValidalas(hatas.celpont)) return;
             // TODO időtartam
-            hatas.celpont[0].alapszintModositas = (hatas.celpont[0].alapszintModositas || 0) + 1;
+            if (!hatas.celpont[0].alapszint.modositas) hatas.celpont[0].alapszint.modositas = [];
+            hatas.celpont[0].alapszint.modositas.push({ertek: 1});
             delete hatas.celpont;
         },
 
@@ -133,7 +136,8 @@ gameEffect = {
             for (const space of gameState.jelenSpaces) {
                 gameState.state.playerSpaces[ellenfel][space].forEach(card => {
                     if (card.laptipus === 'Kalandozó') {
-                        card.asztralModositas = (card.asztralModositas || 0) - 1;
+                        if (!card.alapkepessegek.Asztral.modositas) card.alapkepessegek.Asztral.modositas = [];
+                        card.alapkepessegek.Asztral.modositas.push({ertek: -1});
                     }
                 });
             }
@@ -153,6 +157,49 @@ gameEffect = {
             const card = celpontok[0];
             return gameEffect.jelenbenVan(card) && helper.isFelszereles(card);
         },
-    }
+    },
+
+    "Olyan kalandozó lapok MP-igénye 1-gyel nő, akik nem emberek.": {
+        folyamatos: function(card) {
+            for (const player of gameState.players) {
+                Object.keys(gameState.baseSpaces).forEach(space => {
+                    gameState.state.playerSpaces[player][space].forEach(lap => {
+                        if (lap.laptipus !== 'Kalandozó') return;
+                        
+                        const nemEmberFaj = helper.fajok.find(faj => 
+                            faj !== 'ember' && gameEffect.vanParameter(lap, faj) &&
+                            !gameEffect.vanParameter(lap, 'ember')
+                        );
+                        
+                        if (nemEmberFaj) {
+                            if (!lap.mp.modositas) lap.mp.modositas = [];
+                            lap.mp.modositas.push({ertek: 1});
+                        }
+                    });
+                });
+            }
+        }
+    },
+
+    "Kap 1 alapszintet. Célpont kalandozó veszít 1 alapszintet. A hatás a harc végéig tart.": {
+        ervenyesul: function(hatas) {
+            // TODO időtartam
+            // TODO forrás?
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            
+            const forras = hatas.forras;
+            if (!forras.alapszint.modositas) forras.alapszint.modositas = [];
+            forras.alapszint.modositas.push({ertek: 1});
+            
+            if (!hatas.celpont[0].alapszint.modositas) hatas.celpont[0].alapszint.modositas = [];
+            hatas.celpont[0].alapszint.modositas.push({ertek: -1});
+        },
+
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
+        },
+    },
 
 }

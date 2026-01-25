@@ -42,8 +42,8 @@ gameAction = {
             gameState.state.playerSpaces[player][space].push(card);
             if (card.laptipus === 'Kalandozó' && (space == 'manover' || space == 'sor')) {
                 card.helyzet = 'Éber';
-            }    
-            gameUi.render();
+            }
+            return card;
         }
     },
 
@@ -52,7 +52,7 @@ gameAction = {
         // TODO kell, hogy cardId legyen?
         card = gameState.state.playerSpaces[player].kez.find(c => c.id === cardId);
         console.log("lap kijátszása: ", card)
-        if (!card || gameState.state.playerAttributes[player].mp < card.mp) return;
+        if (!card || gameState.state.playerAttributes[player].mp < helper.getValue(card.mp)) return;
 
         if (!gameEffect.feltetelValidalas(card, player)) return;
 
@@ -64,7 +64,7 @@ gameAction = {
         if (card.laptipus == "Akciólap") {
             card.leidezo = gameState.state.playerAttributes[player].leidezo;
         }
-        gameState.state.playerAttributes[player].mp -= card.mp;
+        gameState.state.playerAttributes[player].mp -= helper.getValue(card.mp);
         kez = gameState.state.playerSpaces[player]['kez'];
         const cardIndex = kez.findIndex(card => card.id === cardId);
         kez.splice(cardIndex, 1);
@@ -74,14 +74,14 @@ gameAction = {
 
     hatasAktivizalas: function(player, hatas) {
         if (!hatas) return;
-        if (hatas.mp && gameState.state.playerAttributes[player].mp < hatas.mp) return;
+        if (hatas.mp && gameState.state.playerAttributes[player].mp < helper.getValue(hatas.mp)) return;
 
         if (!gameEffect.celpontValasztas(hatas, player)) {
             return;
         }
         
         console.log("Hatás aktiválása: ", hatas);
-        gameState.state.playerAttributes[player].mp -= hatas.mp;
+        gameState.state.playerAttributes[player].mp -= helper.getValue(hatas.mp);
 
         gameFlow.idofonalNyitas(hatas)
         gameUi.render();

@@ -7,9 +7,8 @@ gameUi = {
         player = player ? player : card.tulajdonos
         const playerMp = gameState.state.playerAttributes[player].mp;
 
-        mp_text = card.laptipus === "Toronyszint" ? (card.mp === 4 ? "" : card.mp + " MP " ) : card.mp + " MP " ;
-        alapszintmodositas = card.alapszintModositas ? card.alapszintModositas : 0
-        alapszint = card.alapszint + alapszintmodositas
+        mp_text = card.laptipus === "Toronyszint" ? (helper.getValue(card.mp) === 4 ? "" : helper.getValue(card.mp) + " MP " ) : helper.getValue(card.mp) + " MP " ;
+        alapszint = helper.getValue(card.alapszint)
         
         cardDiv.innerHTML = `
             <div class="card-header">${mp_text}${card.nev}</div>
@@ -40,7 +39,7 @@ gameUi = {
             const button = document.createElement('button');
             button.textContent = 'Leidéz';
             // TODO celpontValidalas ellenorzese
-            button.disabled = playerMp < card.mp || !abilityFunctions.hasznalhatoAktualisFazisban(card) ;
+            button.disabled = playerMp < helper.getValue(card.mp) || !abilityFunctions.hasznalhatoAktualisFazisban(card) ;
             button.onclick = (e) => {
                 e.stopPropagation();
                 gameAction.leidezesKezbol(player, card.id);
@@ -71,7 +70,7 @@ gameUi = {
                     effectButton.textContent = hatas.kiirtnev || 'Hatás aktiválás';
                     effectButton.className = 'effect-button';
                     effectButton.disabled = 
-                        playerMp < hatas.mp 
+                        playerMp < helper.getValue(hatas.mp) 
                         || !abilityFunctions.hasznalhatoAktualisFazisban(hatas) 
                         || hatas.tipus == "képesség" && !gameState.jelenSpaces.includes(space) 
                         || (gameEffect[hatas.szoveg] && !gameEffect[hatas.szoveg].celpontValidalas(kivalasztas));

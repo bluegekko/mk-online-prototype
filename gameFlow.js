@@ -63,7 +63,7 @@ gameFlow = {
                 gameState.state.playerSpaces[player][space].forEach(card => {
                     if (card.laptipus === 'Kalandozó') {
                         const sebzes = card.sebzes || 0;
-                        if (sebzes >= card.alapszint + (card.alapszintModositas || 0)) {
+                        if (sebzes >= helper.getValue(card.alapszint)) {
                             // TODO nevesítés
                             gameAction.kartyaMozgatasJatekter(player, space, 'mult', card);
                         } else if (sebzes > 0 && !gameState.state.fazis.manover.folyamatban) {
@@ -231,8 +231,7 @@ gameFlow = {
                 const manoverCards = gameState.state.playerSpaces[kezdemenyezoJatekos].manover;
                 const osszszint = manoverCards.reduce((sum, card) => {
                     if (card.laptipus === 'Kalandozó') {
-                        return sum + (card.alapszint || 0) + (card.alapszintModositas || 0) - 
-                            (card.sebzes || 0);
+                        return sum + helper.getValue(card.alapszint) - (card.sebzes || 0);
                     }
                     return sum;
                 }, 0);

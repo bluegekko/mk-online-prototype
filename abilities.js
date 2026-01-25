@@ -75,11 +75,11 @@ abilityFunctions = {
         }
 
         if (!jelek.includes("allando") && !akciolap) {
-                return !abilityFunctions.harciFazisok.includes(gameState.state.fazis.aktualisFazis.nev);
+            return !abilityFunctions.harciFazisok.includes(gameState.state.fazis.aktualisFazis.nev);
         }
 
         if (jelek.includes("allando") || akciolap) {
-                return true;
+            return true;
         }
 
         console.log("Nem lefedett fázis scenárió")

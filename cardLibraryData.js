@@ -1,12 +1,14 @@
 cardLibrary = [
     {
         "nev": "Ezüst Ököl stratéga",
-        "mp": 3,
+        "mp": {
+            "ertek": 3
+        },
         "laptipus": "Kalandozó",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Harcos"],
         "szinesito": "A gianagi Hercegi Gárda tagja",
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Élet",
         "tulajdonsagok": [],
         "kepzettsegek": [
@@ -15,9 +17,9 @@ cardLibrary = [
             "Stratégia"
         ],
         "alapkepessegek": {
-            "Fizikum": 9,
-            "Asztral": 7,
-            "Mental": 9
+            "Fizikum": {"ertek": 9},
+            "Asztral": {"ertek": 7},
+            "Mental": {"ertek": 9}
         },
         "hatasok": [
             {
@@ -29,12 +31,12 @@ cardLibrary = [
     },
     {
         "nev": "Beavatottak tanítója",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Dorani, az Első Kör beavatásának végrehajtója",
         "fokaszt": ["VARÁZSHASZNÁLÓ"],
         "alkaszt": ["Varázsló"],
-        "alapszint": 1,
+        "alapszint": {"ertek": 1},
         "jellem": "Élet",
         "tulajdonsagok": [],
         "kepzettsegek": [
@@ -43,9 +45,9 @@ cardLibrary = [
             "Mágiaismeret"
         ],
         "alapkepessegek": {
-            "Fizikum": 3,
-            "Asztral": 7,
-            "Mental": 8
+            "Fizikum": {"ertek": 3},
+            "Asztral": {"ertek": 7},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -62,12 +64,12 @@ cardLibrary = [
     },
     {
         "nev": "Felszabadító veterán",
-        "mp": 5,
+        "mp": {"ertek": 5},
         "laptipus": "Kalandozó",
         "szinesito": "A rabszolgavadászok örök ellensége, gianagi alabárdos",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Harcos"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Élet",
         "tulajdonsagok": [],
         "kepzettsegek": [
@@ -76,9 +78,9 @@ cardLibrary = [
             "Vadonismeret"
         ],
         "alapkepessegek": {
-            "Fizikum": 9,
-            "Asztral": 7,
-            "Mental": 9
+            "Fizikum": {"ertek": 9},
+            "Asztral": {"ertek": 7},
+            "Mental": {"ertek": 9}
         },
         "hatasok": [
             {
@@ -90,19 +92,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["harc_elotti"],
                 "kiirtnev": "Alapszintlopás",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "Kap 1 alapszintet. Célpont kalandozó veszít 1 alapszintet. A hatás a harc végéig tart."
             }
         ]
     },
     {
         "nev": "Hínárszakállú",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Abasziszi Antoh-hívő, a merresiták képviselője",
         "fokaszt": ["PAP"],
         "alkaszt": ["Pap"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Élet",
         "tulajdonsagok": ["pszi"],
         "szferak": ["Élet", "Természet"],
@@ -112,9 +114,9 @@ cardLibrary = [
             "Vallás"
         ],
         "alapkepessegek": {
-            "Fizikum": 7,
-            "Asztral": 7,
-            "Mental": 7
+            "Fizikum": {"ertek": 7},
+            "Asztral": {"ertek": 7},
+            "Mental": {"ertek": 7}
         },
         "hatasok": [
             {
@@ -131,12 +133,12 @@ cardLibrary = [
     },
     {
         "nev": "Vir",
-        "mp": 7,
+        "mp": {"ertek": 7},
         "laptipus": "Kalandozó",
         "szinesito": "Via Shen-i fejvadászklán tagja, nő",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Fejvadász"],
-        "alapszint": 5,
+        "alapszint": {"ertek": 5},
         "jellem": "Élet",
         "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
@@ -145,9 +147,9 @@ cardLibrary = [
             "Rejtőzés"
         ],
         "alapkepessegek": {
-            "Fizikum": 9,
-            "Asztral": 7,
-            "Mental": 7
+            "Fizikum": {"ertek": 9},
+            "Asztral": {"ertek": 7},
+            "Mental": {"ertek": 7}
         },
         "hatasok": [
             {
@@ -164,12 +166,12 @@ cardLibrary = [
     },
     {
         "nev": "Aranyleány",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Erigowi erv, Dreina-hívő nő",
         "fokaszt": ["PAP"],
         "alkaszt": ["Pap"],
-        "alapszint": 1,
+        "alapszint": {"ertek": 1},
         "jellem": "Rend",
         "tulajdonsagok": ["pszi"],
         "szferak": ["Élet", "Halál"],
@@ -179,9 +181,9 @@ cardLibrary = [
             "Vallás"
         ],
         "alapkepessegek": {
-            "Fizikum": 4,
-            "Asztral": 8,
-            "Mental": 9
+            "Fizikum": {"ertek": 4},
+            "Asztral": {"ertek": 8},
+            "Mental": {"ertek": 9}
         },
         "hatasok": [
             {
@@ -198,12 +200,12 @@ cardLibrary = [
     },
     {
         "nev": "Bhorakai agranar",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni Iker, Morgena-hívő",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Fejvadász"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Rend",
         "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
@@ -212,9 +214,9 @@ cardLibrary = [
             "Zárnyitás"
         ],
         "alapkepessegek": {
-            "Fizikum": 9,
-            "Asztral": 6,
-            "Mental": 5
+            "Fizikum": {"ertek": 9},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 5}
         },
         "hatasok": [
             {
@@ -226,19 +228,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["allando", "harci", "egyszeri", "megszakito"],
                 "kiirtnev": "Beugrás",
-                "mp": 1,
+                "mp": {"ertek": 1},
                 "szoveg": "A képesség éber helyzetben aktivizálható, ha Sorban vagy harcban van. Frontemberként a csapatba kerül pihenő helyzetben."
             }
         ]
     },
     {
         "nev": "Dart-Nid-Kinito beavatottja",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Kalandozó",
         "szinesito": "Tiadlani, a Víz stílusának mestere",
         "fokaszt": ["HARCMŰVÉSZ"],
         "alkaszt": ["Harcművész"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Rend",
         "tulajdonsagok": [],
         "kepzettsegek": [
@@ -247,9 +249,9 @@ cardLibrary = [
             "Lefegyverzés"
         ],
         "alapkepessegek": {
-            "Fizikum": 9,
-            "Asztral": 7,
-            "Mental": 8
+            "Fizikum": {"ertek": 9},
+            "Asztral": {"ertek": 7},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -261,12 +263,12 @@ cardLibrary = [
     },
     {
         "nev": "Fővadász",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Kalandozó",
         "szinesito": "A nagykirály szolgálatába állt kalandor, abasziszi",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Harcos"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Rend",
         "tulajdonsagok": [],
         "kepzettsegek": [
@@ -275,9 +277,9 @@ cardLibrary = [
             "Pusztítás"
         ],
         "alapkepessegek": {
-            "Fizikum": 8,
-            "Asztral": 6,
-            "Mental": 8
+            "Fizikum": {"ertek": 8},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -294,12 +296,12 @@ cardLibrary = [
     },
     {
         "nev": "Gar Dhagg örököse",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Kalandozó",
         "szinesito": "A Viharkeltők törzsének sámánja, Nagy Vordak híve, ork kalóz",
         "fokaszt": ["PAP"],
         "alkaszt": ["Sámán"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Rend",
         "tulajdonsagok": [],
         "kepzettsegek": [
@@ -308,9 +310,9 @@ cardLibrary = [
             "Úszás"
         ],
         "alapkepessegek": {
-            "Fizikum": 7,
-            "Asztral": 7,
-            "Mental": 8
+            "Fizikum": {"ertek": 7},
+            "Asztral": {"ertek": 7},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -327,12 +329,12 @@ cardLibrary = [
     },
     {
         "nev": "Ranil ökle",
-        "mp": 5,
+        "mp": {"ertek": 5},
         "laptipus": "Kalandozó",
         "szinesito": "A Marniss ügyében eljáró, dwyll unióbeli dwoon",
         "fokaszt": ["PAP"],
         "alkaszt": ["Paplovag"],
-        "alapszint": 3,
+        "alapszint": {"ertek": 3},
         "jellem": "Rend",
         "tulajdonsagok": ["pszi"],
         "szferak": ["Lélek", "Természet"],
@@ -342,9 +344,9 @@ cardLibrary = [
             "Vallatás"
         ],
         "alapkepessegek": {
-            "Fizikum": 9,
-            "Asztral": 6,
-            "Mental": 6
+            "Fizikum": {"ertek": 9},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 6}
         },
         "hatasok": [
             {
@@ -356,19 +358,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
                 "kiirtnev": "Sérítés",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "Célpont toroni kalandozó sérült helyzetbe fordul."
             }
         ]
     },
     {
         "nev": "Sorskovács követője",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Shenwali, toroni smaragdmágus, Weila-hívő, nő",
         "fokaszt": ["VARÁZSHASZNÁLÓ"],
         "alkaszt": ["Varázsló"],
-        "alapszint": 1,
+        "alapszint": {"ertek": 1},
         "jellem": "Rend",
         "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
@@ -377,9 +379,9 @@ cardLibrary = [
             "Rúnamágia"
         ],
         "alapkepessegek": {
-            "Fizikum": 3,
-            "Asztral": 9,
-            "Mental": 9
+            "Fizikum": {"ertek": 3},
+            "Asztral": {"ertek": 9},
+            "Mental": {"ertek": 9}
         },
         "hatasok": [
             {
@@ -391,12 +393,12 @@ cardLibrary = [
     },
     {
         "nev": "A Viharzászló hordozója",
-        "mp": 7,
+        "mp": {"ertek": 7},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni, a Vihargárda tagja",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Lovag"],
-        "alapszint": 4,
+        "alapszint": {"ertek": 4},
         "jellem": "Káosz",
         "kepzettsegek": [
             "Hadrend",
@@ -404,9 +406,9 @@ cardLibrary = [
             "Veszélyérzék"
         ],
         "alapkepessegek": {
-            "Fizikum": 9,
-            "Asztral": 6,
-            "Mental": 6
+            "Fizikum": {"ertek": 9},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 6}
         },
         "hatasok": [
             {
@@ -423,12 +425,12 @@ cardLibrary = [
     },
     {
         "nev": "Házikedvenc",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni udvari ork, a Habrassyn Ház büszkesége",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Harcos"],
-        "alapszint": 3,
+        "alapszint": {"ertek": 3},
         "jellem": "Káosz",
         "kepzettsegek": [
             "Belharc",
@@ -436,9 +438,9 @@ cardLibrary = [
             "Veszélyérzék"
         ],
         "alapkepessegek": {
-            "Fizikum": 10,
-            "Asztral": 4,
-            "Mental": 4
+            "Fizikum": {"ertek": 10},
+            "Asztral": {"ertek": 4},
+            "Mental": {"ertek": 4}
         },
         "hatasok": [
             {
@@ -450,12 +452,12 @@ cardLibrary = [
     },
     {
         "nev": "Salnarri kopjatörő",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni, a Vihargárda tagja",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Lovag"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Káosz",
         "kepzettsegek": [
             "Hadrend",
@@ -463,9 +465,9 @@ cardLibrary = [
             "Taktika"
         ],
         "alapkepessegek": {
-            "Fizikum": 9,
-            "Asztral": 6,
-            "Mental": 6
+            "Fizikum": {"ertek": 9},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 6}
         },
         "hatasok": [
             {
@@ -477,19 +479,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["egyszeri"],
                 "kiirtnev": "Alapszintnövelés",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "Célpont salnarri kalandozó alapszintje 1-gyel nő a forduló végéig. A képesség pihenő és sérült helyzetben is aktivizálható."
             }
         ]
     },
     {
         "nev": "Shuluri vérnyelő",
-        "mp": 6,
+        "mp": {"ertek": 6},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni, a szörnyisten egyházának orgyilkosa, Tharr-hívő",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Fejvadász"],
-        "alapszint": 4,
+        "alapszint": {"ertek": 4},
         "jellem": "Káosz",
         "kepzettsegek": [
             "Lesvetés",
@@ -497,28 +499,28 @@ cardLibrary = [
             "Vallás"
         ],
         "alapkepessegek": {
-            "Fizikum": 10,
-            "Asztral": 5,
-            "Mental": 5
+            "Fizikum": {"ertek": 10},
+            "Asztral": {"ertek": 5},
+            "Mental": {"ertek": 5}
         },
         "hatasok": [
             {
                 "tipus": "képesség",
                 "jelek": ["harci", "megszakito"],
                 "kiirtnev": "Gyógyulás",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "A képesség harci körönként egyszer aktivizálható. Gyógyul 1 szintet, ha az előző harci körben nem gyógyult így."
             }
         ]
     },
     {
         "nev": "Spaonter",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni kyr, függetlenségét kiérdemelt Ascens Morga magitor",
         "fokaszt": ["VARÁZSHASZNÁLÓ"],
         "alkaszt": ["Boszorkánymester"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Káosz",
         "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
@@ -527,28 +529,28 @@ cardLibrary = [
             "Taktika"
         ],
         "alapkepessegek": {
-            "Fizikum": 6,
-            "Asztral": 7,
-            "Mental": 8
+            "Fizikum": {"ertek": 6},
+            "Asztral": {"ertek": 7},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
                 "tipus": "képesség",
                 "jelek": ["elveszendo"],
                 "kiirtnev": "Varázslatvisszavétel",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "Játékosa visszavesz 1 varázslat akciólapot Múltjából Kezébe."
             }
         ]
     },
     {
         "nev": "Tűztisztító",
-        "mp": 7,
+        "mp": {"ertek": 7},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni Sogron-hívő",
         "fokaszt": ["PAP"],
         "alkaszt": ["Tűzvarázsló"],
-        "alapszint": 4,
+        "alapszint": {"ertek": 4},
         "jellem": "Káosz",
         "tulajdonsagok": ["pszi"],
         "szferak": ["Lélek", "Természet"],
@@ -558,9 +560,9 @@ cardLibrary = [
             "Vallás"
         ],
         "alapkepessegek": {
-            "Fizikum": 6,
-            "Asztral": 9,
-            "Mental": 8
+            "Fizikum": {"ertek": 6},
+            "Asztral": {"ertek": 9},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -577,12 +579,12 @@ cardLibrary = [
     },
     {
         "nev": "Zöldkanális zsebmetszője",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni Cápa",
         "fokaszt": ["SZERENCSEVADÁSZ"],
         "alkaszt": ["Tolvaj"],
-        "alapszint": 1,
+        "alapszint": {"ertek": 1},
         "jellem": "Káosz",
         "kepzettsegek": [
             "Álöltözet",
@@ -590,9 +592,9 @@ cardLibrary = [
             "Orvtámadás"
         ],
         "alapkepessegek": {
-            "Fizikum": 6,
-            "Asztral": 5,
-            "Mental": 4
+            "Fizikum": {"ertek": 6},
+            "Asztral": {"ertek": 5},
+            "Mental": {"ertek": 4}
         },
         "hatasok": [
             {
@@ -604,12 +606,12 @@ cardLibrary = [
     },
     {
         "nev": "Zsarnokok szeretője",
-        "mp": 6,
+        "mp": {"ertek": 6},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni, a Kard Testvériség fidiori támogatója, orwellánus",
         "fokaszt": ["VARÁZSHASZNÁLÓ"],
         "alkaszt": ["Boszorkány"],
-        "alapszint": 3,
+        "alapszint": {"ertek": 3},
         "jellem": "Káosz",
         "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
@@ -618,9 +620,9 @@ cardLibrary = [
             "Veszélyérzék"
         ],
         "alapkepessegek": {
-            "Fizikum": 3,
-            "Asztral": 8,
-            "Mental": 8
+            "Fizikum": {"ertek": 3},
+            "Asztral": {"ertek": 8},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -632,19 +634,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
                 "kiirtnev": "MP-nyerés",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "A képesség aktivizálásának feltétele sérült helyzetbe forgatása. Játékosa kap 1 MP-t."
             }
         ]
     },
     {
         "nev": "A Császárszigetek sebgyógyítója",
-        "mp": 6,
+        "mp": {"ertek": 6},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni, hadihajókon szolgálatot teljesítő felcser",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Harcos"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Halál",
         "kepzettsegek": [
             "Hajózás",
@@ -652,9 +654,9 @@ cardLibrary = [
             "Orvoslás"
         ],
         "alapkepessegek": {
-            "Fizikum": 8,
-            "Asztral": 6,
-            "Mental": 6
+            "Fizikum": {"ertek": 8},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 6}
         },
         "hatasok": [
             {
@@ -666,19 +668,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["allando", "harci", "egyszeri", "ismetelheto"],
                 "kiirtnev": "Gyógyítás",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "A képesség Sorban is aktivizálható. Célpont Hajózás képzettséggel rendelkező kalandozó gyógyul 1 szintet."
             }
         ]
     },
     {
         "nev": "Az Oroszlánpápa megbízottja",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Az Oroszlán morghagrissának megvallója, toroni Tharr-hívő",
         "fokaszt": ["PAP"],
         "alkaszt": ["Pap"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Halál",
         "tulajdonsagok": ["pszi"],
         "szferak": ["Halál", "Lélek"],
@@ -688,9 +690,9 @@ cardLibrary = [
             "Vallás"
         ],
         "alapkepessegek": {
-            "Fizikum": 7,
-            "Asztral": 8,
-            "Mental": 8
+            "Fizikum": {"ertek": 7},
+            "Asztral": {"ertek": 8},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -702,12 +704,12 @@ cardLibrary = [
     },
     {
         "nev": "Bhorakai eprimor",
-        "mp": 5,
+        "mp": {"ertek": 5},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni Iker, Morgena-hívő, az első gyilkos",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Fejvadász"],
-        "alapszint": 3,
+        "alapszint": {"ertek": 3},
         "jellem": "Halál",
         "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
@@ -716,9 +718,9 @@ cardLibrary = [
             "Zárnyitás"
         ],
         "alapkepessegek": {
-            "Fizikum": 10,
-            "Asztral": 6,
-            "Mental": 5
+            "Fizikum": {"ertek": 10},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 5}
         },
         "hatasok": [
             {
@@ -730,19 +732,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["megszakito", "elveszendo"],
                 "kiirtnev": "Semlegesítés",
-                "mp": 1,
+                "mp": {"ertek": 1},
                 "szoveg": "Semlegesít célpont 0 MP-igényű eseménylapot."
             }
         ]
     },
     {
         "nev": "Füstmadár",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni Sogron-hívő",
         "fokaszt": ["PAP","VARÁZSHASZNÁLÓ"],
         "alkaszt": ["Pap", "Tűzvarázsló"],
-        "alapszint": 1,
+        "alapszint": {"ertek": 1},
         "jellem": "Halál",
         "tulajdonsagok": ["pszi"],
         "szferak": ["Lélek", "Természet"],
@@ -752,9 +754,9 @@ cardLibrary = [
             "Vallás"
         ],
         "alapkepessegek": {
-            "Fizikum": 6,
-            "Asztral": 8,
-            "Mental": 8
+            "Fizikum": {"ertek": 6},
+            "Asztral": {"ertek": 8},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -771,12 +773,12 @@ cardLibrary = [
     },
     {
         "nev": "Karabator",
-        "mp": 5,
+        "mp": {"ertek": 5},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni, Kharyn'kharn tartomány hajóépítő mestere",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Harcos"],
-        "alapszint": 3,
+        "alapszint": {"ertek": 3},
         "jellem": "Halál",
         "kepzettsegek": [
             "Építészet",
@@ -784,28 +786,28 @@ cardLibrary = [
             "Úszás"
         ],
         "alapkepessegek": {
-            "Fizikum": 8,
-            "Asztral": 6,
-            "Mental": 6
+            "Fizikum": {"ertek": 8},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 6}
         },
         "hatasok": [
             {
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
                 "kiirtnev": "Visszakeverés",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "Játékosa Múltjában lévő célpont hajó típusú hadszert visszekeveri Jövőjébe."
             }
         ]
     },
     {
         "nev": "Magionter",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni kyr, függetlenségét kiérdemelt Ascens Morga magitor",
         "fokaszt": ["VARÁZSHASZNÁLÓ"],
         "alkaszt": ["Boszorkánymester"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Halál",
         "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
@@ -814,9 +816,9 @@ cardLibrary = [
             "Taktika"
         ],
         "alapkepessegek": {
-            "Fizikum": 3,
-            "Asztral": 8,
-            "Mental": 8
+            "Fizikum": {"ertek": 3},
+            "Asztral": {"ertek": 8},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -828,19 +830,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elveszendo"],
                 "kiirtnev": "Leidézés",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "Játékosa 1 MP-vel kevesebbért leidéz 1 legalább 4 MP-értékű Boszorkánymester kalandozó lapot."
             }
         ]
     },
     {
         "nev": "Nemesenszületettek ágyasa",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni, a Kard Testvériség fidiori támogatója, orwellánus",
         "fokaszt": ["VARÁZSHASZNÁLÓ"],
         "alkaszt": ["Boszorkány"],
-        "alapszint": 1,
+        "alapszint": {"ertek": 1},
         "jellem": "Halál",
         "tulajdonsagok": ["pszi"],
         "kepzettsegek": [
@@ -849,9 +851,9 @@ cardLibrary = [
             "Veszélyérzék"
         ],
         "alapkepessegek": {
-            "Fizikum": 3,
-            "Asztral": 8,
-            "Mental": 8
+            "Fizikum": {"ertek": 3},
+            "Asztral": {"ertek": 8},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -863,19 +865,19 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["elforgato"],
                 "kiirtnev": "Elforgatás",
-                "mp": 2,
+                "mp": {"ertek": 2},
                 "szoveg": "Célpont kalandozó éber helyzetből pihenő helyzetbe fordul."
             }
         ]
     },
     {
         "nev": "Quessor",
-        "mp": 5,
+        "mp": {"ertek": 5},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni Tharr-hívő, a vizsgáló",
         "fokaszt": ["PAP", "VARÁZSHASZNÁLÓ"],
         "alkaszt": ["Pap", "Boszorkánymester"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Halál",
         "tulajdonsagok": ["pszi"],
         "szferak": ["Halál", "Lélek"],
@@ -885,9 +887,9 @@ cardLibrary = [
             "Vallás"
         ],
         "alapkepessegek": {
-            "Fizikum": 4,
-            "Asztral": 6,
-            "Mental": 8
+            "Fizikum": {"ertek": 4},
+            "Asztral": {"ertek": 6},
+            "Mental": {"ertek": 8}
         },
         "hatasok": [
             {
@@ -899,12 +901,12 @@ cardLibrary = [
     },
     {
         "nev": "Zöldkanális verőembere",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Kalandozó",
         "szinesito": "Toroni Cápa",
         "fokaszt": ["SZERENCSEVADÁSZ"],
         "alkaszt": ["Tolvaj"],
-        "alapszint": 2,
+        "alapszint": {"ertek": 2},
         "jellem": "Halál",
         "kepzettsegek": [
             "Álöltözet",
@@ -912,26 +914,26 @@ cardLibrary = [
             "Orvtámadás"
         ],
         "alapkepessegek": {
-            "Fizikum": 8,
-            "Asztral": 5,
-            "Mental": 4
+            "Fizikum": {"ertek": 8},
+            "Asztral": {"ertek": 5},
+            "Mental": {"ertek": 4}
         },
         "hatasok": [
             {
                 "tipus": "képesség",
                 "jelek": ["harci", "egyszeri", "elforgato"],
                 "kiirtnev": "Visszaküldés",
-                "mp": 3,
+                "mp": {"ertek": 3},
                 "szoveg": "Célpont kalandozó visszatér Sorába sérült helyzetben."
             }
         ]
     },
     {
         "nev": "Jósok csarnoka",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Toronyszint",
         "szinesito": "A sebekől jósló scaraugor látnokok nagyterme",
-        "fal": 2,
+        "fal": {"ertek": 2},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -947,9 +949,9 @@ cardLibrary = [
     },
     {
         "nev": "Pénzesház",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Toronyszint",
-        "fal": 3,
+        "fal": {"ertek": 3},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -965,9 +967,9 @@ cardLibrary = [
     },
     {
         "nev": "Pihenőszoba",
-        "mp": 4,
+        "mp": {"ertek": 4},
         "laptipus": "Toronyszint",
-        "fal": 2,
+        "fal": {"ertek": 2},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -978,7 +980,7 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["megszakito"],
                 "kiirtnev": "Elforgatás",
-                "mp": 6,
+                "mp": {"ertek": 6},
                 "szoveg": "A képesség aktivizálásának feltétele a feláldozása. Minden kalandozó pihenő helyzetbe fordul."
             }
         ]
@@ -986,10 +988,10 @@ cardLibrary = [
     {
         "nev": "Salnarri gyakorlótér",
         "nevesitett": true,
-        "mp": 0,
+        "mp": {"ertek": 0},
         "laptipus": "Építmény",
         "feltetel": "Toroni",
-        "dp": 1,
+        "dp": {"ertek": 1},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -1005,7 +1007,7 @@ cardLibrary = [
     },
     {
         "nev": "Betörés a tartományi regitorhoz",
-        "mp": 2,
+        "mp": {"ertek": 2},
         "laptipus": "Küldetés",
         "helyszin": "Toron",
         "feltetel": [
@@ -1013,7 +1015,7 @@ cardLibrary = [
             "SZERENCSEVADÁSZ+HARCOS",
             "Toroni Tolvaj"
         ],
-        "dp": 3,
+        "dp": {"ertek": 3},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -1029,7 +1031,7 @@ cardLibrary = [
     },
     {
         "nev": "Hatalmi átrendeződés elősegítése",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Küldetés",
         "helyszin": "Shulur, Toron",
         "feltetel": [
@@ -1037,7 +1039,7 @@ cardLibrary = [
             "Toroni+ember",
             "Vallatás/Vallás"
         ],
-        "dp": 2,
+        "dp": {"ertek": 2},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -1053,7 +1055,7 @@ cardLibrary = [
     },
     {
         "nev": "Megkerülő hadmozdulat",
-        "mp": 2,
+        "mp": {"ertek": 2},
         "laptipus": "Küldetés",
         "helyszin": "Shulur, Toron",
         "feltetel": [
@@ -1061,7 +1063,7 @@ cardLibrary = [
             "Élet/rend jellem",
             "Hadvezetés/Taktika"
         ],
-        "dp": 3,
+        "dp": {"ertek": 3},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -1077,7 +1079,7 @@ cardLibrary = [
     },
     {
         "nev": "Merénylet az Északi Szövetség hadura ellen",
-        "mp": 2,
+        "mp": {"ertek": 2},
         "laptipus": "Küldetés",
         "helyszin": "",
         "feltetel": [
@@ -1085,7 +1087,7 @@ cardLibrary = [
             "Méregkeverés+Politika",
             "Toroni Iker"
         ],
-        "dp": 2,
+        "dp": {"ertek": 2},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -1096,14 +1098,14 @@ cardLibrary = [
                 "tipus": "laphatás",
                 "jelek": ["egyszeri", "megszakito"],
                 "kiirtnev": "Testőr",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "A laphatás játékosa kezdeményező sorelhagyó manővere során aktivizálható, ha a manőver színhelye. Az ellenfél Sorába 1 jelző Testőr kerül (HARCOS/Harcos, 2. alapszintű, F:9, A:5, M:5), akinek akadályoznia kell a manővert."
             }
         ]
     },
     {
         "nev": "Rivális megmérgezése",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Küldetés",
         "helyszin": "Shulur, Toron",
         "feltetel": [
@@ -1111,7 +1113,7 @@ cardLibrary = [
             "Goblin/ork",
             "Herbalizmus/Méregkeverés"
         ],
-        "dp": 2,
+        "dp": {"ertek": 2},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -1127,7 +1129,7 @@ cardLibrary = [
     },
     {
         "nev": "Toroni kincsek eltulajdonítása",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Küldetés",
         "helyszin": "Toron",
         "feltetel": [
@@ -1135,7 +1137,7 @@ cardLibrary = [
             "SZERENCSEVADÁSZ",
             "Zárnyitás"
         ],
-        "dp": 2,
+        "dp": {"ertek": 2},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -1151,7 +1153,7 @@ cardLibrary = [
     },
     {
         "nev": "Uralom a mezsgyeázak felett",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Küldetés",
         "helyszin": "Shulur, Toron",
         "feltetel": [
@@ -1159,7 +1161,7 @@ cardLibrary = [
             "Kínzás/Vallatás",
             "Mágiaismeret/Stratégia"
         ],
-        "dp": 2,
+        "dp": {"ertek": 2},
         "hatasok": [
             {
                 "tipus": "laphatás",
@@ -1175,7 +1177,7 @@ cardLibrary = [
     },
     {
         "nev": "Elárasztott alagút",
-        "mp": 2,
+        "mp": {"ertek": 2},
         "laptipus": "Akadálylap",
         "akadalytipus": "Csapda",
         "hatasok": [
@@ -1194,7 +1196,7 @@ cardLibrary = [
     },
     {
         "nev": "Erdei rablóbanda",
-        "mp": 2,
+        "mp": {"ertek": 2},
         "laptipus": "Akadálylap",
         "akadalytipus": "Bestia",
         "hatasok": [
@@ -1207,7 +1209,7 @@ cardLibrary = [
     },
     {
         "nev": "Mágikus zárszerkezet",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akadálylap",
         "akadalytipus": "Csapda",
         "szinesito": "Moress Nobren kiváló alkotása",
@@ -1232,7 +1234,7 @@ cardLibrary = [
     },
     {
         "nev": "Nap Küldötte",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akadálylap",
         "akadalytipus": "Bestia",
         "szinesito": "Küldött",
@@ -1246,14 +1248,14 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["megszakito"],
                 "kiirtnev": "Gyógyítás-megakadályozás",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "Célpont káosz vagy halál jellemű kalandozót célzó ellenséges gyógyító hatás nem gyógyít."
             }
         ]
     },
     {
         "nev": "Térhajlító varázsjel",
-        "mp": "3X",
+        "mp": {"ertek": "3X"},
         "laptipus": "Akadálylap",
         "akadalytipus": "Csapda",
         "szinesito": "Moress Nobren kiváló alkotása",
@@ -1268,7 +1270,7 @@ cardLibrary = [
     },
     {
         "nev": "Zauraksereg",
-        "mp": "X",
+        "mp": {"ertek": "X"},
         "laptipus": "Akadálylap",
         "akadalytipus": "Bestia",
         "szinesito": "Élőhalott, elkárhozott északiak hordája",
@@ -1282,7 +1284,7 @@ cardLibrary = [
     },
     {
         "nev": "Asztrálsikoly",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Akciólap",
         "fokaszt" : [],
         "alkaszt": ["Boszorkány"],
@@ -1300,14 +1302,14 @@ cardLibrary = [
     },
     {
         "nev": "Hármas keresztvágás",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akciólap",
         "fokaszt" : [],
         "alkaszt": ["Harcos", "Bajvívó"],
         "idotartam": "Pillanat",
         "akciotipus": "Támadás",
         "fazis": "Harc",
-        "sebzes": 1,
+        "sebzes": {"ertek": 1},
         "tipus" : "Közelharci támadás",
         "altipus" : "Vágás",
         "hatasok": [
@@ -1320,14 +1322,14 @@ cardLibrary = [
     },
     {
         "nev": "Kétkezes harcmodor",
-        "mp": 2,
+        "mp": {"ertek": 2},
         "laptipus": "Akciólap",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Kardművész", "Paplovag"],
         "idotartam": "Pillanat",
         "akciotipus": "Támadás",
         "fazis": "Harc",
-        "sebzes": 3,
+        "sebzes": {"ertek": 3},
         "tipus": "Közelharci támadás",
         "altipus": "Vágás",
         "hatasok": [
@@ -1340,27 +1342,27 @@ cardLibrary = [
     },
     {
         "nev": "Lángtáncoltatás",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akciólap",
         "fokaszt": [],
         "alkaszt": ["Varázsló", "Boszorkánymester", "Tűzvarázsló"],
         "idotartam": "Pillanat",
         "akciotipus": "Varázslat",
         "fazis": "Harc",
-        "sebzes": 2,
+        "sebzes": {"ertek": 2},
         "tipus": "Tűzmágia",
         "hatasok": []
     },
     {
         "nev": "Lopakodó letaglózás",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akciólap",
         "fokaszt": [],
         "alkaszt": ["Tolvaj"],
         "idotartam": "Pillanat",
         "akciotipus": "Támadás",
         "fazis": "Harc",
-        "sebzes": 2,
+        "sebzes": {"ertek": 2},
         "tipus": "Közelharci támadás",
         "hatasok": [
             {
@@ -1372,7 +1374,7 @@ cardLibrary = [
     },
     {
         "nev": "Mentálpöröly",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akciólap",
         "fokaszt": [],
         "alkaszt": ["Pap"],
@@ -1391,7 +1393,7 @@ cardLibrary = [
     },
     {
         "nev": "Rozsdásítás",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akciólap",
         "fokaszt": [],
         "alkaszt": ["Varázsló", "Boszorkánymester", "Pap"],
@@ -1411,7 +1413,7 @@ cardLibrary = [
     },
     {
         "nev": "Tömegek dühének kioltása",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akciólap",
         "fokaszt": [],
         "alkaszt": ["Boszorkány"],
@@ -1429,7 +1431,7 @@ cardLibrary = [
     },
     {
         "nev": "Vinnu lehellete",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akciólap",
         "fokaszt": [],
         "alkaszt": [],
@@ -1442,21 +1444,21 @@ cardLibrary = [
                 "tipus": "képesség",
                 "jelek": ["harc_elotti"],
                 "kiirtnev": "Alapszintnövelés",
-                "mp": 0,
+                "mp": {"ertek": 0},
                 "szoveg": "Célpont, Hajózás képzettséggel rendelkező kalandozó alapszintje 2-vel nő a forduló végéig, és mentálja 3-mal csökken."
             }
         ]
     },
     {
         "nev": "Yadegori technika",
-        "mp": 2,
+        "mp": {"ertek": 2},
         "laptipus": "Akciólap",
         "fokaszt": ["HARCMŰVÉSZ"],
         "alkaszt": [],
         "idotartam": "Pillanat",
         "akciotipus": "Pszi",
         "fazis": "Harc",
-        "sebzes": 2,
+        "sebzes": {"ertek": 2},
         "tipus": "Slan diszciplína",
         "hatasok": [
             {
@@ -1469,14 +1471,14 @@ cardLibrary = [
     },
     {
         "nev": "Zsibbasztó ütés",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Akciólap",
         "fokaszt": [],
         "alkaszt": ["Fejvadász"],
         "idotartam": "Pillanat",
         "akciotipus": "Támadás",
         "fazis": "Harc",
-        "sebzes": 2,
+        "sebzes": {"ertek": 2},
         "tipus": "Közelharci támadás",
         "hatasok": [
             {
@@ -1488,7 +1490,7 @@ cardLibrary = [
     },
     {
         "nev": "A túlvilág hívása",
-        "mp": 3,
+        "mp": {"ertek": 3},
         "laptipus": "Eseménylap",
         "szinesito": "Aszisz halottidéző rituálé",
         "idotartam": "Pillanat",
@@ -1503,7 +1505,7 @@ cardLibrary = [
     },
     {
         "nev": "Felgyújtott falvak",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Eseménylap",
         "idotartam": "Végleges",
         "hatasok": [
@@ -1521,7 +1523,7 @@ cardLibrary = [
     },
     {
         "nev": "Határok feszegetése",
-        "mp": 1,
+        "mp": {"ertek": 1},
         "laptipus": "Eseménylap",
         "idotartam": "Pillanat",
         "hatasok": [
@@ -1535,18 +1537,18 @@ cardLibrary = [
     },
     {
         "nev": "Zombi",
-        "mp": 0,
+        "mp": {"ertek": 0},
         "laptipus": "Kalandozó",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Harcos"],
-        "alapszint": 1,
+        "alapszint": {"ertek": 1},
         "jellem": null,
         "tulajdonsagok": ["jelző"],
         "kepzettsegek": [],
         "alapkepessegek": {
-            "Fizikum": 7,
-            "Asztral": 5,
-            "Mental": 5
+            "Fizikum": {"ertek": 7},
+            "Asztral": {"ertek": 5},
+            "Mental": {"ertek": 5}
         },
         "hatasok": []
     }
