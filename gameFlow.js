@@ -38,6 +38,16 @@ gameFlow = {
         }
     },
 
+    idotartamosHatasokVege: function(idotartam) {
+        const idotartamosHatasok = gameState.state.fazis.idotartamosHatasok;
+        for (let i = idotartamosHatasok.length - 1; i >= 0; i--) {
+            if (idotartamosHatasok[i].idotartam === idotartam) {
+                idotartamosHatasok[i].torles();
+                idotartamosHatasok.splice(i, 1);
+            }
+        }
+    },
+
     mpKotottFazis: function(fazis) {
         return fazis.nev == "Manőverek fázisa" || fazis.nev == "Harci körök";
     },
@@ -146,7 +156,9 @@ gameFlow = {
         nev: "Forduló vége",
         kovetkezoFazis: function() {return gameFlow.forduloKezdete;},
         fazisEleje: function() {gameFlow.idofonalNyitas(null)},
-        fazisVege: function() {},
+        fazisVege: function() {
+            idotartamosHatasokVege("Forduló");
+        },
     },
 
     kezdemenyezoCsapatSorElhagyas: {
@@ -293,13 +305,7 @@ gameFlow = {
             gameFlow.idofonalNyitas(null)
         },
         fazisVege: function() {
-            const idotartamosHatasok = gameState.state.fazis.idotartamosHatasok;
-            for (let i = idotartamosHatasok.length - 1; i >= 0; i--) {
-                if (idotartamosHatasok[i].idotartam === 'Harc') {
-                    idotartamosHatasok[i].torles();
-                    idotartamosHatasok.splice(i, 1);
-                }
-            }
+            idotartamosHatasokVege("Harc");
             // TODO manőver vége vesztes játékos
             // TODO manőver vége kezdeményező játékos, ha nem megy tovább
         },

@@ -7,13 +7,15 @@ gameUi = {
         player = player ? player : card.tulajdonos
         const playerMp = gameState.state.playerAttributes[player].mp;
 
-        mp_text = card.laptipus === "Toronyszint" ? (helper.getValue(card.mp) === 4 ? "" : helper.getValue(card.mp) + " MP " ) : helper.getValue(card.mp) + " MP " ;
+        mp_text = card.laptipus === "Toronyszint" ? 
+            (helper.getValue(card.mp) === 4 ? "" : helper.getValue(card.mp) + " MP " ) 
+            : helper.getValue(card.mp) + " MP " ;
         
         cardDiv.innerHTML = `
             <div class="card-header">${mp_text}${card.nev}</div>
             <div class="card-content">
                 ${card.alapszint ? `<div class="alapszint">Alapszint: ${helper.getValue(card.alapszint)}</div>` : ''}
-                ${card.fal != null ? `<div class="fal">FAL: ${card.fal}</div>` : ''}
+                ${card.fal != null ? `<div class="fal">FAL: ${helper.getValue(card.fal)}</div>` : ''}
                 ${card.helyzet ? `<div class="helyzet">Helyzet: ${card.helyzet}</div>` : ''}
             </div>
         `;

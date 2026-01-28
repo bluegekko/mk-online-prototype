@@ -42,6 +42,7 @@ gameEffect = {
     },
 
     kasztValidalas: function(leidezo, card) {
+        // TODO
         return true;
     },
 
