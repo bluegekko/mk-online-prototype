@@ -130,15 +130,13 @@ gameFlow = {
                     }
                 });
 
-                // Húzás 7 lapra
-                const kezbenLevok = gameState.state.playerSpaces[player].kez.length;
-                const huzandoLapok = 7 - kezbenLevok;
-                
-                if (huzandoLapok > 0) {
-                    for (let i = 0; i < huzandoLapok; i++) {
-                        gameAction.laphuzas(player);
-                    }
+                lapkiigazitas = {
+                    tipus: "lapkiigazítás",
+                    player: player
                 }
+                gameState.state.eventSor.push(laphuzas);
+                eventHandler.resolve();
+
             });
             gameFlow.idofonalNyitas(null)
         },

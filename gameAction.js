@@ -1,4 +1,5 @@
 gameAction = {
+
     kartyaMozgatasJatekter: function(player, fromSpaceNev, toSpaceNev, card) {
         // TODO múlt, mélység, kéz, jövő, cserepakli mindig tulajdonoshoz menjen
         // TODO jelző lapok megszűnnek, ha jelenből kikerülnek

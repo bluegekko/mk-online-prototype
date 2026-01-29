@@ -30,7 +30,9 @@ window.gameState = {
             idotartamosHatasok: [],
             prioritas: 'player',
             legutobbiMpKotottManover: null,
-        }
+        },
+        eventSor: [],
+        figyelok: [],        
     },
 
     // Játékállapot inicializálása
@@ -47,6 +49,7 @@ window.gameState = {
             prioritas: 'player',
             legutobbiMpKotottManover: null,
         };
+
         // Játékterek inicializálása minden játékosnak
         this.players.forEach(player => {
             this.state.playerSpaces[player] = {};
@@ -55,7 +58,7 @@ window.gameState = {
             });
         });
 
-        // Kezdő MP.
+        // Kezdő tulajdonságok.
         this.players.forEach(player => {
             this.state.playerAttributes[player] = {};
             this.state.playerAttributes[player].mp = 6;
@@ -64,6 +67,7 @@ window.gameState = {
             this.state.playerAttributes[player].harciKorokVege = false;
             this.state.playerAttributes[player].akadalyozas = true;
             this.state.playerAttributes[player].leidezo = null;
+            this.state.playerAttributes[player].kezmeret = {"ertek": 7};
         });
 
         // Kezdő kártyák kiosztása
