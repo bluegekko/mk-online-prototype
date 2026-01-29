@@ -134,7 +134,7 @@ gameFlow = {
                     tipus: "lapkiigazítás",
                     player: player
                 }
-                gameState.state.eventSor.push(laphuzas);
+                gameState.state.eventSor.push(lapkiigazitas);
                 eventHandler.resolve();
 
             });

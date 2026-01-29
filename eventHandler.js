@@ -13,12 +13,13 @@ eventHandler = {
             }
         },
         "lapkiigazítás": function(esemeny) {
-            const playerAttributes = gameState.state.playerAttributes[esemeny.player];
+            const playerAttributes = gameState.state.playerAttributes[esemeny.player]
+            const playerSpaces = gameState.state.playerSpaces[esemeny.player];
             laphuzas = {
                 tipus: "laphúzás",
                 player: esemeny.player,
                 forras: "lapkiigazítás",
-                szam: helper.getValue(playerAttributes.kezmeret) - playerAttributes.kez.length
+                szam: helper.getValue(playerAttributes.kezmeret) - playerSpaces.kez.length
             }
             gameState.state.eventSor.push(laphuzas);
         },
