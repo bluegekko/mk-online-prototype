@@ -27,7 +27,6 @@ window.gameState = {
                 hatasok: [],
                 folyamatban: true,
             },
-            idotartamosHatasok: [],
             prioritas: 'player',
             legutobbiMpKotottManover: null,
         },
@@ -103,6 +102,9 @@ window.gameState = {
                 });
             });
         });
+
+        
+        //this.state.fazis.aktualisFazis = gameFlow.harcElokeszites,
 
 
         console.log('Initial state:', this.state);

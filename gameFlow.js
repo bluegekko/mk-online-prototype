@@ -14,6 +14,7 @@ gameFlow = {
                 } else {
                     gameEffect[aktualisHatas.szoveg].ervenyesul(aktualisHatas);
                 }
+                eventHandler.resolve();
                 return;
             } else {
                 if (!gameFlow.mpKotottFazis(aktualisFazis)) {                    
@@ -38,16 +39,6 @@ gameFlow = {
         }
     },
 
-    idotartamosHatasokVege: function(idotartam) {
-        const idotartamosHatasok = gameState.state.fazis.idotartamosHatasok;
-        for (let i = idotartamosHatasok.length - 1; i >= 0; i--) {
-            if (idotartamosHatasok[i].idotartam === idotartam) {
-                idotartamosHatasok[i].torles();
-                idotartamosHatasok.splice(i, 1);
-            }
-        }
-    },
-
     mpKotottFazis: function(fazis) {
         return fazis.nev == "Manőverek fázisa" || fazis.nev == "Harci körök";
     },
@@ -55,8 +46,10 @@ gameFlow = {
     kovetkezoFazis: function() {
         gameState.state.fazis.aktualisFazis.fazisVege();
         gameFlow.idofonalZaras();
+        eventHandler.resolve();
         gameState.state.fazis.aktualisFazis = gameState.state.fazis.aktualisFazis.kovetkezoFazis();
         gameState.state.fazis.aktualisFazis.fazisEleje();
+        eventHandler.resolve();
     },
 
     idofonalNyitas: function(effect) {
@@ -155,7 +148,6 @@ gameFlow = {
         kovetkezoFazis: function() {return gameFlow.forduloKezdete;},
         fazisEleje: function() {gameFlow.idofonalNyitas(null)},
         fazisVege: function() {
-            idotartamosHatasokVege("Forduló");
         },
     },
 
@@ -303,7 +295,9 @@ gameFlow = {
             gameFlow.idofonalNyitas(null)
         },
         fazisVege: function() {
-            idotartamosHatasokVege("Harc");
+            gameState.state.eventSor.push({
+                tipus: "Harc vége"
+            });
             // TODO manőver vége vesztes játékos
             // TODO manőver vége kezdeményező játékos, ha nem megy tovább
         },

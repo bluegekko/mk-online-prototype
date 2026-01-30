@@ -150,6 +150,8 @@ cardFactory = {
         const cardData = cardLibrary.find(card => card.nev.toLowerCase() === nev.toLowerCase());
         if (!cardData) throw new Error(`Kártya nem található: ${nev}`);
         
+        const cardDataCopy = JSON.parse(JSON.stringify(cardData));
+        
         const tipusMap = {
             "Kalandozó": cardFactory.kalandozo,
             "Toronyszint": cardFactory.toronyszint,
@@ -159,9 +161,9 @@ cardFactory = {
             "Építmény": cardFactory.epitmeny,
             "Küldetés": cardFactory.kuldetes
         };        
-        const constructor = tipusMap[cardData.laptipus];
-        if (!constructor) throw new Error(`Nem támogatott kártyatípus: ${cardData.laptipus}`);
-        return constructor(cardData);
+        const constructor = tipusMap[cardDataCopy.laptipus];
+        if (!constructor) throw new Error(`Nem támogatott kártyatípus: ${cardDataCopy.laptipus}`);
+        return constructor(cardDataCopy);
     },
 };
 

@@ -4,18 +4,6 @@ gameEffect = {
         return card.szinesito && card.szinesito.toLowerCase().includes(parameterKicsi) || card.nev && card.nev.toLowerCase().includes(parameterKicsi);
     },
 
-    ertekTorles: function(card, ertek, modosito) {
-        const index = card[ertek].modositas.indexOf(modosito);
-        if (index !== -1) card[ertek].modositas.splice(modosito, 1);
-    },
-
-    ertekTorlesRegisztralas: function(card, ertek, modosito, idotartam) {
-        gameState.state.fazis.idotartamosHatasok.push({
-            idotartam: idotartam,
-            torles: () => gameEffect.ertekTorles(card, ertek, modosito)
-        });
-    },
-
     jelenbenVan: function(card) {
         // TODO currentspace referencia
         for (player of gameState.players) {
@@ -84,11 +72,14 @@ gameEffect = {
 
     "Célpont kalandozó kap 1 alapszintet." : {
         ervenyesul: function(card) {
-            console.log("hatas ervenyesules: ", card)
             if (!this.celpontValidalas(card.celpont)) return; // semlegesítésnek számít
-            console.log("hatas celpontja: ", card.celpont[0])
-            if (!card.alapszint.modositas) card.alapszint.modositas = [];
-            card.alapszint.modositas.push({ertek: 1});
+            gameState.state.eventSor.push({
+                tipus: "értékmódosítás",
+                forras: card.isCard ? card : card.forras,
+                hataskor: [card.celpont],
+                ertektipus: "alapszint",
+                ertek: 1
+            })
         },
 
         celpontValidalas: function(celpontok) {
@@ -112,9 +103,14 @@ gameEffect = {
     "Célpont salnarri kalandozó alapszintje 1-gyel nő a forduló végéig. A képesség pihenő és sérült helyzetben is aktivizálható." : {
         ervenyesul: function(hatas) {
             if (!this.celpontValidalas(hatas.celpont)) return;
-            // TODO időtartam
-            if (!hatas.celpont[0].alapszint.modositas) hatas.celpont[0].alapszint.modositas = [];
-            hatas.celpont[0].alapszint.modositas.push({ertek: 1});
+            gameState.state.eventSor.push({
+                tipus: "értékmódosítás",
+                idotartam: "Forduló",
+                forras: hatas.isCard ? hatas : hatas.forras,
+                hataskor: [hatas.celpont],
+                ertektipus: "alapszint",
+                ertek: 1
+            })
             delete hatas.celpont;
         },
 
@@ -146,14 +142,16 @@ gameEffect = {
     "Az ellenséges kalandozók asztrálja 1-gyel csökken." : {
         ervenyesul: function(hatas) {
             const ellenfel = helper.ellenfel(hatas.tulajdonos);
-            for (const space of gameState.jelenSpaces) {
-                gameState.state.playerSpaces[ellenfel][space].forEach(card => {
-                    if (card.laptipus === 'Kalandozó') {
-                        if (!card.alapkepessegek.Asztral.modositas) card.alapkepessegek.Asztral.modositas = [];
-                        card.alapkepessegek.Asztral.modositas.push({ertek: -1});
-                    }
-                });
-            }
+            const ellenfelKalandozok = gameState.jelenSpaces.flatMap(space =>
+                gameState.state.playerSpaces[ellenfel][space].filter(card => card.laptipus === 'Kalandozó')
+            );            
+            gameState.state.eventSor.push({
+                tipus: "értékmódosítás",
+                forras: hatas.isCard ? hatas : hatas.forras,
+                hataskor: ellenfelKalandozok,
+                ertektipus: "alapkepessegek.Asztral",
+                ertek: -1
+            })
         },
 
         celpontValidalas: function(celpontok) {return true;}
@@ -198,20 +196,34 @@ gameEffect = {
         ervenyesul: function(hatas) {
             if (!this.celpontValidalas(hatas.celpont)) return;
             
-            const forras = hatas.forras;
-            const celpont = hatas.celpont[0];
-            const forrasMod = {ertek: 1};
-            const celpontMod = {ertek: -1};
-            
-            if (!forras.alapszint.modositas) forras.alapszint.modositas = [];
-            forras.alapszint.modositas.push(forrasMod);
-            
-            if (!celpont.alapszint.modositas) hatas.celpont[0].alapszint.modositas = [];
-            celpont.alapszint.modositas.push(celpontMod);
+            gameState.state.eventSor.push({
+                tipus: "értékmódosítás",
+                forras: hatas.isCard ? hatas : hatas.forras,
+                hataskor: [hatas.forras],
+                idotartam: "Harc",
+                ertektipus: "alapszint",
+                ertek: 1
+            });
 
-            gameEffect.ertekTorlesRegisztralas(forras, "alapszint", forrasMod, 'Harc');
-            gameEffect.ertekTorlesRegisztralas(celpont, "alapszint", celpontMod, 'Harc')
-            
+            gameState.state.eventSor.push({
+                tipus: "értékmódosítás",
+                forras: hatas.isCard ? hatas : hatas.forras,
+                hataskor: [hatas.celpont[0]],
+                idotartam: "Harc",
+                ertektipus: "alapszint",
+                ertek: -1
+            });
+
+            figyelo = {
+                esemenytipus: "Harc vége",
+                forras: hatas.forras,
+                allando: false,
+                ervenyesul: () => {
+                    gameState.state.eventSor.push({
+                        tipus: "értékmódosítástörlés", forras: hatas, card: hatas.forras,
+                        ertek: "alapszint", modosito: forrasMod});
+                }
+            }
         },
 
         celpontValidalas: function(celpontok) {
@@ -220,7 +232,5 @@ gameEffect = {
             return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
         },
     },
-
-     "Kap 1 fizikumot. Célpont kalandozó veszít 1 asztrált. A hatás a harc végéig tart.": {},
 
 }
