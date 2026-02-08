@@ -280,4 +280,25 @@ gameEffect = {
             if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
         }
     },
+
+    "Kalandozók sorelhagyó manőverből semmiképpen nem térhetnek vissza Sorba éber helyzetben.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "kártyamozgatás",
+                forras: hatas.card,
+                allando: true,
+                ervenyesul: (triggerEsemeny) => {
+                    if (gameState.state.fazis.sorelhagyoManover && 
+                        triggerEsemeny.hova === "sor" && 
+                        triggerEsemeny.ujHelyzet === "éber") {
+                        triggerEsemeny.ujHelyzet = "pihenő";
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
+            if (index !== -1) gameState.state.figyelok.splice(index, 1);
+        }
+    },
 }
