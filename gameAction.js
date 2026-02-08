@@ -68,6 +68,12 @@ gameAction = {
         kez = gameState.state.playerSpaces[player]['kez'];
         const cardIndex = kez.findIndex(card => card.id === cardId);
         kez.splice(cardIndex, 1);
+        // trigger lapleidézés
+        eventHandler.resolve({
+            tipus: "lapleidézés",
+            lap: card,
+            player: player
+        });
         gameFlow.idofonalNyitas(card)
         gameUi.render();
     },

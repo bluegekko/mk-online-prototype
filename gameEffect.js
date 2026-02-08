@@ -325,6 +325,32 @@ gameEffect = {
         }
     },
     
+    "Kap 1 alapszintet, amikor az ellenfél eseménylapot idéz le.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "lapleidézés",
+                forras: hatas.card,
+                allando: true,
+                ervenyesul: (triggerEsemeny) => {
+                    if (triggerEsemeny.lap && triggerEsemeny.lap.laptipus === "Eseménylap" &&
+                        triggerEsemeny.player !== hatas.card.tulajdonos) {
+                        gameState.state.eventSor.push({
+                            tipus: "értékmódosítás",
+                            forras: hatas.card,
+                            hataskor: [hatas.card],
+                            ertektipus: "alapszint",
+                            ertek: 1
+                        });
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
+            if (index !== -1) gameState.state.figyelok.splice(index, 1);
+        }
+    },
+
     "Célpont toroni kalandozó sérült helyzetbe fordul.": {
         ervenyesul: function(hatas) {
             if (!this.celpontValidalas(hatas.celpont)) return;

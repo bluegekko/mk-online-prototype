@@ -96,6 +96,7 @@ eventHandler = {
         "képességlaphatásérvényesülés": function(esemeny) {
             gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.hatas)
         },
+        "lapleidézés": function(esemeny) {},
         "időfonalvisszafejtés": function(esemeny) {
             const fazis = gameState.state.fazis;
             const idofonal = fazis.idofonal;
