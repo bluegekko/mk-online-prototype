@@ -367,4 +367,47 @@ gameEffect = {
             return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó' && gameEffect.vanParameter(card, 'toroni');
         }
     },
+
+    "Dwoon kalandozók + 1 szintet sebződnek minden sebzésforrásból.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "sebzés",
+                forras: hatas.card,
+                allando: true,
+                ervenyesul: (triggerEsemeny) => {
+                    if (triggerEsemeny.hataskor && triggerEsemeny.hataskor[0].laptipus === 'Kalandozó' &&
+                        gameEffect.vanParameter(triggerEsemeny.hataskor[0], 'dwoon')) {
+                        triggerEsemeny.ertek += 1;
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
+            if (index !== -1) gameState.state.figyelok.splice(index, 1);
+        }
+    },
+
+    "Játékosa fegyver tárgyainak MP-igénye 1-gyel csökken.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.szamolasModositok.push({
+                forras: hatas.card,
+                tulajdonsag: "mp",
+                feltetel: function(card) {
+                    return card.tulajdonos === hatas.card.tulajdonos && 
+                           card.laptipus === "Akciólap" && 
+                           card.akciotipus === "Tárgy" && 
+                           card.tipus.includes("fegyver");
+                },
+                vegrehajtas: function(ertek) {
+                    ertek.modositas = ertek.modositas || [];
+                    ertek.modositas.push({"ertek": -1});
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.szamolasModositok.findIndex(mod => mod.forras === hatas.card);
+            if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
+        }
+    },
 }

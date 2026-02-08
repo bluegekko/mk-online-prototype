@@ -392,10 +392,10 @@ cardLibrary = [
         ]
     },
     {
-        "nev": "A Viharzászló hordozója",
+        "nev": "A Vihargárda veteránja",
         "mp": {"ertek": 7},
         "laptipus": "Kalandozó",
-        "szinesito": "Toroni, a Vihargárda tagja",
+        "szinesito": "Toroni",
         "fokaszt": ["HARCOS"],
         "alkaszt": ["Lovag"],
         "alapszint": {"ertek": 4},
