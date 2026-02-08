@@ -256,5 +256,28 @@ gameEffect = {
             if (index !== -1) gameState.state.figyelok.splice(index, 1);
         }
     },
-
+    "Alapszintje 1-gyel nő, ha játékosa irányít nevesített HARCMŰVÉSZ-t.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.szamolasModositok.push({
+                forras: hatas.card,
+                tulajdonsag: "alapszint",
+                feltetel: function(card) {
+                    return card === hatas.card;
+                },
+                vegrehajtas: function(ertek) {
+                    const player = hatas.card.tulajdonos;
+                    const vanNevesitettHarcmuvesz = gameState.state.playerSpaces[player].sor.some(c => 
+                        c.fokaszt && c.fokaszt.includes('HARCMŰVÉSZ') && c.tulajdonsag.includes('nevesített'));
+                    if (vanNevesitettHarcmuvesz) {
+                        ertek.modositas = ertek.modositas || [];
+                        ertek.modositas.push({"ertek": 1});
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.szamolasModositok.findIndex(mod => mod.forras === hatas.card);
+            if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
+        }
+    },
 }
