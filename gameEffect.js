@@ -124,16 +124,22 @@ gameEffect = {
 
     "A képesség aktivizálásának feltétele a feláldozása. Minden kalandozó pihenő helyzetbe fordul." : {
         ervenyesul: function(hatas) {
+            const kalandozok = [];
             for (const player of gameState.players) {
                 for (const space of gameState.jelenSpaces) {
-                    const cards = gameState.state.playerSpaces[player][space];
-                    cards.forEach(card => {
+                    gameState.state.playerSpaces[player][space].forEach(card => {
                         if (card.laptipus === 'Kalandozó') {
-                            card.helyzet = 'pihenő';
+                            kalandozok.push(card);
                         }
                     });
                 }
             }
+            gameState.state.eventSor.push({
+                tipus: "helyzetbeállítás",
+                forras: hatas.isCard ? hatas : hatas.forras,
+                hataskor: kalandozok,
+                helyzet: "pihenő"
+            });
         },
 
         celpontValidalas: function(celpontok) {return true;}
@@ -171,24 +177,26 @@ gameEffect = {
     },
 
     "Olyan kalandozó lapok MP-igénye 1-gyel nő, akik nem emberek.": {
-        folyamatos: function(card) {
-            for (const player of gameState.players) {
-                Object.keys(gameState.baseSpaces).forEach(space => {
-                    gameState.state.playerSpaces[player][space].forEach(lap => {
-                        if (lap.laptipus !== 'Kalandozó') return;
-                        
-                        const nemEmberFaj = helper.fajok.find(faj => 
-                            faj !== 'ember' && gameEffect.vanParameter(lap, faj) &&
-                            !gameEffect.vanParameter(lap, 'ember')
-                        );
-                        
-                        if (nemEmberFaj) {
-                            if (!lap.mp.modositas) lap.mp.modositas = [];
-                            lap.mp.modositas.push({ertek: 1});
-                        }
-                    });
-                });
-            }
+        bekapcsolas: function(hatas) {
+            console.log("MP növelés hozzáadva");
+            gameState.state.szamolasModositok.push({
+                forras: hatas.card,
+                tulajdonsag: "mp",
+                feltetel: function(card) {
+                    const nemEmberFaj = helper.fajok.find(faj => 
+                            faj !== 'ember' && gameEffect.vanParameter(card, faj) &&
+                            !gameEffect.vanParameter(card, 'ember')
+                    );
+                    return card.isCard && card.laptipus == "Kalandozó" && nemEmberFaj;
+                },
+                vegrehajtas: function(ertek) {
+                    ertek.modositas = ertek.modositas || []; 
+                    ertek.modositas.push({"ertek": 1});                }
+            })
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.szamolasModositok.findIndex(mod => mod.forras === hatas.card);
+            if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
         }
     },
 
@@ -213,17 +221,6 @@ gameEffect = {
                 ertektipus: "alapszint",
                 ertek: -1
             });
-
-            figyelo = {
-                esemenytipus: "Harc vége",
-                forras: hatas.forras,
-                allando: false,
-                ervenyesul: () => {
-                    gameState.state.eventSor.push({
-                        tipus: "értékmódosítástörlés", forras: hatas, card: hatas.forras,
-                        ertek: "alapszint", modosito: forrasMod});
-                }
-            }
         },
 
         celpontValidalas: function(celpontok) {

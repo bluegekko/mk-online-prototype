@@ -4,6 +4,7 @@ window.gameState = {
         kez: { name: 'kez', displayName: 'Kéz' },
         sor: { name: 'sor', displayName: 'Sor' },
         manover: { name: 'manover', displayName: 'Manőver' },
+        raktar: { name: 'raktar', displayName: 'Raktár' },
         toronyszintek: { name: 'toronyszintek', displayName: 'Torony' },
         jelenlapok: { name: 'jelenLapok', displayName: '' },
         jovo: { name: 'jovo', displayName: 'Jövő' },
@@ -11,7 +12,7 @@ window.gameState = {
         melyseg: { name: 'melyseg', displayName: 'Mélység' }
     },
 
-    jelenSpaces: ['sor', 'manover', 'toronyszintek', 'jelenlapok'],
+    jelenSpaces: ['sor', 'manover', 'raktar', 'toronyszintek', 'jelenlapok'],
 
     // Játékosok definíciója
     players: ['player', 'opponent'],
@@ -31,7 +32,8 @@ window.gameState = {
             legutobbiMpKotottManover: null,
         },
         eventSor: [],
-        figyelok: [],        
+        figyelok: [],
+        szamolasModositok: [],
     },
 
     // Játékállapot inicializálása
@@ -48,6 +50,10 @@ window.gameState = {
             prioritas: 'player',
             legutobbiMpKotottManover: null,
         };
+
+        this.state.eventSor = [];
+        this.state.figyelok = [];
+        this.state.szamolasModositok = [];
 
         // Játékterek inicializálása minden játékosnak
         this.players.forEach(player => {
@@ -103,9 +109,30 @@ window.gameState = {
             });
         });
 
-        
-        //this.state.fazis.aktualisFazis = gameFlow.harcElokeszites,
-
+        // állandó képességek bekapcsolása
+        this.state.figyelok.push({
+            esemenytipus: "kártyamozgatás",
+            forras: "szabály",
+            allando: true,
+            ervenyesul: (esemeny) => {
+                if (this.jelenSpaces.includes(esemeny.hova) && !this.jelenSpaces.includes(esemeny.honnan)) {
+                    for (const card of esemeny.hataskor) {
+                        if (card.hatasok) {
+                            for (const hatas of card.hatasok) {
+                                if (hatas.tipus === 'képesség' &&
+                                    !abilityFunctions.aktivizalhato(hatas) && 
+                                    !hatas.jelek.includes('harci')) {
+                                    const folyamatosKepesseg = gameEffect[hatas.szoveg];
+                                    if (folyamatosKepesseg && folyamatosKepesseg.bekapcsolas) {
+                                        folyamatosKepesseg.bekapcsolas({card: card, hatas: hatas});
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
         console.log('Initial state:', this.state);
         console.log('Player cards:', this.state.playerSpaces.player.kez);

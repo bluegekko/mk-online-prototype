@@ -987,9 +987,9 @@ cardLibrary = [
     },
     {
         "nev": "Salnarri gyakorlótér",
-        "nevesitett": true,
         "mp": {"ertek": 0},
         "laptipus": "Építmény",
+        "tulajdonsagok": ["nevesített"],
         "feltetel": "Toroni",
         "dp": {"ertek": 1},
         "hatasok": [

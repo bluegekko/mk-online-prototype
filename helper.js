@@ -28,22 +28,30 @@ helper = {
     // TODO erős hatások implementálása
     // limites hatások sorrendje
     // beállító hatások
-    getValue: function(valueStructure) {
-        if (typeof valueStructure === 'number') return valueStructure;
+    getValue: function(obj, property) {
+        const valueStructure = obj[property];
         
         let ertek = valueStructure.ertek || 0;
+
+        const ertekObjektum = JSON.parse(JSON.stringify(valueStructure));
+
+        for (const szamolasMod of gameState.state.szamolasModositok) {
+            if (szamolasMod.feltetel(obj) && szamolasMod.tulajdonsag == property) {
+                szamolasMod.vegrehajtas(ertekObjektum);
+            }
+        }
         
-        if (valueStructure.modositas) {
-            for (let mod of valueStructure.modositas) {
+        if (ertekObjektum.modositas) {
+            for (let mod of ertekObjektum.modositas) {
                 if (mod.limit === undefined || ertek < mod.limit) {
                     ertek += mod.ertek;
                 }
             }
         }
         
-        if (valueStructure.limit) {
-            if (valueStructure.limit[0] !== null && ertek < valueStructure.limit[0]) ertek = valueStructure.limit[0];
-            if (valueStructure.limit[1] !== null && ertek > valueStructure.limit[1]) ertek = valueStructure.limit[1];
+        if (ertekObjektum.limit) {
+            if (ertekObjektum.limit[0] !== null && ertek < ertekObjektum.limit[0]) ertek = ertekObjektum.limit[0];
+            if (ertekObjektum.limit[1] !== null && ertek > ertekObjektum.limit[1]) ertek = ertekObjektum.limit[1];
         }
         
         return ertek;
@@ -58,4 +66,17 @@ helper = {
             sikeresJatekos: null,
         };
     },
+
+    kezdoJelenJatekter: function(card) {
+        switch (card.laptipus) {
+            case "Kalandozó":
+                return "sor";
+            case "Akciólap":
+                return helper.isFelszereles(card) ? "raktar" : "jelenlapok";
+            case "Toronyszint":
+                return "toronyszintek";
+            default:
+                return "jelenlapok";
+        }
+    }
 }

@@ -6,15 +6,15 @@ cardFactory = {
         return (prefix || "c") + "_" + (this.idSeq++); 
     },
     
-    createBaseCard: function({ laptipus, prefix, nev, mp, nevesitett, szinesito, idotartam, fazis, hatasok}) {
+    createBaseCard: function({ laptipus, prefix, nev, mp, tulajdonsagok, szinesito, idotartam, fazis, hatasok}) {
         return {
             id: this.uid(prefix),
             isCard: true,
             laptipus: laptipus,
             nev: nev,
             mp: mp,
-            nevesitett: nevesitett ? nevesitett : false,
             szinesito: szinesito,
+            tulajdonsagok: tulajdonsagok,
             idotartam: idotartam,
             fazis: fazis,
             hatasok: hatasok,
@@ -34,7 +34,6 @@ cardFactory = {
             alkaszt: params.alkaszt,
             alapszint: params.alapszint,
             jellem: params.jellem,
-            pszi: params.pszi,
             szferak: params.szferak,
             kepzettsegek: params.kepzettsegek,
             alapkepessegek: params.alapkepessegek,
@@ -105,10 +104,6 @@ cardFactory = {
             ervenyesul: function() {
                 const hatas = helper.ervenyesuloHatas(this);
                 console.log("érvényesülő hatás: " + hatas)
-                if (this.sebzesCelpont) {
-                    this.sebzesCelpont.sebzes = (this.sebzesCelpont.sebzes || 0) + this.sebzes;
-                    console.log("sebzés", this.sebzesCelpont.sebzes)
-                }
                 if (hatas) {
                     gameEffect[hatas.szoveg].ervenyesul(this);
                 }
@@ -147,7 +142,8 @@ cardFactory = {
 
 
     fromLibrary: (nev) => {
-        const cardData = cardLibrary.find(card => card.nev.toLowerCase() === nev.toLowerCase());
+        const nevLower = nev.toLowerCase();
+        const cardData = cardLibrary.find(card => card.nev.toLowerCase().startsWith(nevLower));
         if (!cardData) throw new Error(`Kártya nem található: ${nev}`);
         
         const cardDataCopy = JSON.parse(JSON.stringify(cardData));

@@ -8,14 +8,14 @@ gameUi = {
         const playerMp = gameState.state.playerAttributes[player].mp;
 
         mp_text = card.laptipus === "Toronyszint" ? 
-            (helper.getValue(card.mp) === 4 ? "" : helper.getValue(card.mp) + " MP " ) 
-            : helper.getValue(card.mp) + " MP " ;
+            (helper.getValue(card, "mp") === 4 ? "" : helper.getValue(card, "mp") + " MP " ) 
+            : helper.getValue(card, "mp") + " MP " ;
         
         cardDiv.innerHTML = `
             <div class="card-header">${mp_text}${card.nev}</div>
             <div class="card-content">
-                ${card.alapszint ? `<div class="alapszint">Alapszint: ${helper.getValue(card.alapszint)}</div>` : ''}
-                ${card.fal != null ? `<div class="fal">FAL: ${helper.getValue(card.fal)}</div>` : ''}
+                ${card.alapszint ? `<div class="alapszint">Alapszint: ${helper.getValue(card, "alapszint")}</div>` : ''}
+                ${card.fal != null ? `<div class="fal">FAL: ${helper.getValue(card, "fal")}</div>` : ''}
                 ${card.helyzet ? `<div class="helyzet">Helyzet: ${card.helyzet}</div>` : ''}
             </div>
         `;
@@ -40,7 +40,7 @@ gameUi = {
             const button = document.createElement('button');
             button.textContent = 'Leidéz';
             // TODO celpontValidalas ellenorzese
-            button.disabled = playerMp < helper.getValue(card.mp) || !abilityFunctions.hasznalhatoAktualisFazisban(card) ;
+            button.disabled = playerMp < helper.getValue(card, "mp") || !abilityFunctions.hasznalhatoAktualisFazisban(card) ;
             button.onclick = (e) => {
                 e.stopPropagation();
                 gameAction.leidezesKezbol(player, card.id);
@@ -71,7 +71,7 @@ gameUi = {
                     effectButton.textContent = hatas.kiirtnev || 'Hatás aktiválás';
                     effectButton.className = 'effect-button';
                     effectButton.disabled = 
-                        playerMp < helper.getValue(hatas.mp) 
+                        playerMp < helper.getValue(hatas, "mp") 
                         || !abilityFunctions.hasznalhatoAktualisFazisban(hatas) 
                         || hatas.tipus == "képesség" && !gameState.jelenSpaces.includes(space) 
                         || (gameEffect[hatas.szoveg] && !gameEffect[hatas.szoveg].celpontValidalas(kivalasztas));

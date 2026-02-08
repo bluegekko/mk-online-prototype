@@ -7,13 +7,7 @@ gameFlow = {
         
         if (idofonal.folyamatban) {
             if (idofonal.hatasok.length > 0) {
-                aktualisHatas = idofonal.hatasok.pop();
-                console.log(aktualisHatas)
-                if (aktualisHatas.isCard) {
-                    aktualisHatas.ervenyesul();
-                } else {
-                    gameEffect[aktualisHatas.szoveg].ervenyesul(aktualisHatas);
-                }
+                gameState.state.eventSor.push({tipus: "időfonalvisszafejtés"})
                 eventHandler.resolve();
                 return;
             } else {
@@ -66,7 +60,7 @@ gameFlow = {
                 gameState.state.playerSpaces[player][space].forEach(card => {
                     if (card.laptipus === 'Kalandozó') {
                         const sebzes = card.sebzes || 0;
-                        if (sebzes >= helper.getValue(card.alapszint)) {
+                        if (sebzes >= helper.getValue(card, "alapszint")) {
                             // TODO nevesítés
                             gameAction.kartyaMozgatasJatekter(player, space, 'mult', card);
                         } else if (sebzes > 0 && !gameState.state.fazis.manover.folyamatban) {
@@ -233,7 +227,7 @@ gameFlow = {
                 const manoverCards = gameState.state.playerSpaces[kezdemenyezoJatekos].manover;
                 const osszszint = manoverCards.reduce((sum, card) => {
                     if (card.laptipus === 'Kalandozó') {
-                        return sum + helper.getValue(card.alapszint) - (card.sebzes || 0);
+                        return sum + helper.getValue(card, "alapszint") - (card.sebzes || 0);
                     }
                     return sum;
                 }, 0);
