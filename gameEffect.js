@@ -586,4 +586,48 @@ gameEffect = {
             if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
         }
     },
+
+    "Az általa leidézett varázslatoktól az ellenséges kalandozók +1 szintet sebződnek.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "sebzés",
+                forras: hatas.card,
+                allando: true,
+                idozites: "előtte",
+                ervenyesul: (triggerEsemeny) => {
+                    if (triggerEsemeny.forras && triggerEsemeny.forras.leidezo === hatas.card &&
+                        triggerEsemeny.forras.laptipus === "Akciólap" && 
+                        triggerEsemeny.forras.akciotipus === "Varázslat" &&
+                        triggerEsemeny.hataskor && triggerEsemeny.hataskor[0] &&
+                        triggerEsemeny.hataskor[0].tulajdonos !== hatas.card.tulajdonos) {
+                        triggerEsemeny.sebzes = (triggerEsemeny.sebzes || 0) + 1;
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
+            if (index !== -1) gameState.state.figyelok.splice(index, 1);
+        }
+    },
+
+    "Célpont kalandozó visszatér Sorába sérült helyzetben.": {
+        ervenyesul: function(hatas) {
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            gameState.state.eventSor.push({
+                tipus: "kártyamozgatás",
+                forras: hatas.forras,
+                player: hatas.celpont[0].tulajdonos,
+                hataskor: [hatas.celpont[0]],
+                honnan: "manover",
+                hova: "sor",
+                ujHelyzet: "Sérült"
+            });
+        },
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
+        }
+    },
 }

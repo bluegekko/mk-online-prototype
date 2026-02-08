@@ -58,6 +58,11 @@ Bhorakai eprimor
 hatásként leidézés
 Magionter
 
+Harci állandó
+quessor
+
+játékos - tulajdonos - irányító
+
 További munkát igényel a jelenlegi implementáció
 Magionter
 Rozsdásítás
