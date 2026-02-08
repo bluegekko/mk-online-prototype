@@ -465,8 +465,12 @@ gameEffect = {
                             allando: false,
                             ervenyesul: (triggerEsemeny) => {
                                 if (triggerEsemeny.player !== hatas.card.tulajdonos) {
-                                    gameState.state.playerAttributes[triggerEsemeny.player].mp = 
-                                        Math.max(0, gameState.state.playerAttributes[triggerEsemeny.player].mp - 1);
+                                    gameState.state.eventSor.push({
+                                        tipus: "mpvesztés",
+                                        forras: hatas.card,
+                                        player: triggerEsemeny.player,
+                                        ertek: 1
+                                    });
                                 }
                             }
                         });

@@ -32,7 +32,7 @@ eventHandler = {
             laphuzas = {
                 tipus: "laphúzás",
                 player: esemeny.player,
-                forras: "lapkiigazítás",
+                forras: "szabály",
                 szam: helper.getValue(playerAttributes, "kezmeret") - playerSpaces.kez.length
             }
             gameState.state.eventSor.push(laphuzas);
@@ -104,6 +104,33 @@ eventHandler = {
         },
         "semlegesítés": function(esemeny) {
             // TODO
+        },
+        "mpvesztés": function(esemeny) {
+            gameState.state.playerAttributes[esemeny.player].mp = 
+                Math.max(0, gameState.state.playerAttributes[esemeny.player].mp - esemeny.ertek);
+        },
+        "mpnyerés": function(esemeny) {
+            gameState.state.playerAttributes[esemeny.player].mp += esemeny.ertek;
+        },
+        "visszaforgatás": function(esemeny) {
+            const kalandozok = gameState.state.playerSpaces[esemeny.player].sor.filter(card => card.laptipus === 'Kalandozó');
+            kalandozok.forEach(card => {
+                if (card.helyzet === "Pihenő") {
+                    gameState.state.eventSor.push({
+                        tipus: "helyzetbeállítás",
+                        forras: "szabály",
+                        hataskor: [card],
+                        helyzet: "Éber"
+                    });
+                } else if (card.helyzet === "Sérült") {
+                    gameState.state.eventSor.push({
+                        tipus: "helyzetbeállítás",
+                        forras: "szabály",
+                        hataskor: [card],
+                        helyzet: "Pihenő"
+                    });
+                }
+            });
         },
         "időfonalvisszafejtés": function(esemeny) {
             const fazis = gameState.state.fazis;

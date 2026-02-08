@@ -21,6 +21,7 @@ Zöldkanális zsebmetszője
 
 Támadásdobás, támadóküszöb
 Bhorakai agranar
+Salnarri gyakorlótér
 
 Akadálylapok
 Fővadász
@@ -39,11 +40,9 @@ Többi játéktér
 Spaonter
 Karabator
 
-Triggerek célzása
-Zsarnokok szeretője
-
 Képesség feltétel
 Zsarnokok szeretője
+Pihenőszoba
 
 laphatások
 Házikedvenc
@@ -61,8 +60,12 @@ Magionter
 Harci állandó
 quessor
 
-játékos - tulajdonos - irányító
+Időfonalt használó triggerek
+Zsarnokok szeretője
+Jósok csarnoka
+Pénzesház
 
 További munkát igényel a jelenlegi implementáció
 Magionter
 Rozsdásítás
+játékos - tulajdonos - irányító

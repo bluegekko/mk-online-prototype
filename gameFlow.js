@@ -109,14 +109,15 @@ gameFlow = {
         fazisEleje: function() {
             gameState.players.forEach(player => {
                 const playerAttributes = gameState.state.playerAttributes[player];
-                playerAttributes.mp += 4
-                // Kör eleji regenerálás: minden Pihenő -> Éber a Sorban
-                gameState.state.playerSpaces[player].sor.forEach(card => {
-                    if (card.helyzet === "Pihenő") {
-                        card.helyzet = "Éber";
-                    } else if (card.helyzet === "Sérült") {
-                        card.helyzet = "Pihenő";
-                    }
+                gameState.state.eventSor.push({
+                    tipus: "mpnyerés",
+                    player: player,
+                    ertek: 4
+                });
+                
+                gameState.state.eventSor.push({
+                    tipus: "visszaforgatás",
+                    player: player
                 });
 
                 lapkiigazitas = {
