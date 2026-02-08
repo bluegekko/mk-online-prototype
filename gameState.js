@@ -135,6 +135,8 @@ window.gameState = {
             }
         });
 
+        // TODO kikapcsolás
+
         console.log('Initial state:', this.state);
         console.log('Player cards:', this.state.playerSpaces.player.kez);
         console.log('Player tower:', this.state.playerSpaces.player.toronyszintek);
