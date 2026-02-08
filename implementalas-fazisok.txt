@@ -10,6 +10,7 @@ Hínárszakállú
 
 Prioritás (többjátékos)
 Vir
+Salnarri kopjatörő
 
 egyperjátékos
 Aranyleány
@@ -19,6 +20,7 @@ Bhorakai agranar
 
 Akadálylapok
 Fővadász
+Salnarri kopjatörő
 
 Hatás közbeni (lap)választás
 Gar Dhagg örököse

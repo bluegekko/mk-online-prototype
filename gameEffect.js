@@ -410,4 +410,25 @@ gameEffect = {
             if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
         }
     },
+
+    "Pihenő helyzetben kerül a Jelenbe.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "kártyamozgatás",
+                forras: hatas.card,
+                allando: true,
+                idozites: "előtte",
+                ervenyesul: (triggerEsemeny) => {
+                    if (triggerEsemeny.hataskor && triggerEsemeny.hataskor[0] === hatas.card &&
+                        gameState.jelenSpaces.includes(triggerEsemeny.hova)) {
+                        triggerEsemeny.ujHelyzet = "Pihenő";
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
+            if (index !== -1) gameState.state.figyelok.splice(index, 1);
+        }
+    },
 }
