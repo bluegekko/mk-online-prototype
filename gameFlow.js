@@ -1,4 +1,6 @@
 gameFlow = {
+    // TODO sikeresség
+
     duplapassz: function() {
         const fazis = gameState.state.fazis;
         const idofonal = fazis.idofonal;
@@ -142,6 +144,9 @@ gameFlow = {
         kovetkezoFazis: function() {return gameFlow.forduloKezdete;},
         fazisEleje: function() {gameFlow.idofonalNyitas(null)},
         fazisVege: function() {
+            eventHandler.resolve({
+                tipus: "Forduló vége"
+            });
         },
     },
 

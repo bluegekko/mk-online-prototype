@@ -449,4 +449,42 @@ gameEffect = {
                    card.kepzettsegek && card.kepzettsegek.includes('Hajózás');
         }
     },
+
+    "Jelenbe kerülése után a forduló végéig, amikor az ellenfél sikertelen egy sorelhagyó manőverben, akkor veszít 1 MP-t.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "kártyamozgatás",
+                forras: hatas.card,
+                allando: false,
+                ervenyesul: (triggerEsemeny) => {
+                    if (triggerEsemeny.hataskor && triggerEsemeny.hataskor[0] === hatas.card &&
+                        gameState.jelenSpaces.includes(triggerEsemeny.hova)) {
+                        gameState.state.figyelok.push({
+                            esemenytipus: "sikertelenség",
+                            forras: hatas.card,
+                            allando: false,
+                            ervenyesul: (triggerEsemeny) => {
+                                if (triggerEsemeny.player !== hatas.card.tulajdonos) {
+                                    gameState.state.playerAttributes[triggerEsemeny.player].mp = 
+                                        Math.max(0, gameState.state.playerAttributes[triggerEsemeny.player].mp - 1);
+                                }
+                            }
+                        });
+                        gameState.state.figyelok.push({
+                            esemenytipus: "Forduló vége",
+                            forras: hatas.card,
+                            allando: false,
+                            ervenyesul: (triggerEsemeny) => {
+                                gameState.state.figyelok = gameState.state.figyelok.filter(f => 
+                                    !(f.forras === hatas.card && (f.esemenytipus === "sikertelenség" || f.esemenytipus === "Forduló vége")));
+                            }
+                        });
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            gameState.state.figyelok = gameState.state.figyelok.filter(f => f.forras !== hatas.card);
+        }
+    },
 }
