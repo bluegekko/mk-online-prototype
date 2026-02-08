@@ -102,6 +102,9 @@ eventHandler = {
                 card.sebzes = Math.max(0, (card.sebzes || 0) - esemeny.gyogyulas);
             }
         },
+        "semlegesítés": function(esemeny) {
+            // TODO
+        },
         "időfonalvisszafejtés": function(esemeny) {
             const fazis = gameState.state.fazis;
             const idofonal = fazis.idofonal;

@@ -487,4 +487,20 @@ gameEffect = {
             gameState.state.figyelok = gameState.state.figyelok.filter(f => f.forras !== hatas.card);
         }
     },
+
+    "Semlegesít célpont 0 MP-igényű eseménylapot.": {
+        ervenyesul: function(hatas) {
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            gameState.state.eventSor.push({
+                tipus: "semlegesítés",
+                forras: hatas.isCard ? hatas : hatas.forras,
+                celpont: hatas.celpont[0]
+            });
+        },
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            return card.isCard && card.laptipus === 'Eseménylap' && helper.getValue(card, "mp") === 0;
+        }
+    },
 }

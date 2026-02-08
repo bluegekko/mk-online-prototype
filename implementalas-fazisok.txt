@@ -13,8 +13,9 @@ A Császárszigetek sebgyógyítója
 Prioritás (többjátékos)
 Vir
 Salnarri kopjatörő
+Bhorakai eprimor
 
-egyperjátékos
+egyperjátékos-állandó
 Aranyleány
 Zöldkanális zsebmetszője
 
@@ -48,3 +49,6 @@ Az Oroszlánpápa megbízottja
 
 sikeresség
 Az Oroszlánpápa megbízottja
+
+Semlegesítés
+Bhorakai eprimor
