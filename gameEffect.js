@@ -229,5 +229,32 @@ gameEffect = {
             return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
         },
     },
+    "Az ellenfél kalandozói +1 szintet sebződnek az általa leidézett természet szférájú varázslatoktól.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "sebzés",
+                forras: hatas.card,
+                allando: true,
+                idozites: "előtte",
+                ervenyesul: (triggerEsemeny) => {
+                    console.log("sebzes figyelo", triggerEsemeny);
+                    if (triggerEsemeny.forras && 
+                            triggerEsemeny.forras.akciotipus && 
+                            triggerEsemeny.forras.akciotipus === 'Varázslat' && 
+                            triggerEsemeny.forras.szferak.includes('Természet') &&
+                            triggerEsemeny.forras.leidezo === hatas.card &&
+                            triggerEsemeny.hataskor && triggerEsemeny.hataskor[0].laptipus === 'Kalandozó' &&
+                            triggerEsemeny.hataskor[0].tulajdonos !== hatas.card.tulajdonos) {
+                        console.log("sebzés növelés");
+                        triggerEsemeny.ertek += 1;
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
+            if (index !== -1) gameState.state.figyelok.splice(index, 1);
+        }
+    },
 
 }

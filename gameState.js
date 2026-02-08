@@ -120,9 +120,10 @@ window.gameState = {
                         if (card.hatasok) {
                             for (const hatas of card.hatasok) {
                                 if (hatas.tipus === 'képesség' &&
-                                    !abilityFunctions.aktivizalhato(hatas) && 
-                                    !hatas.jelek.includes('harci')) {
+                                        !abilityFunctions.aktivizalhato(hatas) && 
+                                        !hatas.jelek.includes('harci')) {
                                     const folyamatosKepesseg = gameEffect[hatas.szoveg];
+                                    hatas.forras = card;
                                     if (folyamatosKepesseg && folyamatosKepesseg.bekapcsolas) {
                                         folyamatosKepesseg.bekapcsolas({card: card, hatas: hatas});
                                     }

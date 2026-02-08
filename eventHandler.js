@@ -2,10 +2,10 @@ eventHandler = {
     resolve: function(ujEsemeny) {
         if (ujEsemeny) {gameState.state.eventSor.push(ujEsemeny);}
         while (esemeny = gameState.state.eventSor.shift()) {
-            // subscriptions az eventType listáján végigmegyünk, is triggerelünk eventeket (feltételes kiértékelés)
             console.log("Resolving: ", esemeny.tipus);
+            eventHandler.figyelokEloAktivalasa(esemeny);
             eventHandler.eventResolver[esemeny.tipus](esemeny);
-            eventHandler.figyelokAktivalasa(esemeny);
+            eventHandler.figyelokUtoAktivalasa(esemeny);
         }
     },
 
@@ -78,7 +78,7 @@ eventHandler = {
             for (const card of esemeny.hataskor) {
                 console.log("move: ", card, " from ", esemeny.honnan, " to ", esemeny.hova)
                 gameAction.kartyaMozgatasJatekter(esemeny.player, esemeny.honnan, esemeny.hova, card);
-                if (card.tipus === "Kalandozó" && esemeny.ujHelyzet) {
+                if (card.laptipus === "Kalandozó" && esemeny.ujHelyzet) {
                     card.helyzet = esemeny.ujHelyzet;
                 } 
             }
@@ -108,14 +108,15 @@ eventHandler = {
                         player: aktualisHatas.tulajdonos,
                         honnan: "idofonal",
                         hova: helper.kezdoJelenJatekter(card),
-                        hataskor: [aktualisHatas]
+                        hataskor: [aktualisHatas],
+                        ujHelyzet: "Éber",
                     });
                     if (card.sebzesCelpont) {
                         gameState.state.eventSor.push({
                             tipus: "sebzés",
                             forras: aktualisHatas,
                             hataskor: [card.sebzesCelpont],
-                            sebzes: card.sebzes
+                            sebzes: helper.getValue(card, "sebzes")
                         });
                     }
                     gameState.state.eventSor.push({
@@ -134,13 +135,23 @@ eventHandler = {
         }
     },
 
-    figyelokAktivalasa: function(esemeny) {
+    figyelokEloAktivalasa: function(esemeny) {
         for (figyelo of gameState.state.figyelok) {
             console.log("figyelo vizsgálat: ", figyelo.esemenytipus, " === ", esemeny.tipus, "?")
-            if (figyelo.esemenytipus === esemeny.tipus){
+            if (figyelo.esemenytipus === esemeny.tipus && figyelo.idozites == "előtte"){
                 figyelo.ervenyesul(esemeny);
             }
         }
 
-    }
+    },
+
+    figyelokUtoAktivalasa: function(esemeny) {
+        for (figyelo of gameState.state.figyelok) {
+            console.log("figyelo vizsgálat: ", figyelo.esemenytipus, " === ", esemeny.tipus, "?")
+            if (figyelo.esemenytipus === esemeny.tipus && (!figyelo.idozites || figyelo.idozites == "utána")){
+                figyelo.ervenyesul(esemeny);
+            }
+        }
+
+    },
 }
