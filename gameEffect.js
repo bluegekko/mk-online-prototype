@@ -523,4 +523,27 @@ gameEffect = {
             if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
         }
     },
+
+    "Az általa leidézett varázslatok MP-igénye 1-gyel csökken, de nem csökkenhet 1 alá.": {
+        bekapcsolas: function(hatas) {
+            // TODO akkor is működjön, ha még leidézés előtt vagyunk, de más szempontból ne számítson (pl ne tudjam kijelölni leidézőként, és aztán 1 MP-s varázslatként visszavenni más lappal)
+            gameState.state.szamolasModositok.push({
+                forras: hatas.card,
+                tulajdonsag: "mp",
+                feltetel: function(card) {
+                    return card.laptipus === "Akciólap" && card.akciotipus === "Varázslat" && 
+                           card.leidezo === hatas.card;
+                },
+                vegrehajtas: function(ertek) {
+                    ertek.modositas = ertek.modositas || [];
+                    const ujErtek = Math.max(1, ertek.ertek - 1);
+                    ertek.modositas.push({"ertek": ujErtek - ertek.ertek});
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.szamolasModositok.findIndex(mod => mod.forras === hatas.card);
+            if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
+        }
+    },
 }

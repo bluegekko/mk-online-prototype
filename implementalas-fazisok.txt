@@ -37,6 +37,7 @@ Tűztisztító
 
 Többi játéktér
 Spaonter
+Karabator
 
 Triggerek célzása
 Zsarnokok szeretője
@@ -53,3 +54,10 @@ Az Oroszlánpápa megbízottja
 
 Semlegesítés
 Bhorakai eprimor
+
+hatásként leidézés
+Magionter
+
+További munkát igényel a jelenlegi implementáció
+Magionter
+Rozsdásítás
