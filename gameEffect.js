@@ -301,4 +301,44 @@ gameEffect = {
             if (index !== -1) gameState.state.figyelok.splice(index, 1);
         }
     },
+
+    "Akciólapok sebzése legfeljebb 1-gyel lehet több, mint az MP-értékük. Ha az MP-értékében szerepel X, akkor sebzése legfeljebb 2 lehet.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "sebzés",
+                forras: hatas.card,
+                allando: true,
+                ervenyesul: (triggerEsemeny) => {
+                    if (triggerEsemeny.forras && triggerEsemeny.forras.laptipus === "Akciólap") {
+                        const mpErtek = triggerEsemeny.forras.mp.ertek;
+                        const maxSebzes = triggerEsemeny.forras.mp.ertek.toString().includes('X') ? 2 : mpErtek + 1;
+                        if (triggerEsemeny.ertek > maxSebzes) {
+                            triggerEsemeny.ertek = maxSebzes;
+                        }
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
+            if (index !== -1) gameState.state.figyelok.splice(index, 1);
+        }
+    },
+    
+    "Célpont toroni kalandozó sérült helyzetbe fordul.": {
+        ervenyesul: function(hatas) {
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            gameState.state.eventSor.push({
+                tipus: "helyzetbeállítás",
+                forras: hatas.forras,
+                hataskor: [hatas.celpont[0]],
+                helyzet: "Sérült"
+            });
+        },
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó' && gameEffect.vanParameter(card, 'toroni');
+        }
+    },
 }
