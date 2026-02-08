@@ -546,4 +546,44 @@ gameEffect = {
             if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
         }
     },
+
+    "Célpont kalandozó éber helyzetből pihenő helyzetbe fordul.": {
+        ervenyesul: function(hatas) {
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            if (hatas.celpont[0].helyzet == "Éber") {
+                gameState.state.eventSor.push({
+                    tipus: "helyzetbeállítás",
+                    forras: hatas.forras,
+                    hataskor: [hatas.celpont[0]],
+                    helyzet: "Pihenő"
+                });
+            }
+        },
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
+        }
+    },
+
+    "Játékosa lapjainak MP-igényét nem lehet növelni.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.szamolasModositok.push({
+                forras: hatas.card,
+                tulajdonsag: "mp",
+                feltetel: function(card) {
+                    return card.tulajdonos === hatas.card.tulajdonos;
+                },
+                vegrehajtas: function(ertek) {
+                    if (ertek.modositas) {
+                        ertek.modositas = ertek.modositas.filter(mod => mod.ertek <= 0);
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.szamolasModositok.findIndex(mod => mod.forras === hatas.card);
+            if (index !== -1) gameState.state.szamolasModositok.splice(index, 1);
+        }
+    },
 }
