@@ -3,10 +3,12 @@ Ezüst Ököl stratéga
 Beavatottak tanítója
 Vir
 Aranyleány
+Tűztisztító
 
 Küldetések
 Beavatottak tanítója
 Hínárszakállú
+A Császárszigetek sebgyógyítója
 
 Prioritás (többjátékos)
 Vir
@@ -14,6 +16,7 @@ Salnarri kopjatörő
 
 egyperjátékos
 Aranyleány
+Zöldkanális zsebmetszője
 
 Támadásdobás, támadóküszöb
 Bhorakai agranar
@@ -24,3 +27,18 @@ Salnarri kopjatörő
 
 Hatás közbeni (lap)választás
 Gar Dhagg örököse
+Spaonter
+
+Harci körök
+Shuluri vérnyelő
+Tűztisztító
+
+Többi játéktér
+Spaonter
+
+Triggerek célzása
+Zsarnokok szeretője
+
+Képesség feltétel
+Zsarnokok szeretője
+

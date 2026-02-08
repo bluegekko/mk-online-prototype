@@ -97,6 +97,11 @@ eventHandler = {
             gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.hatas)
         },
         "lapleidézés": function(esemeny) {},
+        "gyógyulás": function(esemeny) {
+            for (const card of esemeny.hataskor) {
+                card.sebzes = Math.max(0, (card.sebzes || 0) - esemeny.gyogyulas);
+            }
+        },
         "időfonalvisszafejtés": function(esemeny) {
             const fazis = gameState.state.fazis;
             const idofonal = fazis.idofonal;

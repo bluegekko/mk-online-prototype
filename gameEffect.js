@@ -431,4 +431,22 @@ gameEffect = {
             if (index !== -1) gameState.state.figyelok.splice(index, 1);
         }
     },
+
+    "Célpont Hajózás képzettséggel rendelkező kalandozó gyógyul 1 szintet.": {
+        ervenyesul: function(hatas) {
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            gameState.state.eventSor.push({
+                tipus: "gyógyulás",
+                forras: hatas.isCard ? hatas : hatas.forras,
+                hataskor: [hatas.celpont[0]],
+                gyogyulas: 1
+            });
+        },
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó' && 
+                   card.kepzettsegek && card.kepzettsegek.includes('Hajózás');
+        }
+    },
 }
