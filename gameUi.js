@@ -152,6 +152,18 @@ gameUi = {
                 e.stopPropagation();
             };
             
+            // Tutorial close button
+            document.getElementById('tutorialClose').onclick = () => {
+                document.getElementById('tutorialPopup').classList.remove('expanded');
+            };
+            
+            // Tutorial expand on click
+            document.getElementById('tutorialPopup').onclick = (e) => {
+                if (!e.target.closest('.tutorial-content')) {
+                    document.getElementById('tutorialPopup').classList.add('expanded');
+                }
+            };
+            
             this.deckListenersAdded = true;
         }
 

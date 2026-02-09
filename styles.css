@@ -234,3 +234,109 @@ button:disabled {
     background: #1a3a4a;
     box-shadow: 0 0 12px rgba(74, 122, 138, 0.4);
 }
+
+.tutorial-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: #171b2e;
+    border: 2px solid #7aa2f7;
+    border-radius: 50%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #7aa2f7;
+    transition: all 0.3s ease;
+}
+
+.tutorial-popup::before {
+    content: '?';
+}
+
+.tutorial-popup.expanded::before {
+    display: none;
+}
+
+.tutorial-popup:hover {
+    transform: scale(1.1);
+}
+
+.tutorial-popup.expanded {
+    width: 400px;
+    height: auto;
+    border-radius: 12px;
+    cursor: default;
+}
+
+.tutorial-content {
+    padding: 20px;
+    position: relative;
+    display: none;
+}
+
+.tutorial-popup.expanded .tutorial-content {
+    display: block;
+}
+
+.tutorial-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #e6e6e6;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+}
+
+.tutorial-close:hover {
+    color: #7aa2f7;
+}
+
+.tutorial-popup h2 {
+    margin: 0 0 15px 0;
+    color: #7aa2f7;
+    font-size: 14px;
+}
+
+.tutorial-text {
+    color: #e6e6e6;
+    line-height: 1.4;
+    font-size: 12px;
+}
+
+.tutorial-text ul {
+    margin: 8px 0;
+    padding-left: 20px;
+}
+
+.tutorial-text li {
+    margin: 4px 0;
+}
+
+.deck-input {
+    margin-top: 10px;
+    padding: 10px;
+    background: #14182a;
+    border: 1px solid #222745;
+    border-radius: 8px;
+}
+
+.deck-input textarea {
+    width: 100%;
+    background: #1e2440;
+    border: 1px solid #2b335a;
+    border-radius: 6px;
+    color: #e6e6e6;
+    padding: 8px;
+    font-family: monospace;
+    resize: vertical;
+}
