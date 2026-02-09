@@ -129,6 +129,32 @@ gameUi = {
         document.getElementById('mp').textContent = gameState.state.playerAttributes['player'].mp;
         document.getElementById('aktualisFazis').textContent = gameState.state.fazis.aktualisFazis.nev;
 
+        // Deck input event listeners (only add once)
+        if (!this.deckListenersAdded) {
+            document.getElementById('deckToggleBtn').onclick = () => {
+                const deckInput = document.getElementById('deckInput');
+                const toggleBtn = document.getElementById('deckToggleBtn');
+                if (deckInput.style.display === 'none') {
+                    deckInput.style.display = 'block';
+                    toggleBtn.textContent = '▲ Pakli';
+                } else {
+                    deckInput.style.display = 'none';
+                    toggleBtn.textContent = '▼ Pakli';
+                }
+            };
+            
+            document.getElementById('loadDeckBtn').onclick = () => {
+                this.loadDeckFromText();
+            };
+            
+            // Prevent space key from passing when typing in deck textarea
+            document.getElementById('deckTextarea').onkeydown = (e) => {
+                e.stopPropagation();
+            };
+            
+            this.deckListenersAdded = true;
+        }
+
         // Időfonal hatások megjelenítése
         const idofonalContainer = document.getElementById('idofonal');
         if (idofonalContainer) {
@@ -187,5 +213,40 @@ gameUi = {
                 }
             });
         });
+    },
+
+    loadDeckFromText: function() {
+        const deckText = document.getElementById('deckTextarea').value;
+        const lines = deckText.split('\n').filter(line => line.trim());
+        const newDeck = [];
+        
+        for (const line of lines) {
+            const match = line.trim().match(/^(\d+)\s+(.+)$/);
+            if (match) {
+                const count = parseInt(match[1]);
+                const cardName = match[2].trim();
+                
+                for (let i = 0; i < count; i++) {
+                    try {
+                        const card = cardFactory.fromLibrary(cardName);
+                        newDeck.push(card);
+                    } catch (error) {
+                        console.warn(`Kártya nem található: ${cardName}`);
+                    }
+                }
+            }
+        }
+        
+        if (newDeck.length > 0) {
+            gameState.customDeck = newDeck;
+            gameState.initializeState();
+            
+            // Hide deck input after loading
+            document.getElementById('deckInput').style.display = 'none';
+            document.getElementById('deckToggleBtn').textContent = '▼ Pakli';
+            
+            this.render();
+            console.log(`Pakli betöltve: ${newDeck.length} kártya`);
+        }
     }
 }

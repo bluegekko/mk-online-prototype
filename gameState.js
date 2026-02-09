@@ -78,16 +78,20 @@ window.gameState = {
         });
 
         // Kezdő kártyák kiosztása
-        this.state.playerSpaces['player'].jovo = [
-            cardFactory.fromLibrary("Határok feszegetése"),
-            cardFactory.fromLibrary("A túlvilág hívása"),
-            cardFactory.fromLibrary("Salnarri kopjatörő"),
-            cardFactory.fromLibrary("Ezüst Ököl stratéga"),
-            cardFactory.fromLibrary("Lángtáncoltatás"),
-            cardFactory.fromLibrary("Spaonter"),
-            cardFactory.fromLibrary("Spaonter"),
-            cardFactory.fromLibrary("Spaonter"),
-        ];
+        if (this.customDeck && this.customDeck.length > 0) {
+            this.state.playerSpaces['player'].jovo = [...this.customDeck];
+        } else {
+            this.state.playerSpaces['player'].jovo = [
+                cardFactory.fromLibrary("Határok feszegetése"),
+                cardFactory.fromLibrary("A túlvilág hívása"),
+                cardFactory.fromLibrary("Salnarri kopjatörő"),
+                cardFactory.fromLibrary("Ezüst Ököl stratéga"),
+                cardFactory.fromLibrary("Lángtáncoltatás"),
+                cardFactory.fromLibrary("Spaonter"),
+                cardFactory.fromLibrary("Spaonter"),
+                cardFactory.fromLibrary("Spaonter"),
+            ];
+        }
 
         this.state.playerSpaces['opponent'].manover = [
             cardFactory.fromLibrary("Spaonter"),
