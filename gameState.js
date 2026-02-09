@@ -65,14 +65,16 @@ window.gameState = {
 
         // Kezdő tulajdonságok.
         this.players.forEach(player => {
-            this.state.playerAttributes[player] = {};
-            this.state.playerAttributes[player].mp = 6;
-            this.state.playerAttributes[player].kivalasztas = [];
-            this.state.playerAttributes[player].kuldetesFolytatas = true;
-            this.state.playerAttributes[player].harciKorokVege = false;
-            this.state.playerAttributes[player].akadalyozas = true;
-            this.state.playerAttributes[player].leidezo = null;
-            this.state.playerAttributes[player].kezmeret = {"ertek": 7};
+            this.state.playerAttributes[player] = {
+                mp: 6,
+                kivalasztas: [],
+                kuldetesFolytatas: true,
+                harciKorokVege: false,
+                akadalyozas: true,
+                leidezo: null,
+                kezmeret: {"ertek": 7},
+                csapatmeret: {"ertek": 0}
+            };
         });
 
         // Kezdő kártyák kiosztása

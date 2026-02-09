@@ -69,6 +69,7 @@ eventHandler = {
             if (index !== -1) esemeny.card[esemeny.ertek].modositas.splice(esemeny.modosito, 1);
         },
         "Harc vége": function(esemeny) {},
+        "Forduló vége": function(esemeny) {},
         "helyzetbeállítás": function(esemeny) {
             for (const card of esemeny.hataskor) {
                 card.helyzet = esemeny.helyzet;
@@ -130,6 +131,19 @@ eventHandler = {
                         helyzet: "Pihenő"
                     });
                 }
+            });
+        },
+        "manővervége": function(esemeny) {
+            const manoverCards = [...gameState.state.playerSpaces[esemeny.player].manover];
+            manoverCards.forEach(card => {
+                gameState.state.eventSor.push({
+                    tipus: "kártyamozgatás",
+                    player: esemeny.player,
+                    honnan: "manover",
+                    hova: "sor",
+                    hataskor: [card],
+                    ujHelyzet: "Pihenő",
+                });
             });
         },
         "időfonalvisszafejtés": function(esemeny) {

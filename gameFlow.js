@@ -108,23 +108,22 @@ gameFlow = {
         kovetkezoFazis: function() {return gameFlow.manoverekFazisa;},
         fazisEleje: function() {
             gameState.players.forEach(player => {
-                const playerAttributes = gameState.state.playerAttributes[player];
                 gameState.state.eventSor.push({
                     tipus: "mpnyerés",
                     player: player,
                     ertek: 4
                 });
-                
+
                 gameState.state.eventSor.push({
                     tipus: "visszaforgatás",
                     player: player
                 });
 
-                lapkiigazitas = {
+                gameState.state.eventSor.push({
                     tipus: "lapkiigazítás",
                     player: player
-                }
-                gameState.state.eventSor.push(lapkiigazitas);
+                });
+
                 eventHandler.resolve();
 
             });
@@ -291,15 +290,44 @@ gameFlow = {
             return gameFlow.manoverekFazisa;
         },
         fazisEleje: function() {
-            // TODO csapatszint összehasonlítás
-            gameFlow.idofonalNyitas(null)
+            // TODO csapatszint összehasonlítás, harc nyertesének beállítása ez alapján
+            const manoverState = gameState.state.fazis.manover;
+            const kezdemenyezoJatekos = manoverState.kezdemenyezoJatekos;
+            const akadalyozoJatekos = helper.ellenfel(kezdemenyezoJatekos);
+            
+            const kezdemenyezoCsapatszint = helper.getValue(kezdemenyezoJatekos, "csapatszint");
+            const akadalyozoCsapatszint = helper.getValue(akadalyozoJatekos, "csapatszint");
+            
+            if (kezdemenyezoCsapatszint > akadalyozoCsapatszint) {
+                manoverState.harcNyertes = kezdemenyezoJatekos;
+            } else if (akadalyozoCsapatszint > kezdemenyezoCsapatszint) {
+                manoverState.harcNyertes = akadalyozoJatekos;
+            } else {
+                manoverState.harcNyertes = null;
+            }
+            // Ha egyenlő, akkor nincs győztes (harcNyertes marad null)
+            
+            gameFlow.idofonalNyitas(null);
         },
         fazisVege: function() {
             gameState.state.eventSor.push({
                 tipus: "Harc vége"
             });
-            // TODO manőver vége vesztes játékos
-            // TODO manőver vége kezdeményező játékos, ha nem megy tovább
+            const manoverState = gameState.state.fazis.manover;
+            gameState.players.forEach(player => {
+                const nyertesEsKuldetesEsFolytatas = manoverState.harcNyertes === player && 
+                    manoverState.aktualisManover === 'küldetés' && 
+                    gameState.state.playerAttributes[player].kuldetesFolytatas;
+                
+                if (!nyertesEsKuldetesEsFolytatas) {
+                    gameState.state.eventSor.push({
+                        tipus: "manővervége",
+                        player: player
+                    });
+                } else {
+                    manoverState.kuldetesFolytatas = true;
+                }
+            });
         },
     },
 }

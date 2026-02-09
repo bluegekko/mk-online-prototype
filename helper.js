@@ -29,11 +29,21 @@ helper = {
     // limites hatások sorrendje
     // beállító hatások
     getValue: function(obj, property) {
-        const valueStructure = obj[property];
+        const valueStructure = obj[property] || {ertek: 0};
         
         let ertek = valueStructure.ertek || 0;
 
         const ertekObjektum = JSON.parse(JSON.stringify(valueStructure));
+
+        if (property === "aktualisSzint" && obj.laptipus === "Kalandozó") {
+            ertek = helper.getValue(obj, "alapszint") - (obj.sebzes || 0);
+        }
+
+        if (property === "csapatszint" && gameState.players.includes(obj)) {
+            ertek = gameState.state.playerSpaces[obj].manover
+                .filter(card => card.laptipus === "Kalandozó")
+                .reduce((total, card) => total + helper.getValue(card, "aktualisSzint"), 0);
+        }
 
         for (const szamolasMod of gameState.state.szamolasModositok) {
             if (szamolasMod.feltetel(obj) && szamolasMod.tulajdonsag == property) {
