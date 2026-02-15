@@ -224,7 +224,38 @@ gameUi = {
                     countElement.textContent = cards ? cards.length : 0;
                 }
             });
-        });
+
+            // Mélység, Múlt, Jövő gombok hozzáadása
+            const jelenZone = player === 'player' ? 
+                document.querySelector('.zone[aria-labelledby="jelenCim"]') :
+                document.querySelector('.zone[aria-labelledby="enemyJelenCim"]');
+            
+            if (jelenZone) {
+                let buttonsContainer = jelenZone.querySelector('.space-buttons');
+                if (!buttonsContainer) {
+                    buttonsContainer = document.createElement('div');
+                    buttonsContainer.className = 'space-buttons';
+                    buttonsContainer.style.cssText = 'display: flex; gap: 5px; justify-content: flex-end; margin-top: 10px;';
+                    jelenZone.appendChild(buttonsContainer);
+                }
+                
+                buttonsContainer.innerHTML = '';
+                
+                const spaces = ['melyseg', 'mult', 'jovo'];
+                const spaceNames = {'melyseg': 'Mélység', 'mult': 'Múlt', 'jovo': 'Jövő'};
+                
+                spaces.forEach(spaceName => {
+                    const button = document.createElement('button');
+                    const count = gameState.state.playerSpaces[player][spaceName].length;
+                    button.textContent = `${spaceNames[spaceName]} (${count})`;
+                    button.style.cssText = 'font-size: 10px; padding: 4px 6px; background: #4a90e2; color: white; border: 1px solid #357abd; border-radius: 3px; cursor: pointer;';
+                    button.onclick = () => {
+                        this.showSpaceCards(player, spaceName, spaceNames[spaceName]);
+                    };
+                    buttonsContainer.appendChild(button);
+                });
+            };
+        })
     },
 
     loadDeckFromText: function() {
@@ -260,5 +291,102 @@ gameUi = {
             this.render();
             console.log(`Pakli betöltve: ${newDeck.length} kártya`);
         }
+    },
+
+    showSpaceCards: function(player, spaceName, displayName) {
+        const cards = gameState.state.playerSpaces[player][spaceName];
+        const playerName = player === 'player' ? 'Saját' : 'Ellenfél';
+        
+        // Meglévő panel eltávolítása
+        const existingPanel = document.querySelector('.space-panel');
+        if (existingPanel) {
+            existingPanel.remove();
+        }
+        
+        // Új panel létrehozása
+        const panel = document.createElement('div');
+        panel.className = 'space-panel';
+        
+        const header = document.createElement('div');
+        header.className = 'space-panel-header';
+        
+        const title = document.createElement('h4');
+        title.className = 'space-panel-title';
+        title.textContent = `${playerName} - ${displayName} (${cards.length})`;
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'space-panel-close';
+        closeBtn.textContent = '×';
+        closeBtn.onclick = () => {
+            panel.remove();
+            gameUi.render();
+        };
+        
+        header.appendChild(title);
+        header.appendChild(closeBtn);
+        panel.appendChild(header);
+        
+        const cardsContainer = document.createElement('div');
+        cardsContainer.className = 'space-panel-cards';
+        
+        if (cards.length === 0) {
+            const emptyMsg = document.createElement('p');
+            emptyMsg.className = 'space-panel-empty';
+            emptyMsg.textContent = 'Nincs lap ebben a területben.';
+            cardsContainer.appendChild(emptyMsg);
+        } else {
+            cards.forEach(card => {
+                const cardElement = this.createCardElement(card, player, spaceName);
+                // Panel frissítése kiválasztás után
+                const originalOnClick = cardElement.onclick;
+                cardElement.onclick = () => {
+                    originalOnClick();
+                    // Panel tartalomának frissítése
+                    setTimeout(() => {
+                        cardsContainer.innerHTML = '';
+                        cards.forEach(c => {
+                            const updatedElement = this.createCardElement(c, player, spaceName);
+                            const updatedOriginalOnClick = updatedElement.onclick;
+                            updatedElement.onclick = () => {
+                                updatedOriginalOnClick();
+                                setTimeout(() => this.refreshPanelCards(cardsContainer, cards, player, spaceName), 10);
+                            };
+                            cardsContainer.appendChild(updatedElement);
+                        });
+                    }, 10);
+                };
+                cardsContainer.appendChild(cardElement);
+            });
+        }
+        
+        panel.appendChild(cardsContainer);
+        document.body.appendChild(panel);
+        
+        // Panel bezárása kattintásra a játék területén
+        const closeOnClickOutside = (e) => {
+            if (e.target && e.target.nodeType === Node.ELEMENT_NODE && !panel.contains(e.target)) {
+                panel.remove();
+                document.querySelector('.container').removeEventListener('click', closeOnClickOutside);
+                gameUi.render();
+            }
+        };
+        
+        // Kis késleltetés, hogy ne zárja be azonnal
+        setTimeout(() => {
+            document.querySelector('.container').addEventListener('click', closeOnClickOutside);
+        }, 100);
+    },
+
+    refreshPanelCards: function(container, cards, player, spaceName) {
+        container.innerHTML = '';
+        cards.forEach(card => {
+            const cardElement = this.createCardElement(card, player, spaceName);
+            const originalOnClick = cardElement.onclick;
+            cardElement.onclick = () => {
+                originalOnClick();
+                setTimeout(() => this.refreshPanelCards(container, cards, player, spaceName), 10);
+            };
+            container.appendChild(cardElement);
+        });
     }
 }

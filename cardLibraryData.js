@@ -1348,7 +1348,7 @@ cardLibrary = [
         "alkaszt": ["Varázsló", "Boszorkánymester", "Tűzvarázsló"],
         "idotartam": "Pillanat",
         "akciotipus": "Varázslat",
-        "fazis": "Harc",
+        "fazis": "Sor",
         "sebzes": {"ertek": 2},
         "tipus": "Tűzmágia",
         "hatasok": []
