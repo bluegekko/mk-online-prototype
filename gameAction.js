@@ -35,13 +35,13 @@ gameAction = {
         return true;
     },
 
-    kartyaHozzaadas: function (nev, player, space) {
+    kartyaHozzaadas: function (nev, player, space, helyzet) {
         const card = cardFactory.fromLibrary(nev);
         if (card) {
             card.tulajdonos = player;
             gameState.state.playerSpaces[player][space].push(card);
             if (card.laptipus === 'Kalandozó' && (space == 'manover' || space == 'sor')) {
-                card.helyzet = 'Éber';
+                card.helyzet = helyzet ? helyzet : 'Éber';
             }
             return card;
         }

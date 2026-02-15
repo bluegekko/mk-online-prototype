@@ -47,6 +47,7 @@ Pihenőszoba
 laphatások
 Házikedvenc
 Az Oroszlánpápa megbízottja
+A Császárszigetek sebgyógyítója
 
 sikeresség
 Az Oroszlánpápa megbízottja
@@ -65,8 +66,11 @@ Bhorakai agranar
 
 Időfonalt használó triggerek
 Zsarnokok szeretője
+Az Oroszlánpápa megbízottja
 Jósok csarnoka
 Pénzesház
+küldetések
+Felgyújtott falvak
 
 További munkát igényel a jelenlegi implementáció
 Magionter

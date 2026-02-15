@@ -79,32 +79,54 @@ window.gameState = {
 
         // Kezdő kártyák kiosztása
         if (this.customDeck && this.customDeck.length > 0) {
-            this.state.playerSpaces['player'].jovo = [...this.customDeck];
+            this.customDeck.forEach(card => {
+                this.state.eventSor.push({
+                    tipus: "kártyahozzáadás",
+                    nev: card.nev,
+                    player: 'player',
+                    hova: 'jovo'
+                });
+            });
         } else {
-            this.state.playerSpaces['player'].jovo = [
-                cardFactory.fromLibrary("Határok feszegetése"),
-                cardFactory.fromLibrary("A túlvilág hívása"),
-                cardFactory.fromLibrary("Salnarri kopjatörő"),
-                cardFactory.fromLibrary("Ezüst Ököl stratéga"),
-                cardFactory.fromLibrary("Lángtáncoltatás"),
-                cardFactory.fromLibrary("Spaonter"),
-                cardFactory.fromLibrary("Spaonter"),
-                cardFactory.fromLibrary("Spaonter"),
+            const kezdoKartyak = [
+                "Határok feszegetése",
+                "A túlvilág hívása",
+                "Salnarri kopjatörő",
+                "Ezüst Ököl stratéga",
+                "Lángtáncoltatás",
+                "Spaonter",
+                "Spaonter",
+                "Spaonter"
             ];
+            kezdoKartyak.forEach(nev => {
+                this.state.eventSor.push({
+                    tipus: "kártyahozzáadás",
+                    nev: nev,
+                    player: 'player',
+                    hova: 'jovo'
+                });
+            });
         }
 
-        this.state.playerSpaces['opponent'].manover = [
-            cardFactory.fromLibrary("Spaonter"),
-            cardFactory.fromLibrary("Spaonter"),
-        ];
+        ['Spaonter', 'Spaonter'].forEach(nev => {
+            this.state.eventSor.push({
+                tipus: "kártyahozzáadás",
+                nev: nev,
+                player: 'opponent',
+                hova: 'manover'
+            });
+        });
 
         // Toronyszintek beállítása mindkét játékosnak
         this.players.forEach(player => {
-            this.state.playerSpaces[player].toronyszintek = [
-                cardFactory.fromLibrary("Pénzesház"),
-                cardFactory.fromLibrary("Pihenőszoba"),
-                cardFactory.fromLibrary("Pihenőszoba")
-            ];
+            ['Pénzesház', 'Pihenőszoba', 'Pihenőszoba'].forEach(nev => {
+                this.state.eventSor.push({
+                    tipus: "kártyahozzáadás",
+                    nev: nev,
+                    player: player,
+                    hova: 'toronyszintek'
+                });
+            });
         });
 
          this.players.forEach(player => {
@@ -142,6 +164,29 @@ window.gameState = {
         });
 
         // TODO kikapcsolás
+
+        // laphatások bekapcsolása
+        this.state.figyelok.push({
+            esemenytipus: "kártyahozzáadás",
+            forras: "szabály",
+            allando: true,
+            ervenyesul: (esemeny) => {
+                const card = this.state.playerSpaces[esemeny.player][esemeny.hova].at(-1);
+                if (card && card.hatasok) {
+                    card.hatasok.forEach(hatas => {
+                        if (hatas.tipus === 'laphatás' && 
+                                !abilityFunctions.aktivizalhato(hatas) && 
+                                !hatas.jelek.includes('harci')) {
+                            const folyamatosKepesseg = gameEffect[hatas.szoveg];
+                            hatas.forras = card;
+                            if (folyamatosKepesseg && folyamatosKepesseg.bekapcsolas) {
+                                folyamatosKepesseg.bekapcsolas({card: card, hatas: hatas});
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
         console.log('Initial state:', this.state);
         console.log('Player cards:', this.state.playerSpaces.player.kez);

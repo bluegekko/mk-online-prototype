@@ -92,8 +92,13 @@ gameEffect = {
     "Játékosa Sorába 2 jelző Zombi kerül pihenő helyzetben." : {
         ervenyesul: function(card) {
             for (let i = 0; i < 2; i++) {
-                card = gameAction.kartyaHozzaadas("Zombi", card.tulajdonos, 'sor');
-                card.helyzet = "Pihenő";
+                gameState.state.eventSor.push({
+                    tipus: "kártyahozzáadás",
+                    nev: "Zombi",
+                    player: card.tulajdonos,
+                    hova: "sor",
+                    helyzet: "Pihenő"
+                });
             }
         },
 
@@ -451,6 +456,25 @@ gameEffect = {
     },
 
     "Jelenbe kerülése után a forduló végéig, amikor az ellenfél sikertelen egy sorelhagyó manőverben, akkor veszít 1 MP-t.": {
+        ervenyesul: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "sikertelenség",
+                forras: hatas.card,
+                allando: false,
+                idotartam: "Forduló",
+                ervenyesul: (triggerEsemeny) => {
+                    if (triggerEsemeny.player !== hatas.card.tulajdonos) {
+                        gameState.state.eventSor.push({
+                            tipus: "mpvesztés",
+                            forras: hatas.card,
+                            player: triggerEsemeny.player,
+                            ertek: 1
+                        });
+                    }
+                }
+            });
+        },
+
         bekapcsolas: function(hatas) {
             gameState.state.figyelok.push({
                 esemenytipus: "kártyamozgatás",
@@ -459,34 +483,15 @@ gameEffect = {
                 ervenyesul: (triggerEsemeny) => {
                     if (triggerEsemeny.hataskor && triggerEsemeny.hataskor[0] === hatas.card &&
                         gameState.jelenSpaces.includes(triggerEsemeny.hova)) {
-                        gameState.state.figyelok.push({
-                            esemenytipus: "sikertelenség",
-                            forras: hatas.card,
-                            allando: false,
-                            ervenyesul: (triggerEsemeny) => {
-                                if (triggerEsemeny.player !== hatas.card.tulajdonos) {
-                                    gameState.state.eventSor.push({
-                                        tipus: "mpvesztés",
-                                        forras: hatas.card,
-                                        player: triggerEsemeny.player,
-                                        ertek: 1
-                                    });
-                                }
-                            }
-                        });
-                        gameState.state.figyelok.push({
-                            esemenytipus: "Forduló vége",
-                            forras: hatas.card,
-                            allando: false,
-                            ervenyesul: (triggerEsemeny) => {
-                                gameState.state.figyelok = gameState.state.figyelok.filter(f => 
-                                    !(f.forras === hatas.card && (f.esemenytipus === "sikertelenség" || f.esemenytipus === "Forduló vége")));
-                            }
+                        gameState.state.eventSor.push({
+                            tipus: "időfonalbakerülés",
+                            hatas: hatas.hatas
                         });
                     }
                 }
             });
         },
+
         kikapcsolas: function(hatas) {
             gameState.state.figyelok = gameState.state.figyelok.filter(f => f.forras !== hatas.card);
         }

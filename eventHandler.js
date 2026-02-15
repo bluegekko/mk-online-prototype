@@ -69,7 +69,11 @@ eventHandler = {
             if (index !== -1) esemeny.card[esemeny.ertek].modositas.splice(esemeny.modosito, 1);
         },
         "Harc vége": function(esemeny) {},
-        "Forduló vége": function(esemeny) {},
+        "Forduló vége": function(esemeny) {
+            gameState.state.figyelok = gameState.state.figyelok.filter(figyelo => 
+                figyelo.idotartam !== "Forduló"
+            );
+        },
         "helyzetbeállítás": function(esemeny) {
             for (const card of esemeny.hataskor) {
                 card.helyzet = esemeny.helyzet;
@@ -98,6 +102,12 @@ eventHandler = {
             gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.hatas)
         },
         "lapleidézés": function(esemeny) {},
+        "kártyahozzáadás": function(esemeny) {
+            gameAction.kartyaHozzaadas(esemeny.nev, esemeny.player, esemeny.hova);
+        },
+        "időfonalbakerülés": function(esemeny) {
+            gameState.state.fazis.idofonal.hatasok.push(esemeny.hatas);
+        },
         "gyógyulás": function(esemeny) {
             for (const card of esemeny.hataskor) {
                 card.sebzes = Math.max(0, (card.sebzes || 0) - esemeny.gyogyulas);
@@ -175,6 +185,7 @@ eventHandler = {
                         hatas: helper.ervenyesuloHatas(aktualisHatas),
                     });
                 } else {
+                    idofonal.hatasok.pop()
                     gameState.state.eventSor.push({
                         tipus: "képességlaphatásérvényesülés",
                         forras: aktualisHatas.forras,
