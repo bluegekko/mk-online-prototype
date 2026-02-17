@@ -169,6 +169,7 @@ eventHandler = {
             manoverCards.forEach(card => {
                 gameState.state.eventSor.push({
                     tipus: "kártyamozgatás",
+                    forras: "szabály",
                     player: esemeny.player,
                     honnan: "manover",
                     hova: "sor",
@@ -176,6 +177,19 @@ eventHandler = {
                     ujHelyzet: "Pihenő",
                 });
             });
+        },
+        "feláldozás": function(esemeny) {
+            for (const card of esemeny.hataskor) {
+                const honnan = gameState.state.playerSpaces[esemeny.player].sor.includes(card) ? "sor" : "manover";
+                gameState.state.eventSor.push({
+                    tipus: "kártyamozgatás",
+                    forras: "szabály",
+                    player: esemeny.player,
+                    honnan: honnan,
+                    hova: "mult",
+                    hataskor: [card]
+                });
+            }
         },
         "időfonalvisszafejtés": function(esemeny) {
             const fazis = gameState.state.fazis;

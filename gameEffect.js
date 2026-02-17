@@ -658,5 +658,41 @@ gameEffect = {
             });
         },
         celpontValidalas: function(celpontok) {return true;}
+    },
+
+    "Ha egy kalandozó egy nem ellenséges képesség vagy laphatás hatása miatt éber helyzetbe fordul, akkor a kalandozó irányítójának fel kell áldoznia 1 kalandozóját.": {
+        bekapcsolas: function(hatas) {
+            gameState.state.figyelok.push({
+                esemenytipus: "helyzetbeállítás",
+                forras: hatas.card,
+                allando: true,
+                ervenyesul: (triggerEsemeny) => {
+                    if (triggerEsemeny.helyzet === "Éber" && 
+                        triggerEsemeny.hataskor && triggerEsemeny.hataskor[0] &&
+                        triggerEsemeny.hataskor[0].laptipus === 'Kalandozó' &&
+                        triggerEsemeny.forras && triggerEsemeny.forras.tulajdonos !== hatas.card.tulajdonos &&
+                        triggerEsemeny.forras != "szabály") {
+                        const player = triggerEsemeny.hataskor[0].tulajdonos;
+                        const kalandozok = [...gameState.state.playerSpaces[player].sor, ...gameState.state.playerSpaces[player].manover]
+                            .filter(card => card.laptipus === 'Kalandozó');
+                        if (kalandozok.length > 0) {
+                            gameState.state.eventSor.push({
+                                tipus: "kártyaválasztás",
+                                szam: 1,
+                                hataskor: kalandozok,
+                                forrasesemeny: {
+                                    tipus: "feláldozás",
+                                    player: player
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        },
+        kikapcsolas: function(hatas) {
+            const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
+            if (index !== -1) gameState.state.figyelok.splice(index, 1);
+        }
     }
 }

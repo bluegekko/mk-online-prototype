@@ -110,17 +110,20 @@ gameFlow = {
             gameState.players.forEach(player => {
                 gameState.state.eventSor.push({
                     tipus: "mpnyerés",
+                    forras: "szabály",
                     player: player,
                     ertek: 4
                 });
 
                 gameState.state.eventSor.push({
                     tipus: "visszaforgatás",
+                    forras: "szabály",
                     player: player
                 });
 
                 gameState.state.eventSor.push({
                     tipus: "lapkiigazítás",
+                    forras: "szabály",
                     player: player
                 });
 
