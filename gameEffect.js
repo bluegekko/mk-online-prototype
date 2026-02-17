@@ -660,6 +660,27 @@ gameEffect = {
         celpontValidalas: function(celpontok) {return true;}
     },
 
+    "Játékosa Múltjában lévő célpont hajó típusú hadszert visszekeveri Jövőjébe.": {
+        ervenyesul: function(hatas) {
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            gameState.state.eventSor.push({
+                tipus: "kártyamozgatás",
+                forras: hatas.forras,
+                player: hatas.forras.tulajdonos,
+                hataskor: [hatas.celpont[0]],
+                honnan: "mult",
+                hova: "jovo"
+            });
+        },
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            const mult = gameState.state.playerSpaces[card.tulajdonos].mult;
+            return mult.includes(card) && card.laptipus === 'Akciólap' && card.akciotipus === 'Tárgy' && 
+                   card.tipus && card.tipus.includes('hajó');
+        }
+    },
+
     "Ha egy kalandozó egy nem ellenséges képesség vagy laphatás hatása miatt éber helyzetbe fordul, akkor a kalandozó irányítójának fel kell áldoznia 1 kalandozóját.": {
         bekapcsolas: function(hatas) {
             gameState.state.figyelok.push({
@@ -694,5 +715,25 @@ gameEffect = {
             const index = gameState.state.figyelok.findIndex(figyelo => figyelo.forras === hatas.card);
             if (index !== -1) gameState.state.figyelok.splice(index, 1);
         }
-    }
+    },
+ 
+    "Játékosa Múltjában lévő célpont hajó típusú hadszert visszekeveri Jövőjébe.": {
+        ervenyesul: function(hatas) {
+            if (!this.celpontValidalas(hatas.celpont)) return;
+            gameState.state.eventSor.push({
+                tipus: "kártyamozgatás",
+                forras: hatas.forras,
+                player: hatas.forras.tulajdonos,
+                hataskor: [hatas.celpont[0]],
+                honnan: "mult",
+                hova: "jovo"
+            });
+        },
+        celpontValidalas: function(celpontok) {
+            if (!celpontok || celpontok.length !== 1) return false;
+            const card = celpontok[0];
+            const mult = gameState.state.playerSpaces[card.tulajdonos]?.mult || [];
+            return mult.includes(card) && card.laptipus === 'Felszerelés' && card.tipus ==='Hadszer' && card.altipus === 'Hajó';
+        }
+    },
 }

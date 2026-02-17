@@ -72,6 +72,9 @@ Pénzesház
 küldetések
 Felgyújtott falvak
 
+Keverés
+Karabator
+
 További munkát igényel a jelenlegi implementáció
 Magionter
 Rozsdásítás
