@@ -26,6 +26,11 @@ gameUi = {
             console.log("kivalasztott", card)
         }
         
+        const valaszthatoKartyak = gameState.state.valaszthatoKartyak || [];
+        if (valaszthatoKartyak.includes(card)) {
+            cardDiv.classList.add('selectable');
+        }
+        
         cardDiv.onclick = () => {
             const index = kivalasztas.indexOf(card);
             if (index === -1) {
@@ -54,7 +59,10 @@ gameUi = {
                 const ostromButton = document.createElement('button');
                 ostromButton.textContent = 'Ostrom';
                 ostromButton.disabled = 
-                        playerMp < 2 
+                        playerMp < 2 || !abilityFunctions.hasznalhatoAktualisFazisban({
+                            fazis: "Sor",
+                            sebesseg: "mp-kötött"
+                        })
                 ostromButton.onclick = (e) => {
                     e.stopPropagation();
                     gameAction.ostrom('player', card);
@@ -128,6 +136,44 @@ gameUi = {
         console.log('Current phase:', gameState.state.fazis.aktualisFazis);
         document.getElementById('mp').textContent = gameState.state.playerAttributes['player'].mp;
         document.getElementById('aktualisFazis').textContent = gameState.state.fazis.aktualisFazis.nev;
+
+        // Passz gomb disabled állapota
+        const passzBtn = document.getElementById('passBtn');
+        if (passzBtn) {
+            passzBtn.disabled = gameState.state.valasztasFolyamatban || false;
+        }
+
+        // Nyitott panel frissítése
+        const existingPanel = document.querySelector('.space-panel');
+        if (existingPanel) {
+            const title = existingPanel.querySelector('.space-panel-title');
+            if (title) {
+                const match = title.textContent.match(/(Saját|Ellenfél) - (Mélység|Múlt|Jövő)/);
+                if (match) {
+                    const playerName = match[1];
+                    const displayName = match[2];
+                    const player = playerName === 'Saját' ? 'player' : 'opponent';
+                    const spaceMap = {'Mélység': 'melyseg', 'Múlt': 'mult', 'Jövő': 'jovo'};
+                    const spaceName = spaceMap[displayName];
+                    const cards = gameState.state.playerSpaces[player][spaceName];
+                    
+                    title.textContent = `${playerName} - ${displayName} (${cards.length})`;
+                    
+                    const container = existingPanel.querySelector('.space-panel-cards');
+                    if (container) {
+                        container.innerHTML = '';
+                        if (cards.length === 0) {
+                            const emptyMsg = document.createElement('p');
+                            emptyMsg.className = 'space-panel-empty';
+                            emptyMsg.textContent = 'Nincs lap ebben a területben.';
+                            container.appendChild(emptyMsg);
+                        } else {
+                            this.refreshPanelCards(container, cards, player, spaceName);
+                        }
+                    }
+                }
+            }
+        }
 
         // Deck input event listeners (only add once)
         if (!this.deckListenersAdded) {
@@ -300,6 +346,12 @@ gameUi = {
         // Meglévő panel eltávolítása
         const existingPanel = document.querySelector('.space-panel');
         if (existingPanel) {
+            const existingTitle = existingPanel.querySelector('.space-panel-title').textContent;
+            const currentTitle = `${playerName} - ${displayName} (${cards.length})`;
+            if (existingTitle.startsWith(`${playerName} - ${displayName}`)) {
+                existingPanel.remove();
+                return;
+            }
             existingPanel.remove();
         }
         

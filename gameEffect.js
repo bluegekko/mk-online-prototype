@@ -639,4 +639,24 @@ gameEffect = {
             return gameEffect.jelenbenVan(card) && card.laptipus === 'Kalandozó';
         }
     },
+    "Játékosa visszavesz 1 varázslat akciólapot Múltjából Kezébe.": {
+        ervenyesul: function(hatas) {
+            const mult = gameState.state.playerSpaces[hatas.forras.tulajdonos].mult;
+            const varazslatok = mult.filter(card => card.laptipus === 'Akciólap' && card.akciotipus === 'Varázslat');
+            if (varazslatok.length === 0) return;
+            
+            gameState.state.eventSor.push({
+                tipus: "kártyaválasztás",
+                szam: 1,
+                hataskor: varazslatok,
+                forrasesemeny: {
+                    tipus: "kártyamozgatás",
+                    player: hatas.forras.tulajdonos,
+                    honnan: "mult",
+                    hova: "kez"
+                }
+            });
+        },
+        celpontValidalas: function(celpontok) {return true;}
+    }
 }

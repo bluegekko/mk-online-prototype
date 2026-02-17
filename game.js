@@ -10,7 +10,9 @@
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space') {
                 e.preventDefault();
-                passz();
+                if (!gameState.state.valasztasFolyamatban) {
+                    passz();
+                }
             }
             if (e.code === 'Enter' && document.activeElement.id === 'cardNameInput') {
                 e.preventDefault();
@@ -27,6 +29,7 @@
 
     // Új kör kezdése
     function passz() {
+        if (gameState.state.valasztasFolyamatban) return;
         gameFlow.duplapassz(gameState.state);
         gameUi.render();
     }
@@ -47,17 +50,4 @@
         initializeEventListeners();
         gameState.initializeState();
     });
-
-    // Debug helper globálisan elérhető
-    window.debug = {
-        getState: () => gameState.state,
-        addCard: (player, space, card) => {
-            gameState.state.players[player][space].push(card);
-            gameState.render();
-        },
-        setMP: (amount) => {
-            gameState.state.mp = amount;
-            gameState.render();
-        }
-    };
 })();

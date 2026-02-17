@@ -13,14 +13,6 @@ abilityFunctions = {
         hatas.jelek.includes("megszakito")
     },
 
-    folyamatos: function(hatas) {
-        // TODO
-    },
-
-    idozitett: function(hatas) {
-        // TODO
-    },
-
     sebesseg: function(hatas) {
         if (hatas.jelek.includes("megszakito") || hatas.jelek.includes("harc_elotti")) {
             return "gyors hatás"
@@ -50,11 +42,16 @@ abilityFunctions = {
             jelek = helper.ervenyesuloHatas(hatas) ? helper.ervenyesuloHatas(hatas).jelek : []
             akciolap = hatas.laptipus == "Akciólap"
         } else {
-            fazis = abilityFunctions.fazis(hatas);
-            sebesseg = abilityFunctions.sebesseg(hatas);
+            fazis = hatas.fazis ? hatas.fazis : abilityFunctions.fazis(hatas);
+            sebesseg = hatas.sebesseg ? hatas.sebesseg : abilityFunctions.sebesseg(hatas);
             jelek = hatas.jelek
             akciolap = false;
         }
+        if (gameState.state.fazis.valasztasfolyamatban) {
+            return false;
+        }
+
+
         if (sebesseg == "mp-kötött" && gameState.state.fazis.idofonal.folyamatban) {
             return false;
         }

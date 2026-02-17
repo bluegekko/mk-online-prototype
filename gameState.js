@@ -26,8 +26,9 @@ window.gameState = {
             manover: helper.resetManoverState(),
             idofonal: {
                 hatasok: [],
-                folyamatban: true,
+                valasztasfolyamatban: true,
             },
+            valasztas: false,
             prioritas: 'player',
             legutobbiMpKotottManover: null,
         },
@@ -46,7 +47,7 @@ window.gameState = {
                 hatasok: [],
                 folyamatban: true,
             },
-            idotartamosHatasok: [],
+            valasztasfolyamatban: false,
             prioritas: 'player',
             legutobbiMpKotottManover: null,
         };
@@ -73,7 +74,7 @@ window.gameState = {
                 akadalyozas: true,
                 leidezo: null,
                 kezmeret: {"ertek": 7},
-                csapatmeret: {"ertek": 0}
+                csapatmeret: {"ertek": 0},
             };
         });
 
@@ -163,6 +164,8 @@ window.gameState = {
             }
         });
 
+        // TODO állandó harci
+
         // TODO kikapcsolás
 
         // laphatások bekapcsolása
@@ -187,6 +190,100 @@ window.gameState = {
                 }
             }
         });
+
+        // időtartamos lapok kezelése
+        this.state.figyelok.push({
+            esemenytipus: "Forduló vége",
+            forras: "szabály",
+            allando: true,
+            ervenyesul: (esemeny) => {
+                this.players.forEach(player => {
+                    this.jelenSpaces.forEach(space => {
+                        const cards = [...this.state.playerSpaces[player][space]];
+                        cards.forEach(card => {
+                            if (card.idotartam === "Forduló") {
+                                this.state.eventSor.push({
+                                    tipus: "kártyamozgatás",
+                                    player: player,
+                                    honnan: space,
+                                    hova: "mult",
+                                    hataskor: [card]
+                                });
+                            }
+                        });
+                    });
+                });
+            }
+        });
+
+        this.state.figyelok.push({
+            esemenytipus: "Harc vége",
+            forras: "szabály",
+            allando: true,
+            ervenyesul: (esemeny) => {
+                this.players.forEach(player => {
+                    this.jelenSpaces.forEach(space => {
+                        const cards = [...this.state.playerSpaces[player][space]];
+                        cards.forEach(card => {
+                            if (card.idotartam === "Harc") {
+                                this.state.eventSor.push({
+                                    tipus: "kártyamozgatás",
+                                    player: player,
+                                    honnan: space,
+                                    hova: "mult",
+                                    hataskor: [card]
+                                });
+                            }
+                        });
+                    });
+                });
+            }
+        });
+
+        this.state.figyelok.push({
+            esemenytipus: "manővervége",
+            forras: "szabály",
+            allando: true,
+            ervenyesul: (esemeny) => {
+                this.jelenSpaces.forEach(space => {
+                    const cards = [...this.state.playerSpaces[esemeny.player][space]];
+                    cards.forEach(card => {
+                        if (card.idotartam === "Manőver") {
+                            this.state.eventSor.push({
+                                tipus: "kártyamozgatás",
+                                player: esemeny.player,
+                                honnan: space,
+                                hova: "mult",
+                                hataskor: [card]
+                            });
+                        }
+                    });
+                });
+            }
+        });
+
+        this.state.figyelok.push({
+            esemenytipus: "kártyamozgatás",
+            forras: "szabály",
+            allando: true,
+            ervenyesul: (esemeny) => {
+                if (this.jelenSpaces.includes(esemeny.hova)) {
+                    esemeny.hataskor.forEach(card => {
+                        if (card.idotartam === "Pillanat") {
+                            this.state.eventSor.push({
+                                tipus: "kártyamozgatás",
+                                player: card.tulajdonos,
+                                honnan: esemeny.hova,
+                                hova: "mult",
+                                hataskor: [card]
+                            });
+                        }
+                    });
+                }
+            }
+        });
+
+        eventHandler.resolve();
 
         console.log('Initial state:', this.state);
         console.log('Player cards:', this.state.playerSpaces.player.kez);

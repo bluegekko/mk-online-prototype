@@ -1,12 +1,16 @@
 eventHandler = {
-    resolve: function(ujEsemeny) {
+    resolve: async function(ujEsemeny) {
         if (ujEsemeny) {gameState.state.eventSor.push(ujEsemeny);}
+        let esemeny;
         while (esemeny = gameState.state.eventSor.shift()) {
             console.log("Resolving: ", esemeny.tipus);
             eventHandler.figyelokEloAktivalasa(esemeny);
-            eventHandler.eventResolver[esemeny.tipus](esemeny);
+            await eventHandler.eventResolver[esemeny.tipus](esemeny);
             eventHandler.figyelokUtoAktivalasa(esemeny);
         }
+        
+        gameState.state.playerAttributes['player'].kivalasztas = [];
+        gameUi.render();
     },
 
     esemenytipusIdotartamhoz: function(idotartam) {
@@ -102,6 +106,23 @@ eventHandler = {
             gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.hatas)
         },
         "lapleidézés": function(esemeny) {},
+        "kártyaválasztás": async function(esemeny) {
+            const kivalasztas = gameState.state.playerAttributes['player'].kivalasztas;
+            const kezdetiSzam = kivalasztas.length;
+            
+            gameState.state.valasztasFolyamatban = true;
+            gameState.state.valaszthatoKartyak = esemeny.hataskor || [];
+            gameUi.render();
+            
+            while (kivalasztas.length < kezdetiSzam + esemeny.szam) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            gameState.state.valasztasFolyamatban = false;
+            gameState.state.valaszthatoKartyak = [];
+            
+            esemeny.forrasesemeny.hataskor = kivalasztas.slice(kezdetiSzam);
+            gameState.state.eventSor.push(esemeny.forrasesemeny);
+        },
         "kártyahozzáadás": function(esemeny) {
             gameAction.kartyaHozzaadas(esemeny.nev, esemeny.player, esemeny.hova);
         },
