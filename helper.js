@@ -11,6 +11,13 @@ helper = {
     // jelenleg csak simán includes van, ami nem mindig felel meg
     fajok: ["ember", "ork", "elf", "aun", "kyr", "aquir", "törpe", "anur",],
 
+    vanEmberFaj: function(card) {
+        const nemEmberFaj = this.fajok.find(faj => 
+            faj !== 'ember' && gameEffect.vanParameter(card, faj)
+        );
+        return !nemEmberFaj || gameEffect.vanParameter(card, 'ember');
+    },
+
     ervenyesuloHatas: function(card) {return card.hatasok.find(h => h.ervenyesules === true);},
 
     isFelszereles: function(card) {

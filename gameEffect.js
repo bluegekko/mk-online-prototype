@@ -188,11 +188,7 @@ gameEffect = {
                 forras: hatas.card,
                 tulajdonsag: "mp",
                 feltetel: function(card) {
-                    const nemEmberFaj = helper.fajok.find(faj => 
-                            faj !== 'ember' && gameEffect.vanParameter(card, faj) &&
-                            !gameEffect.vanParameter(card, 'ember')
-                    );
-                    return card.isCard && card.laptipus == "Kalandozó" && nemEmberFaj;
+                    return card.isCard && card.laptipus == "Kalandozó" && !helper.vanEmberFaj(card);
                 },
                 vegrehajtas: function(ertek) {
                     ertek.modositas = ertek.modositas || []; 

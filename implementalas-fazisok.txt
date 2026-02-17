@@ -27,11 +27,6 @@ Akadálylapok
 Fővadász
 Salnarri kopjatörő
 
-Hatás közbeni (lap)választás
-Gar Dhagg örököse
-Spaonter
-Füstmadár
-
 Harci körök
 Shuluri vérnyelő
 Tűztisztító
@@ -43,11 +38,6 @@ Karabator
 Képesség feltétel
 Zsarnokok szeretője
 Pihenőszoba
-
-laphatások
-Házikedvenc
-Az Oroszlánpápa megbízottja
-A Császárszigetek sebgyógyítója
 
 sikeresség
 Az Oroszlánpápa megbízottja
@@ -74,6 +64,9 @@ Felgyújtott falvak
 
 Keverés
 Karabator
+
+Szabálypara
+Füstmadár
 
 További munkát igényel a jelenlegi implementáció
 Magionter
