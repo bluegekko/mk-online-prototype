@@ -45,7 +45,8 @@ gameUi = {
             const button = document.createElement('button');
             button.textContent = 'Leidéz';
             // TODO celpontValidalas ellenorzese
-            button.disabled = playerMp < helper.getValue(card, "mp") || !abilityFunctions.hasznalhatoAktualisFazisban(card) ;
+            button.disabled = playerMp < helper.getValue(card, "mp") || !abilityFunctions.hasznalhatoAktualisFazisban(card) || 
+                !gameEffect.feltetelValidalas(card, player) || !gameEffect.celpontValidalas(card, player) ;
             button.onclick = (e) => {
                 e.stopPropagation();
                 gameAction.leidezesKezbol(player, card.id);

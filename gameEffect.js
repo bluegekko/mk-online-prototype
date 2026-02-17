@@ -40,6 +40,10 @@ gameEffect = {
             if (leidezo && leidezo.helyzet !== 'Éber') return false;
             if (!this.kasztValidalas(leidezo, hatas)) return false;
          }
+         if (hatas.isCard && hatas.laptipus === 'Építmény' && hatas.feltetel) {
+            const sorKalandozok = gameState.state.playerSpaces[player].sor;
+            return feltetel.teljesul(hatas.feltetel, sorKalandozok);
+         }
          return true;
     },
 

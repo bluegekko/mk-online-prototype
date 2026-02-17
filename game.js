@@ -19,6 +19,11 @@
                 kartyaHozzaadas();
             }
         });
+        
+        // Card name input - megakadályozza a Space billentyű továbbterjesztését
+        document.getElementById('cardNameInput').addEventListener('keydown', (e) => {
+            e.stopPropagation();
+        });
     }
 
     // Új játék indítása
