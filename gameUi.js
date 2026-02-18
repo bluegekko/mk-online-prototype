@@ -17,6 +17,7 @@ gameUi = {
                 ${card.alapszint ? `<div class="alapszint">Alapszint: ${helper.getValue(card, "alapszint")}</div>` : ''}
                 ${card.fal != null ? `<div class="fal">FAL: ${helper.getValue(card, "fal")}</div>` : ''}
                 ${card.helyzet ? `<div class="helyzet">Helyzet: ${card.helyzet}</div>` : ''}
+                ${card.dp != null ? `<div class="dp">DP: ${helper.getValue(card, "dp")}</div>` : ''}
             </div>
         `;
 
@@ -41,12 +42,11 @@ gameUi = {
             gameUi.render();
         };
 
-        if (space === 'kez') {
+        if (space === 'kez' && player == card.tulajdonos) {
             const button = document.createElement('button');
             button.textContent = 'Leidéz';
             // TODO celpontValidalas ellenorzese
-            button.disabled = playerMp < helper.getValue(card, "mp") || !abilityFunctions.hasznalhatoAktualisFazisban(card) || 
-                !gameEffect.feltetelValidalas(card, player) || !gameEffect.celpontValidalas(card, player) ;
+            button.disabled = !card.leidezheto(player);
             button.onclick = (e) => {
                 e.stopPropagation();
                 gameAction.leidezesKezbol(player, card.id);
@@ -69,6 +69,72 @@ gameUi = {
                     gameAction.ostrom('player', card);
                 };
                 cardDiv.appendChild(ostromButton);
+            }
+        }
+
+        if (space === 'kuldetesek') {
+            const kuldetesButton = document.createElement('button');
+            kuldetesButton.textContent = 'Manőver';
+            kuldetesButton.disabled = !abilityFunctions.hasznalhatoAktualisFazisban({
+                fazis: "Sor",
+                sebesseg: 'mp-kötött'
+            });
+            kuldetesButton.onclick = (e) => {
+                e.stopPropagation();
+                gameAction.kuldetesMegoldas(player, card);
+            };
+            cardDiv.appendChild(kuldetesButton);
+            
+            // Feltételválasztás UI manőver közben
+            const feltetelValasztas = gameState.state.feltetelValasztas;
+            if (feltetelValasztas && card.feltetel && gameState.state.fazis.manover.szinhely === card) {
+                const feltetelek = card.feltetel;
+                const manoverCsapat = gameState.state.playerSpaces[gameState.state.fazis.manover.kezdemenyezoJatekos].manover;
+                
+                feltetelek.forEach((feltetelStr, index) => {
+                    const teljesul = feltetel.teljesul(feltetelStr, manoverCsapat);
+                    const valasztva = feltetelValasztas.valasztott.includes(index);
+                    
+                    const feltetelBtn = document.createElement('button');
+                    feltetelBtn.textContent = feltetelStr + (teljesul ? ' ✓' : ' ✗');
+                    feltetelBtn.disabled = !teljesul || valasztva;
+                    feltetelBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        if (!valasztva) {
+                            feltetelValasztas.valasztott.push(index);
+                            gameUi.render();
+                        }
+                    };
+                    cardDiv.appendChild(feltetelBtn);
+                });
+                
+                const keszBtn = document.createElement('button');
+                keszBtn.textContent = 'Kész';
+                keszBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    feltetelValasztas.kesz = true;
+                };
+                cardDiv.appendChild(keszBtn);
+            }
+            
+            // Megoldásdöntés UI
+            const megoldasDontes = gameState.state.megoldasDontes;
+            if (megoldasDontes && megoldasDontes.kuldetes === card) {
+                const megoldBtn = document.createElement('button');
+                megoldBtn.textContent = 'Megoldja';
+                megoldBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    megoldasDontes.dontes = true;
+                };
+                cardDiv.appendChild(megoldBtn);
+                
+                const nemMegoldBtn = document.createElement('button');
+                nemMegoldBtn.textContent = 'Nem oldja meg';
+                nemMegoldBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    megoldasDontes.dontes = false;
+                };
+                cardDiv.appendChild(nemMegoldBtn);
             }
         }
 
@@ -149,12 +215,12 @@ gameUi = {
         if (existingPanel) {
             const title = existingPanel.querySelector('.space-panel-title');
             if (title) {
-                const match = title.textContent.match(/(Saját|Ellenfél) - (Mélység|Múlt|Jövő)/);
+                const match = title.textContent.match(/(Saját|Ellenfél) - (Mélység|Múlt|Jövő|Kéz|Megoldott küldetések)/);
                 if (match) {
                     const playerName = match[1];
                     const displayName = match[2];
                     const player = playerName === 'Saját' ? 'player' : 'opponent';
-                    const spaceMap = {'Mélység': 'melyseg', 'Múlt': 'mult', 'Jövő': 'jovo'};
+                    const spaceMap = {'Mélység': 'melyseg', 'Múlt': 'mult', 'Jövő': 'jovo', 'Kéz': 'kez', 'Megoldott küldetések': 'megoldottkuldetesek'};
                     const spaceName = spaceMap[displayName];
                     const cards = gameState.state.playerSpaces[player][spaceName];
                     
@@ -270,6 +336,15 @@ gameUi = {
                 if (countElement) {
                     countElement.textContent = cards ? cards.length : 0;
                 }
+                
+                // Küldetések subzone megjelenítése/elrejtése
+                if (space === 'kuldetesek') {
+                    const subzoneId = `${prefix}-kuldetesekSubzone`;
+                    const subzone = document.getElementById(subzoneId);
+                    if (subzone) {
+                        subzone.style.display = cards && cards.length > 0 ? 'block' : 'none';
+                    }
+                }
             });
 
             // Mélység, Múlt, Jövő gombok hozzáadása
@@ -288,8 +363,8 @@ gameUi = {
                 
                 buttonsContainer.innerHTML = '';
                 
-                const spaces = ['melyseg', 'mult', 'jovo'];
-                const spaceNames = {'melyseg': 'Mélység', 'mult': 'Múlt', 'jovo': 'Jövő'};
+                const spaces = player === 'player' ? ['megoldottkuldetesek', 'jovo', 'mult', 'melyseg'] : ['megoldottkuldetesek', 'kez', 'jovo', 'mult', 'melyseg'];
+                const spaceNames = {'melyseg': 'Mélység', 'mult': 'Múlt', 'jovo': 'Jövő', 'kez': 'Kéz', 'megoldottkuldetesek': 'Megoldott küldetések'};
                 
                 spaces.forEach(spaceName => {
                     const button = document.createElement('button');

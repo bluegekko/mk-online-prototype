@@ -29,14 +29,6 @@
             </div>
         </div>
         <main class="zones">
-            <!-- Ellenfél keze -->
-            <section class="zone" aria-labelledby="opponentKezCim">
-                <h2 id="opponentKezCim">Ellenfél keze <small class="pill" id="opponent-kezCount">0</small></h2>
-                <div id="opponent-kez" class="cards"></div>
-                <div id="opponent-kezEmpty" class="empty">Nincs kártya az ellenfél kezében.</div>
-            </section>
-            
-            
             <!-- Ellenfél területe -->
             <section class="zone" aria-labelledby="enemyJelenCim">
                 <h2 id="enemyJelenCim">Ellenfél – Jelen <small class="pill" id="opponent-jelenCount">0</small></h2>
@@ -55,10 +47,16 @@
                             <div id="opponent-sor" class="cards"></div>
                             <div id="opponent-sorEmpty" class="empty">Nincs lap a Sorban.</div>
                         </div>
-                        <div class="subzone">
-                            <h3 class="subzone-title">Manőver <small class="pill" id="opponent-manoverCount">0</small></h3>
-                            <div id="opponent-manover" class="cards"></div>
-                            <div id="opponent-manoverEmpty" class="empty">Nincs lap a Manőverben.</div>
+                        <div class="manover-kuldetesek-row">
+                            <div class="subzone">
+                                <h3 class="subzone-title">Manőver <small class="pill" id="opponent-manoverCount">0</small></h3>
+                                <div id="opponent-manover" class="cards"></div>
+                                <div id="opponent-manoverEmpty" class="empty">Nincs lap a Manőverben.</div>
+                            </div>
+                            <div class="subzone" id="opponent-kuldetesekSubzone" style="display: none;">
+                                <h3 class="subzone-title">Küldetések <small class="pill" id="opponent-kuldetesekCount">0</small></h3>
+                                <div id="opponent-kuldetesek" class="cards"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,10 +101,16 @@
                         <div id="player-toronyszintekEmpty" class="empty">Nincs toronyszint.</div>
                     </aside>
                     <div class="jelen-right">
-                        <div class="subzone">
-                            <h3 class="subzone-title">Manőver <small class="pill" id="player-manoverCount">0</small></h3>
-                            <div id="player-manover" class="cards"></div>
-                            <div id="player-manoverEmpty" class="empty">Nincs lap a Manőverben.</div>
+                        <div class="manover-kuldetesek-row">
+                            <div class="subzone">
+                                <h3 class="subzone-title">Manőver <small class="pill" id="player-manoverCount">0</small></h3>
+                                <div id="player-manover" class="cards"></div>
+                                <div id="player-manoverEmpty" class="empty">Nincs lap a Manőverben.</div>
+                            </div>
+                            <div class="subzone" id="player-kuldetesekSubzone" style="display: none;">
+                                <h3 class="subzone-title">Küldetések <small class="pill" id="player-kuldetesekCount">0</small></h3>
+                                <div id="player-kuldetesek" class="cards"></div>
+                            </div>
                         </div>
                         <div class="subzone">
                             <h3 class="subzone-title">Sor <small class="pill" id="player-sorCount">0</small></h3>

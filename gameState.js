@@ -6,13 +6,15 @@ window.gameState = {
         manover: { name: 'manover', displayName: 'Manőver' },
         raktar: { name: 'raktar', displayName: 'Raktár' },
         toronyszintek: { name: 'toronyszintek', displayName: 'Torony' },
+        kuldetesek: { name: 'kuldetesek', displayName: 'Megoldásra váró küldetések' },
+        megoldottkuldetesek: { name: 'megoldottkuldetesek', displayName: 'Megoldott küldetések halmaza' },
         jelenlapok: { name: 'jelenLapok', displayName: '' },
         jovo: { name: 'jovo', displayName: 'Jövő' },
         mult: { name: 'mult', displayName: 'Múlt' },
         melyseg: { name: 'melyseg', displayName: 'Mélység' }
     },
 
-    jelenSpaces: ['sor', 'manover', 'raktar', 'toronyszintek', 'jelenlapok'],
+    jelenSpaces: ['sor', 'manover', 'raktar', 'toronyszintek', 'jelenlapok', 'kuldetesek'],
 
     // Játékosok definíciója
     players: ['player', 'opponent'],
@@ -91,6 +93,7 @@ window.gameState = {
         } else {
             const kezdoKartyak = [
                 "Határok feszegetése",
+                "Megkerülő hadmozdulat",
                 "A túlvilág hívása",
                 "Salnarri kopjatörő",
                 "Ezüst Ököl stratéga",
@@ -115,6 +118,24 @@ window.gameState = {
                 nev: nev,
                 player: 'opponent',
                 hova: 'manover'
+            });
+        });
+
+        ['Spaonter', 'Spaonter', 'Spaonter'].forEach(nev => {
+            this.state.eventSor.push({
+                tipus: "kártyahozzáadás",
+                nev: nev,
+                player: 'player',
+                hova: 'sor'
+            });
+        });
+
+        ['Megkerülő hadmozdulat'].forEach(nev => {
+            this.state.eventSor.push({
+                tipus: "kártyahozzáadás",
+                nev: nev,
+                player: 'player',
+                hova: 'kuldetesek'
             });
         });
 

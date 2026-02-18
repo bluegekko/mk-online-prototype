@@ -55,8 +55,7 @@ gameFlow = {
 
     idofonalZaras: function() {
         gameState.state.fazis.idofonal.folyamatban = false;
-        
-        
+
         gameState.players.forEach(player => {
             gameState.jelenSpaces.forEach(space => {
                 gameState.state.playerSpaces[player][space].forEach(card => {
@@ -167,7 +166,10 @@ gameFlow = {
                 return gameFlow.akadalyozoCsapatSorElhagyas;
             }
         },
-        fazisEleje: function() {},
+        fazisEleje: function() {
+            const manoverState = gameState.state.fazis.manover;
+            manoverState.manoverezoJatekos = manoverState.kezdemenyezoJatekos;
+        },
         fazisVege: function() {},
     },
 
@@ -260,9 +262,25 @@ gameFlow = {
     kuldetesFeltetelTeljesites: {
         nev: "Küldetés feltétel teljesítés",
         kovetkezoFazis: function() {return gameFlow.manoverekFazisa;},
-        fazisEleje: function() {gameFlow.idofonalNyitas(null)},
+        fazisEleje: function() {
+            const manoverState = gameState.state.fazis.manover;
+            gameState.state.eventSor.push({
+                tipus: "feltételválasztás",
+                player: manoverState.manoverezoJatekos,
+                feltetelek: manoverState.szinhely.feltetel,
+                forrasesemeny: {
+                    tipus: "megoldásdöntés",
+                    player: manoverState.manoverezoJatekos,
+                }
+            });
+            gameFlow.idofonalNyitas(null)
+        },
         fazisVege: function() {
-            // TODO manőver vége manőverező játékos
+            const manoverState = gameState.state.fazis.manover;
+            gameState.state.eventSor.push({
+                    tipus: "manővervége",
+                    player: manoverState.manoverezoJatekos
+            });
         },
     },
 
@@ -329,6 +347,7 @@ gameFlow = {
                     });
                 } else {
                     manoverState.kuldetesFolytatas = true;
+                    manoverState.manoverezoJatekos = player;
                 }
             });
         },

@@ -105,7 +105,17 @@ eventHandler = {
         "képességlaphatásérvényesülés": function(esemeny) {
             gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.hatas)
         },
-        "lapleidézés": function(esemeny) {},
+        "lapleidézés": function(esemeny) {
+            esemeny.lap.fizetes(esemeny.player);
+            gameState.state.eventSor.push({
+                tipus: "kártyamozgatás",
+                player: esemeny.player,
+                honnan: esemeny.honnan,
+                hova: "idofonal",
+                hataskor: [esemeny.lap]
+            });
+            gameFlow.idofonalNyitas();
+        },
         "kártyaválasztás": async function(esemeny) {
             const kivalasztas = gameState.state.playerAttributes['player'].kivalasztas;
             const kezdetiSzam = kivalasztas.length;
@@ -123,8 +133,67 @@ eventHandler = {
             esemeny.forrasesemeny.hataskor = kivalasztas.slice(kezdetiSzam);
             gameState.state.eventSor.push(esemeny.forrasesemeny);
         },
+        "feltételválasztás": async function(esemeny) {
+            gameState.state.valasztasFolyamatban = true;
+            gameState.state.feltetelValasztas = {
+                feltetelek: esemeny.feltetelek,
+                valasztott: [],
+                kesz: false
+            };
+            gameUi.render();
+            
+            while (!gameState.state.feltetelValasztas.kesz) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            gameState.state.valasztasFolyamatban = false;
+            
+            esemeny.forrasesemeny.teljesitettFeltetelek = gameState.state.feltetelValasztas.valasztott;
+            gameState.state.feltetelValasztas = null;
+            gameState.state.eventSor.push(esemeny.forrasesemeny);
+        },
+        "megoldásdöntés": async function(esemeny) {
+            kuldetes = gameState.state.fazis.manover.szinhely;
+            if (esemeny.teljesitettFeltetelek.length === 0) return;
+            if (gameState.state.playerAttributes[esemeny.player].mp < helper.getValue(kuldetes, "mp")) return;
+            
+            gameState.state.valasztasFolyamatban = true;
+            gameState.state.megoldasDontes = {
+                kuldetes: kuldetes,
+                dontes: null
+            };
+            gameUi.render();
+            
+            while (gameState.state.megoldasDontes.dontes === null) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            gameState.state.valasztasFolyamatban = false;
+            
+            if (gameState.state.megoldasDontes.dontes === true) {
+                gameState.state.eventSor.push({
+                    tipus: "küldetésmegoldás",
+                    player: esemeny.player,
+                    kuldetes: kuldetes,
+                    teljesitettFeltetelek: esemeny.teljesitettFeltetelek
+                });
+            }
+            gameState.state.megoldasDontes = null;
+        },
+        "küldetésmegoldás": function(esemeny) {
+            gameState.state.eventSor.push({
+                tipus: "mpfizetés",
+                player: esemeny.player,
+                ertek: helper.getValue(esemeny.kuldetes, "mp")
+            });
+            gameState.state.eventSor.push({
+                tipus: "kártyamozgatás",
+                player: esemeny.player,
+                honnan: "kuldetesek",
+                hova: "megoldottkuldetesek",
+                hataskor: [esemeny.kuldetes]
+            });
+        },
         "kártyahozzáadás": function(esemeny) {
-            gameAction.kartyaHozzaadas(esemeny.nev, esemeny.player, esemeny.hova);
+            gameAction.kartyaHozzaadas(esemeny.nev, esemeny.player, esemeny.hova, esemeny.helyzet);
         },
         "időfonalbakerülés": function(esemeny) {
             gameState.state.fazis.idofonal.hatasok.push(esemeny.hatas);
@@ -138,6 +207,10 @@ eventHandler = {
             // TODO
         },
         "mpvesztés": function(esemeny) {
+            gameState.state.playerAttributes[esemeny.player].mp = 
+                Math.max(0, gameState.state.playerAttributes[esemeny.player].mp - esemeny.ertek);
+        },
+        "mpfizetés": function(esemeny) {
             gameState.state.playerAttributes[esemeny.player].mp = 
                 Math.max(0, gameState.state.playerAttributes[esemeny.player].mp - esemeny.ertek);
         },

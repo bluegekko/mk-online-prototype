@@ -141,6 +141,16 @@ button:disabled {
     gap: 12px; 
 }
 
+.manover-kuldetesek-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.manover-kuldetesek-row:has(.subzone:not([style*="display: none"]):nth-child(2)) {
+    grid-template-columns: 1fr 1fr;
+}
+
 .subzone { 
     background: rgba(255,255,255,0.03); 
     border: 1px solid #222745; 

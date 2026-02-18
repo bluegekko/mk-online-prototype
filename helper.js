@@ -79,6 +79,7 @@ helper = {
             aktualisManover: null,
             folyamatban: false,
             kezdemenyezoJatekos: null,
+            manoverezoJatekos: null,
             szinhely: null,
             sikeresJatekos: null,
         };
@@ -92,6 +93,8 @@ helper = {
                 return helper.isFelszereles(card) ? "raktar" : "jelenlapok";
             case "Toronyszint":
                 return "toronyszintek";
+            case "Küldetés":
+                return "kuldetesek";
             default:
                 return "jelenlapok";
         }

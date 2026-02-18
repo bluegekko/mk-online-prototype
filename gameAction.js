@@ -5,7 +5,9 @@ gameAction = {
         const fromSpace = fromSpaceNev === 'idofonal' ? 
             gameState.state.fazis.idofonal.hatasok : 
             gameState.state.playerSpaces[player][fromSpaceNev];
-        const toSpace = gameState.state.playerSpaces[player][toSpaceNev];
+        const toSpace = toSpaceNev === 'idofonal' ?
+            gameState.state.fazis.idofonal.hatasok :
+            gameState.state.playerSpaces[player][toSpaceNev];
         this.kartyaMozgatas(fromSpace, toSpace, card.id);
         if (card.laptipus === 'Kalandozó' && fromSpaceNev == 'manover' && toSpaceNev == 'sor') {
                 card.helyzet = 'Pihenő';
@@ -52,9 +54,7 @@ gameAction = {
         // TODO kell, hogy cardId legyen?
         card = gameState.state.playerSpaces[player].kez.find(c => c.id === cardId);
         console.log("lap kijátszása: ", card)
-        if (!card || gameState.state.playerAttributes[player].mp < helper.getValue(card, "mp")) return;
-
-        if (!gameEffect.feltetelValidalas(card, player)) return;
+        if (!card.leidezheto(player)) return;
 
         // Hatás célpont választás ellenőrzése
         if (!gameEffect.celpontValasztas(card, player)) {
@@ -64,17 +64,14 @@ gameAction = {
         if (card.laptipus == "Akciólap") {
             card.leidezo = gameState.state.playerAttributes[player].leidezo;
         }
-        gameState.state.playerAttributes[player].mp -= helper.getValue(card, "mp");
-        kez = gameState.state.playerSpaces[player]['kez'];
-        const cardIndex = kez.findIndex(card => card.id === cardId);
-        kez.splice(cardIndex, 1);
-        // trigger lapleidézés
+
         eventHandler.resolve({
             tipus: "lapleidézés",
             lap: card,
+            honnan: "kez",
             player: player
         });
-        gameFlow.idofonalNyitas(card)
+
         gameUi.render();
     },
 
@@ -130,7 +127,11 @@ gameAction = {
         
         const { kalandozok, felszerelesek } = validalas;
 
-        gameState.state.playerAttributes[player].mp -= 2;
+        eventHandler.resolve({
+            tipus: "mpfizetés",
+            player: player,
+            ertek: 2
+        });
 
         kalandozok.forEach(kalandozo => {
             this.kartyaMozgatasJatekter(player, 'sor', 'manover', kalandozo)
@@ -145,5 +146,31 @@ gameAction = {
 
         gameUi.render();
 
+    },
+
+    kuldetesMegoldas: function(player, card) {
+        if (gameState.state.fazis.idofonal.folyamatban) return;
+        console.log("Küldetés");
+
+        kivalasztas = gameState.state.playerAttributes[player].kivalasztas;
+        csapatmeret = 3;
+        const validalas = this.manoverKivalasztasValidalas(kivalasztas, csapatmeret);
+        
+        if (!validalas) return;
+        
+        const { kalandozok, felszerelesek } = validalas;
+
+        kalandozok.forEach(kalandozo => {
+            this.kartyaMozgatasJatekter(player, 'sor', 'manover', kalandozo)
+        });
+
+        gameState.state.fazis.manover.kezdemenyezoJatekos = player;
+        gameState.state.fazis.manover.aktualisManover = "küldetés";
+        gameState.state.fazis.manover.szinhely = card;
+
+        gameState.state.fazis.aktualisFazis = gameFlow.kezdemenyezoCsapatSorElhagyas;
+        gameState.state.fazis.aktualisFazis.fazisEleje();
+
+        gameUi.render();
     }
 }
