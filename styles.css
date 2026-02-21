@@ -491,3 +491,194 @@ button:disabled {
     box-shadow: 0 3px 6px rgba(0,0,0,0.3);
     transform: translateY(-1px);
 }
+
+/* Menu panel styles */
+.menu-panel {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 250px;
+    background: #171b2e;
+    border: 1px solid #222745;
+    border-radius: 10px;
+    z-index: 999;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.menu-content {
+    padding: 15px;
+}
+
+.menu-content h3 {
+    margin: 0 0 15px 0;
+    color: #7aa2f7;
+    font-size: 16px;
+    border-bottom: 1px solid #222745;
+    padding-bottom: 8px;
+}
+
+.menu-section {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-section input {
+    background: #1e2440;
+    border: 1px solid #2b335a;
+    border-radius: 6px;
+    color: #e6e6e6;
+    padding: 8px;
+}
+
+.menu-section button {
+    width: 100%;
+}
+/* Menu popup styles */
+.menu-popup {
+    position: fixed;
+    top: 20px;
+    right: 100px;
+    width: 60px;
+    height: 60px;
+    background: #171b2e;
+    border: 2px solid #7aa2f7;
+    border-radius: 50%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #7aa2f7;
+    transition: all 0.3s ease;
+}
+
+.menu-popup::before {
+    content: '☰';
+}
+
+.menu-popup.expanded::before {
+    display: none;
+}
+
+.menu-popup:hover {
+    transform: scale(1.1);
+}
+
+.menu-popup.expanded {
+    width: 250px;
+    height: auto;
+    border-radius: 12px;
+    cursor: default;
+}
+
+.menu-popup .menu-content {
+    padding: 15px;
+    display: none;
+}
+
+.menu-popup.expanded .menu-content {
+    display: block;
+}
+
+.menu-popup .menu-content h3 {
+    margin: 0 0 15px 0;
+    color: #7aa2f7;
+    font-size: 16px;
+    border-bottom: 1px solid #222745;
+    padding-bottom: 8px;
+}
+
+.menu-popup .menu-section {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-popup .menu-section input {
+    background: #1e2440;
+    border: 1px solid #2b335a;
+    border-radius: 6px;
+    color: #e6e6e6;
+    padding: 8px;
+}
+
+.menu-popup .menu-section button {
+    width: 100%;
+}
+.menu-popup .menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #222745;
+    padding-bottom: 8px;
+}
+
+.menu-popup .menu-close {
+    background: transparent;
+    border: none;
+    color: #e6e6e6;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.menu-popup .menu-close:hover {
+    color: #7aa2f7;
+}
+.tutorial-popup.expanded ~ .menu-popup {
+    right: 440px;
+}
+.menu-popup .menu-header {
+    border-bottom: none !important;
+}
+
+.menu-popup .menu-content h3 {
+    border-bottom: none !important;
+}
+.menu-popup .menu-section label {
+    color: #c0d2ff;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.menu-popup .menu-section select {
+    background: #1e2440;
+    border: 1px solid #2b335a;
+    border-radius: 6px;
+    color: #e6e6e6;
+    padding: 8px;
+    width: 100%;
+}
+.game-mode-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.game-mode-btn {
+    flex: 1;
+    padding: 6px 8px;
+    font-size: 12px;
+    background: #25315a;
+    border: 1px solid #2a335c;
+    color: #e6e6e6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.game-mode-btn:hover {
+    background: #2a3660;
+}
+
+.game-mode-btn.active {
+    background: #7aa2f7;
+    border-color: #7aa2f7;
+    color: #171b2e;
+}

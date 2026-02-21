@@ -28,6 +28,38 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Menu popup -->
+        <div id="menuPopup" class="menu-popup">
+            <div class="menu-content">
+                <div class="menu-header">
+                    <h3>Menü</h3>
+                    <button class="menu-close">&times;</button>
+                </div>
+                <div class="menu-section">
+                    <input type="text" id="cardNameInput" placeholder="Kártya neve">
+                    <button id="addCardBtn">Hozzáad</button>
+                </div>
+                <div class="menu-section">
+                    <label>Játékmód:</label>
+                    <div class="game-mode-buttons">
+                        <button class="game-mode-btn active" data-mode="local">Lokális</button>
+                        <button class="game-mode-btn" data-mode="ai">VS AI</button>
+                        <button class="game-mode-btn" data-mode="online">Online</button>
+                    </div>
+                </div>
+                <div class="menu-section">
+                    <button id="newGameBtn">Új játék</button>
+                </div>
+                <div class="menu-section">
+                    <button id="deckToggleBtn">▼ Pakli</button>
+                    <div id="deckInput" class="deck-input" style="display: none;">
+                        <textarea id="deckTextarea" placeholder="Pakli formátum: [szám] [lapnév]&#10;Példa:&#10;2 Spaonter&#10;1 Lángtáncoltatás" rows="10" cols="50"></textarea>
+                        <button id="loadDeckBtn">Pakli betöltése</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <main class="zones">
             <!-- Ellenfél területe -->
             <section class="zone" aria-labelledby="enemyJelenCim">
@@ -71,15 +103,34 @@
                     </div>
                     <div class="controls">
                         <button id="playerSwitchBtn">Játékoscsere</button>
-                        <input type="text" id="cardNameInput" placeholder="Kártya neve">
-                        <button id="addCardBtn">Hozzáad</button>
-                        <button id="newGameBtn">Új játék</button>
                         <button id="passBtn">Passz</button>
-                        <button id="deckToggleBtn">▼ Pakli</button>
                     </div>
                     <div id="deckInput" class="deck-input" style="display: none;">
                         <textarea id="deckTextarea" placeholder="Pakli formátum: [szám] [lapnév]&#10;Példa:&#10;2 Spaonter&#10;1 Lángtáncoltatás" rows="10" cols="50"></textarea>
                         <button id="loadDeckBtn">Pakli betöltése</button>
+                    </div>
+                    <div id="menuPanel" class="menu-panel" style="display: none;">
+                        <div class="menu-content">
+                            <h3>Menü</h3>
+                            <div class="menu-section">
+                                <input type="text" id="cardNameInput" placeholder="Kártya neve">
+                                <button id="addCardBtn">Hozzáad</button>
+                            </div>
+                            <div class="menu-section">
+                                <label>Játékmód:</label>
+                                <select id="gameModeSelect">
+                                    <option value="local" selected>Lokális</option>
+                                    <option value="ai">VS AI</option>
+                                    <option value="online">Online</option>
+                                </select>
+                            </div>
+                            <div class="menu-section">
+                                <button id="newGameBtn">Új játék</button>
+                            </div>
+                            <div class="menu-section">
+                                <button id="deckToggleBtn">▼ Pakli</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -134,6 +185,7 @@
 
     <script src="helper.js"></script>
     <script src="eventHandler.js"></script>
+    <script src="enemyAI.js"></script>
     <script src="jatekszabalyFigyelok.js"></script>
     <script src="gameFlow.js"></script>
     <script src="gameEffect.js"></script>

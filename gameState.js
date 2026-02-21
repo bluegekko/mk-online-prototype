@@ -21,6 +21,7 @@ window.gameState = {
 
     // Játékállapot
     state: {
+        mode: 'local',
         playerSpaces: {},
         playerAttributes: {},
         fazis: {

@@ -246,6 +246,9 @@ gameUi = {
             passzBtn.disabled = gameState.state.valasztasFolyamatban || 
                                gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos;
         }
+        
+        // AI check
+        enemyAI.checkAndAct();
 
         // Nyitott panel frissítése
         const existingPanel = document.querySelector('.space-panel');
@@ -326,6 +329,28 @@ gameUi = {
                     document.getElementById('tutorialPopup').classList.add('expanded');
                 }
             };
+            
+            // Menu popup click handler
+            document.getElementById('menuPopup').onclick = (e) => {
+                if (!e.target.closest('.menu-content')) {
+                    document.getElementById('menuPopup').classList.toggle('expanded');
+                }
+            };
+            
+            // Menu close button
+            document.querySelector('.menu-close').onclick = (e) => {
+                e.stopPropagation();
+                document.getElementById('menuPopup').classList.remove('expanded');
+            };
+            
+            // Game mode buttons
+            document.querySelectorAll('.game-mode-btn').forEach(btn => {
+                btn.onclick = () => {
+                    document.querySelectorAll('.game-mode-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    gameState.state.mode = btn.dataset.mode;
+                };
+            });
             
             this.deckListenersAdded = true;
         }
