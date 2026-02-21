@@ -77,7 +77,6 @@ helper = {
     resetManoverState: function() {
         return {
             aktualisManover: null,
-            folyamatban: false,
             kezdemenyezoJatekos: null,
             manoverezoJatekos: null,
             szinhely: null,

@@ -25,6 +25,25 @@ eventHandler = {
     },
 
     eventResolver: {
+        "aktívjátékos" : function(esemeny) {
+            const playerMp = gameState.state.playerAttributes.player.mp;
+            const opponentMp = gameState.state.playerAttributes.opponent.mp;
+            
+            if (playerMp > opponentMp) {
+                gameState.state.fazis.prioritas = 'player';
+            } else if (opponentMp > playerMp) {
+                gameState.state.fazis.prioritas = 'opponent';
+            } else {
+                // Egyenlő MP esetén a régebben MP-kötött manővert végrehajtó játékos
+                const legutobbiMpKotottManover = gameState.state.fazis.legutobbiMpKotottManover;
+                
+                if (legutobbiMpKotottManover === 'player') {
+                    gameState.state.fazis.prioritas = 'opponent';
+                } else {
+                    gameState.state.fazis.prioritas = 'player';
+                }
+            }
+        },
         "laphúzás": function(esemeny) {
             for (let i = 0; i < esemeny.szam; i++) {
                 gameAction.laphuzas(esemeny.player);

@@ -33,7 +33,9 @@ window.gameState = {
             valasztas: false,
             prioritas: 'player',
             legutobbiMpKotottManover: null,
+            egypassz: false,
         },
+        aktualisJatekos: 'player',
         eventSor: [],
         figyelok: [],
         szamolasModositok: [],
@@ -52,8 +54,10 @@ window.gameState = {
             valasztasfolyamatban: false,
             prioritas: 'player',
             legutobbiMpKotottManover: null,
+            egypassz: false,
         };
 
+        this.state.aktualisJatekos = 'player',
         this.state.eventSor = [];
         this.state.figyelok = [];
         this.state.szamolasModositok = [];
@@ -117,7 +121,7 @@ window.gameState = {
                 tipus: "kártyahozzáadás",
                 nev: nev,
                 player: 'opponent',
-                hova: 'manover'
+                hova: 'sor'
             });
         });
 
@@ -135,6 +139,15 @@ window.gameState = {
                 tipus: "kártyahozzáadás",
                 nev: nev,
                 player: 'player',
+                hova: 'kuldetesek'
+            });
+        });
+
+        ['Megkerülő hadmozdulat'].forEach(nev => {
+            this.state.eventSor.push({
+                tipus: "kártyahozzáadás",
+                nev: nev,
+                player: 'opponent',
                 hova: 'kuldetesek'
             });
         });

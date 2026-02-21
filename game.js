@@ -10,9 +10,7 @@
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space') {
                 e.preventDefault();
-                if (!gameState.state.valasztasFolyamatban) {
-                    passz();
-                }
+                passz();
             }
             if (e.code === 'Enter' && document.activeElement.id === 'cardNameInput') {
                 e.preventDefault();
@@ -32,10 +30,9 @@
         gameUi.render();
     }
 
-    // Új kör kezdése
     function passz() {
-        if (gameState.state.valasztasFolyamatban) return;
-        gameFlow.duplapassz(gameState.state);
+        if (gameState.state.valasztasFolyamatban || gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos) return;
+        gameFlow.passz();
         gameUi.render();
     }
 
@@ -44,7 +41,7 @@
         const input = document.getElementById('cardNameInput');
         const cardName = input.value.trim();
         if (cardName) {
-            gameAction.kartyaHozzaadas(cardName, 'player', 'kez')
+            gameAction.kartyaHozzaadas(cardName, gameState.state.aktualisJatekos, 'kez')
         }
         input.value = '';
         gameUi.render();

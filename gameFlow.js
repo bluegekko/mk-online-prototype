@@ -1,6 +1,18 @@
 gameFlow = {
     // TODO sikeresség
 
+    passz: function() {
+        const fazis = gameState.state.fazis;
+        if (gameState.state.fazis.egypassz) {
+            this.duplapassz();
+            eventHandler.resolve({tipus: "aktívjátékos"});
+            gameState.state.fazis.egypassz = false;
+        } else {
+            gameState.state.fazis.egypassz = true;
+            gameState.state.fazis.prioritas = helper.ellenfel(gameState.state.fazis.prioritas);
+        }
+    },
+
     duplapassz: function() {
         const fazis = gameState.state.fazis;
         const idofonal = fazis.idofonal;
@@ -9,8 +21,7 @@ gameFlow = {
         
         if (idofonal.folyamatban) {
             if (idofonal.hatasok.length > 0) {
-                gameState.state.eventSor.push({tipus: "időfonalvisszafejtés"})
-                eventHandler.resolve();
+                eventHandler.resolve({tipus: "időfonalvisszafejtés"});
                 return;
             } else {
                 if (!gameFlow.mpKotottFazis(aktualisFazis)) {                    
@@ -21,16 +32,16 @@ gameFlow = {
                 return;
             }
         }
-        if (aktualisFazis.nev = 'Manőverek fázisa') {
+        if (aktualisFazis.nev === 'Manőverek fázisa') {
             gameFlow.kovetkezoFazis();
             return;
         }
         // TODO harci körök vége mindkét játékostól
-        if (aktualisFazis.nev = 'Harci körök' && manoverState.harciKorokVege) {
+        if (aktualisFazis.nev === 'Harci körök' && manoverState.harciKorokVege) {
             gameFlow.kovetkezoFazis();
             return;
         } 
-        if (aktualisFazis.nev = 'Harci körök' && !manoverState.harciKorokVege) {
+        if (aktualisFazis.nev === 'Harci körök' && !manoverState.harciKorokVege) {
             gameFlow.ujHarciKor();
         }
     },
@@ -169,6 +180,7 @@ gameFlow = {
         fazisEleje: function() {
             const manoverState = gameState.state.fazis.manover;
             manoverState.manoverezoJatekos = manoverState.kezdemenyezoJatekos;
+            gameFlow.idofonalNyitas(null);
         },
         fazisVege: function() {},
     },
@@ -192,7 +204,9 @@ gameFlow = {
                 return gameFlow.manoverekFazisa;
             }
         },
-        fazisEleje: function() {},
+        fazisEleje: function() {
+            gameFlow.idofonalNyitas(null);
+        },
         fazisVege: function() {
             // TODO manőver vége, ha üres a csapat
             // TODO manőver vége, ha üres az akadályozó csapat, és ilyenkor sikeres

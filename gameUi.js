@@ -27,7 +27,7 @@ gameUi = {
             </div>
         `;
 
-        const kivalasztas = gameState.state.playerAttributes['player'].kivalasztas;
+        const kivalasztas = gameState.state.playerAttributes[gameState.state.aktualisJatekos].kivalasztas;
         if (kivalasztas.includes(card)) {
             cardDiv.classList.add('selected');
             console.log("kivalasztott", card)
@@ -48,7 +48,7 @@ gameUi = {
             gameUi.render();
         };
 
-        if (space === 'kez' && player == card.tulajdonos) {
+        if (space === 'kez' && player === gameState.state.aktualisJatekos) {
             const button = document.createElement('button');
             button.textContent = 'Leidéz';
             // TODO celpontValidalas ellenorzese
@@ -60,7 +60,7 @@ gameUi = {
             cardDiv.appendChild(button);
         }
 
-        if (space === 'toronyszintek' && player === helper.ellenfel('player')) {
+        if (space === 'toronyszintek' && player === helper.ellenfel(gameState.state.aktualisJatekos)) {
             const ellenfelToronyszintek = gameState.state.playerSpaces[player]['toronyszintek'];
             if (ellenfelToronyszintek.length > 0 && ellenfelToronyszintek[0] === card) {
                 const ostromButton = document.createElement('button');
@@ -72,7 +72,7 @@ gameUi = {
                         })
                 ostromButton.onclick = (e) => {
                     e.stopPropagation();
-                    gameAction.ostrom('player', card);
+                    gameAction.ostrom(gameState.state.aktualisJatekos, card);
                 };
                 cardDiv.appendChild(ostromButton);
             }
@@ -87,7 +87,7 @@ gameUi = {
             });
             kuldetesButton.onclick = (e) => {
                 e.stopPropagation();
-                gameAction.kuldetesMegoldas(player, card);
+                gameAction.kuldetesMegoldas(gameState.state.aktualisJatekos, card);
             };
             cardDiv.appendChild(kuldetesButton);
             
@@ -144,7 +144,7 @@ gameUi = {
         }
 
         // Add buttons for activatable effects
-        if (card.hatasok) {
+        if (card.hatasok && card.tulajdonos === gameState.state.aktualisJatekos) {
             card.hatasok.forEach((hatas, index) => {
                 if (abilityFunctions.aktivizalhato(hatas)) {
                     const effectButton = document.createElement('button');
@@ -165,7 +165,7 @@ gameUi = {
         }
 
         // Leidéző gomb
-        if (card.laptipus === 'Kalandozó' && (space === 'sor' || space === 'manover')) {
+        if (card.laptipus === 'Kalandozó' && (space === 'sor' || space === 'manover') && card.tulajdonos === gameState.state.aktualisJatekos) {
             const leidezoButton = document.createElement('button');
             leidezoButton.textContent = 'Leidéző';
             leidezoButton.className = 'leidezo-button';
@@ -235,15 +235,16 @@ gameUi = {
 
     render: function() {    
         // MP megjelenítése
-        console.log('Current MP:', gameState.state.playerAttributes['player'].mp)
+        console.log('Current MP:', gameState.state.playerAttributes[gameState.state.aktualisJatekos].mp)
         console.log('Current phase:', gameState.state.fazis.aktualisFazis);
-        document.getElementById('mp').textContent = gameState.state.playerAttributes['player'].mp;
+        document.getElementById('mp').textContent = gameState.state.playerAttributes[gameState.state.aktualisJatekos].mp;
         document.getElementById('aktualisFazis').textContent = gameState.state.fazis.aktualisFazis.nev;
 
         // Passz gomb disabled állapota
         const passzBtn = document.getElementById('passBtn');
         if (passzBtn) {
-            passzBtn.disabled = gameState.state.valasztasFolyamatban || false;
+            passzBtn.disabled = gameState.state.valasztasFolyamatban || 
+                               gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos;
         }
 
         // Nyitott panel frissítése
@@ -255,7 +256,7 @@ gameUi = {
                 if (match) {
                     const playerName = match[1];
                     const displayName = match[2];
-                    const player = playerName === 'Saját' ? 'player' : 'opponent';
+                    const player = playerName === 'Saját' ? gameState.state.aktualisJatekos : helper.ellenfel(gameState.state.aktualisJatekos);
                     const spaceMap = {'Mélység': 'melyseg', 'Múlt': 'mult', 'Jövő': 'jovo', 'Kéz': 'kez', 'Megoldott küldetések': 'megoldottkuldetesek'};
                     const spaceName = spaceMap[displayName];
                     const cards = gameState.state.playerSpaces[player][spaceName];
@@ -295,6 +296,19 @@ gameUi = {
             document.getElementById('loadDeckBtn').onclick = () => {
                 this.loadDeckFromText();
             };
+            
+            document.getElementById('playerSwitchBtn').onclick = () => {
+                gameState.state.aktualisJatekos = gameState.state.aktualisJatekos === 'player' ? 'opponent' : 'player';
+                this.render();
+            };
+            
+            // Ctrl key for player switching
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && !e.repeat) {
+                    gameState.state.aktualisJatekos = gameState.state.aktualisJatekos === 'player' ? 'opponent' : 'player';
+                    this.render();
+                }
+            });
             
             // Prevent space key from passing when typing in deck textarea
             document.getElementById('deckTextarea').onkeydown = (e) => {
@@ -336,24 +350,31 @@ gameUi = {
         }
     
         // Játékterek frissítése
-        gameState.players.forEach(player => {
+        const aktualisJatekos = gameState.state.aktualisJatekos || 'player';
+        
+        // Player mapping: melyik játékos kártyái jelenjenek meg melyik UI pozícióban
+        const uiPlayers = aktualisJatekos === 'opponent' ? 
+            ['opponent', 'player'] : ['player', 'opponent'];
+        
+        uiPlayers.forEach((actualPlayer, index) => {
+            const uiPrefix = index === 0 ? 'player' : 'opponent';
+            
             Object.keys(gameState.baseSpaces).forEach(space => {
-                const prefix = player === 'player' ? 'player' : 'opponent';
-                const containerId = `${prefix}-${space}`;
+                const containerId = `${uiPrefix}-${space}`;
                 
                 const container = document.getElementById(containerId);
                 if (!container) {
                     return;
                 }
     
-                const cards = gameState.state.playerSpaces[player][space];
+                const cards = gameState.state.playerSpaces[actualPlayer][space];
             
                 // Tartalom frissítése
                 container.innerHTML = '';
                 
                 if (cards && cards.length > 0) {
                     cards.forEach(card => {
-                        const cardElement = this.createCardElement(card, player, space);
+                        const cardElement = this.createCardElement(card, actualPlayer, space);
                         container.appendChild(cardElement);
                     });
                 }
@@ -375,7 +396,7 @@ gameUi = {
                 
                 // Küldetések subzone megjelenítése/elrejtése
                 if (space === 'kuldetesek') {
-                    const subzoneId = `${prefix}-kuldetesekSubzone`;
+                    const subzoneId = `${uiPrefix}-kuldetesekSubzone`;
                     const subzone = document.getElementById(subzoneId);
                     if (subzone) {
                         subzone.style.display = cards && cards.length > 0 ? 'block' : 'none';
@@ -384,7 +405,7 @@ gameUi = {
             });
 
             // Mélység, Múlt, Jövő gombok hozzáadása
-            const jelenZone = player === 'player' ? 
+            const jelenZone = uiPrefix === 'player' ? 
                 document.querySelector('.zone[aria-labelledby="jelenCim"]') :
                 document.querySelector('.zone[aria-labelledby="enemyJelenCim"]');
             
@@ -399,16 +420,16 @@ gameUi = {
                 
                 buttonsContainer.innerHTML = '';
                 
-                const spaces = player === 'player' ? ['megoldottkuldetesek', 'jovo', 'mult', 'melyseg'] : ['megoldottkuldetesek', 'kez', 'jovo', 'mult', 'melyseg'];
+                const spaces = uiPrefix === 'player' ? ['megoldottkuldetesek', 'jovo', 'mult', 'melyseg'] : ['megoldottkuldetesek', 'kez', 'jovo', 'mult', 'melyseg'];
                 const spaceNames = {'melyseg': 'Mélység', 'mult': 'Múlt', 'jovo': 'Jövő', 'kez': 'Kéz', 'megoldottkuldetesek': 'Megoldott küldetések'};
                 
                 spaces.forEach(spaceName => {
                     const button = document.createElement('button');
-                    const count = gameState.state.playerSpaces[player][spaceName].length;
+                    const count = gameState.state.playerSpaces[actualPlayer][spaceName].length;
                     button.textContent = `${spaceNames[spaceName]} (${count})`;
                     button.style.cssText = 'font-size: 10px; padding: 4px 6px; background: #4a90e2; color: white; border: 1px solid #357abd; border-radius: 3px; cursor: pointer;';
                     button.onclick = () => {
-                        this.showSpaceCards(player, spaceName, spaceNames[spaceName]);
+                        this.showSpaceCards(actualPlayer, spaceName, spaceNames[spaceName]);
                     };
                     buttonsContainer.appendChild(button);
                 });
@@ -522,7 +543,7 @@ gameUi = {
 
     showSpaceCards: function(player, spaceName, displayName) {
         const cards = gameState.state.playerSpaces[player][spaceName];
-        const playerName = player === 'player' ? 'Saját' : 'Ellenfél';
+        const playerName = player === gameState.state.aktualisJatekos ? 'Saját' : 'Ellenfél';
         const title = `${playerName} - ${displayName} (${cards.length})`;
         
         // Toggle működés
