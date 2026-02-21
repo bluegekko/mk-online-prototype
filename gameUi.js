@@ -318,6 +318,18 @@ gameUi = {
                 e.stopPropagation();
             };
             
+            // Pass button and space key handling
+            document.getElementById('passBtn').onclick = () => {
+                gameAction.passz();
+            };
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    e.preventDefault();
+                    gameAction.passz();
+                }
+            });
+            
             // Tutorial close button
             document.getElementById('tutorialClose').onclick = () => {
                 document.getElementById('tutorialPopup').classList.remove('expanded');
@@ -349,6 +361,7 @@ gameUi = {
                     document.querySelectorAll('.game-mode-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     gameState.state.mode = btn.dataset.mode;
+                    this.updateOnlineButtons();
                 };
             });
             
@@ -594,6 +607,106 @@ gameUi = {
                 setTimeout(() => this.refreshPanelCards(container, cards, player, spaceName), 10);
             };
             container.appendChild(cardElement);
+        });
+    },
+    
+    updateOnlineButtons: function() {
+        const onlineSection = document.querySelector('.game-mode-buttons').parentElement;
+        let onlineButtons = onlineSection.querySelector('.online-buttons');
+        
+        if (gameState.state.mode === 'online') {
+            if (!onlineButtons) {
+                onlineButtons = document.createElement('div');
+                onlineButtons.className = 'online-buttons';
+                onlineButtons.innerHTML = `
+                    <button id="hostBtn">Hoszt</button>
+                    <button id="joinBtn">Csatlakozás</button>
+                `;
+                onlineSection.appendChild(onlineButtons);
+                
+                document.getElementById('hostBtn').onclick = () => {
+                    const hostBtn = document.getElementById('hostBtn');
+                    const joinBtn = document.getElementById('joinBtn');
+                    
+                    if (hostBtn.classList.contains('pressed')) {
+                        hostBtn.classList.remove('pressed');
+                        hostBtn.textContent = 'Hoszt';
+                        peerConnection.disconnect();
+                    } else {
+                        joinBtn.classList.remove('pressed');
+                        joinBtn.textContent = 'Csatlakozás';
+                        hostBtn.classList.add('pressed');
+                        const gameId = this.generateGameId();
+                        const displayId = gameId.replace('mk-online-', '');
+                        hostBtn.textContent = `Hoszt (${displayId})`;
+                        peerConnection.startHost(gameId);
+                    }
+                };
+                
+                document.getElementById('joinBtn').onclick = () => {
+                    const hostBtn = document.getElementById('hostBtn');
+                    const joinBtn = document.getElementById('joinBtn');
+                    
+                    if (joinBtn.classList.contains('pressed')) {
+                        joinBtn.classList.remove('pressed');
+                        joinBtn.textContent = 'Csatlakozás';
+                        peerConnection.disconnect();
+                    } else {
+                        hostBtn.classList.remove('pressed');
+                        hostBtn.textContent = 'Hoszt';
+                        joinBtn.classList.add('pressed');
+                        this.showHostList();
+                    }
+                };
+            }
+        } else {
+            if (onlineButtons) {
+                onlineButtons.remove();
+            }
+        }
+    },
+    
+    generateGameId: function() {
+        const randomIndex = Math.floor(Math.random() * cardLibrary.length);
+        return 'mk-online-' + cardLibrary[randomIndex].nev;
+    },
+    
+    showHostList: function() {
+        const panel = document.createElement('div');
+        panel.className = 'space-panel';
+        panel.innerHTML = `
+            <div class="space-panel-header">
+                <h4 class="space-panel-title">Csatlakozás játékhoz</h4>
+                <button class="space-panel-close">&times;</button>
+            </div>
+            <div class="space-panel-cards" id="hostList">
+                <input type="text" id="gameIdInput" placeholder="Játék ID (kártya neve)" style="width: 100%; margin-bottom: 10px; padding: 8px; background: #1e2440; border: 1px solid #2b335a; border-radius: 4px; color: #e6e6e6;">
+                <button id="connectBtn" style="width: 100%; padding: 8px; background: #4a90e2; border: 1px solid #357abd; color: white; border-radius: 4px; cursor: pointer;">Csatlakozás</button>
+                <p style="font-size: 12px; color: #a8a8a8; margin-top: 10px; text-align: center;">Add meg a host által megosztott kártya nevet</p>
+            </div>
+        `;
+        
+        panel.querySelector('.space-panel-close').onclick = () => {
+            panel.remove();
+            document.getElementById('joinBtn').classList.remove('pressed');
+        };
+        
+        document.body.appendChild(panel);
+        
+        document.getElementById('connectBtn').onclick = () => {
+            const gameId = document.getElementById('gameIdInput').value.trim();
+            if (gameId) {
+                const fullId = 'mk-online-' + gameId;
+                console.log('Attempting to join game:', fullId);
+                peerConnection.joinGame(fullId);
+                panel.remove();
+            }
+        };
+        
+        document.getElementById('gameIdInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('connectBtn').click();
+            }
         });
     }
 }

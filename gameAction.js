@@ -50,6 +50,7 @@ gameAction = {
     },
 
     // Kártya kijátszása kézből
+    // playeraction
     leidezesKezbol: function(player, cardId) {
         // TODO kell, hogy cardId legyen?
         card = gameState.state.playerSpaces[player].kez.find(c => c.id === cardId);
@@ -81,6 +82,7 @@ gameAction = {
         gameUi.render();
     },
 
+    // playeraction
     hatasAktivizalas: function(player, card, hatas) {
         if (!hatas) return;
         if (hatas.mp && gameState.state.playerAttributes[player].mp < helper.getValue(hatas, "mp")) return;
@@ -120,6 +122,7 @@ gameAction = {
         return { kalandozok, felszerelesek };
     },
 
+    // playeraction
     ostrom: function(player, card) {
         if (gameState.state.playerAttributes[player].mp < 2) return;
         if (gameState.state.fazis.idofonal.folyamatban) return;
@@ -154,6 +157,7 @@ gameAction = {
 
     },
 
+    // playeraction
     kuldetesMegoldas: function(player, card) {
         if (gameState.state.fazis.idofonal.folyamatban) return;
         console.log("Küldetés");
@@ -177,6 +181,13 @@ gameAction = {
         gameState.state.fazis.aktualisFazis = gameFlow.kezdemenyezoCsapatSorElhagyas;
         gameState.state.fazis.aktualisFazis.fazisEleje();
 
+        gameUi.render();
+    },
+    
+    // playeraction
+    passz: function() {
+        if (gameState.state.valasztasFolyamatban || gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos) return;
+        gameFlow.passz();
         gameUi.render();
     }
 }

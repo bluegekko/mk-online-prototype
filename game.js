@@ -3,15 +3,10 @@
     function initializeEventListeners() {
         // Vezérlő gombok eseménykezelői
         document.getElementById('newGameBtn').addEventListener('click', ujJatek);
-        document.getElementById('passBtn').addEventListener('click', passz);
         document.getElementById('addCardBtn').addEventListener('click', kartyaHozzaadas);
         
         // Billentyűzet eseménykezelő
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                passz();
-            }
             if (e.code === 'Enter' && document.activeElement.id === 'cardNameInput') {
                 e.preventDefault();
                 kartyaHozzaadas();
@@ -24,15 +19,8 @@
         });
     }
 
-    // Új játék indítása
     function ujJatek() {
         gameState.initializeState();
-        gameUi.render();
-    }
-
-    function passz() {
-        if (gameState.state.valasztasFolyamatban || gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos) return;
-        gameFlow.passz();
         gameUi.render();
     }
 
