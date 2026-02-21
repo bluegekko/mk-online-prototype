@@ -123,11 +123,12 @@ cardFactory = {
         });
         baseCard.leidezesFeltetelek.push(
             (player, card) => {
-            const leidezo = gameState.state.playerAttributes[player].leidezo;
-            if (leidezo && leidezo.helyzet !== 'Éber') return false;
-            if (!gameEffect.kasztValidalas(leidezo, card.hatasok)) return false;
-            return true;
-        });
+                const leidezo = gameState.state.playerAttributes[player].leidezo;
+                if (leidezo && leidezo.helyzet !== 'Éber') return false;
+                if (!gameEffect.kasztValidalas(leidezo, card.hatasok)) return false;
+                return true;
+            }
+        );
         return { 
             ...baseCard,
             akciotipus: params.akciotipus,

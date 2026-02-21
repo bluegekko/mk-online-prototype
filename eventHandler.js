@@ -92,30 +92,6 @@ eventHandler = {
                 } 
             }
         },
-        "sebzés": function(esemeny) {
-            for (const card of esemeny.hataskor) {
-                card.sebzes = (card.sebzes || 0) + esemeny.sebzes;
-            }
-        },
-        "lapérvényesülés": function(esemeny) {
-            if (esemeny.hatas && esemeny.hatas.szoveg) {
-                gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.forras);
-            }
-        },
-        "képességlaphatásérvényesülés": function(esemeny) {
-            gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.hatas)
-        },
-        "lapleidézés": function(esemeny) {
-            esemeny.lap.fizetes(esemeny.player);
-            gameState.state.eventSor.push({
-                tipus: "kártyamozgatás",
-                player: esemeny.player,
-                honnan: esemeny.honnan,
-                hova: "idofonal",
-                hataskor: [esemeny.lap]
-            });
-            gameFlow.idofonalNyitas();
-        },
         "kártyaválasztás": async function(esemeny) {
             const kivalasztas = gameState.state.playerAttributes['player'].kivalasztas;
             const kezdetiSzam = kivalasztas.length;
@@ -157,18 +133,15 @@ eventHandler = {
             if (gameState.state.playerAttributes[esemeny.player].mp < helper.getValue(kuldetes, "mp")) return;
             
             gameState.state.valasztasFolyamatban = true;
-            gameState.state.megoldasDontes = {
-                kuldetes: kuldetes,
-                dontes: null
-            };
+            gameState.state.megoldasDontes = null;
             gameUi.render();
             
-            while (gameState.state.megoldasDontes.dontes === null) {
+            while (gameState.state.megoldasDontes === null) {
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
             gameState.state.valasztasFolyamatban = false;
             
-            if (gameState.state.megoldasDontes.dontes === true) {
+            if (gameState.state.megoldasDontes === true) {
                 gameState.state.eventSor.push({
                     tipus: "küldetésmegoldás",
                     player: esemeny.player,
@@ -176,7 +149,7 @@ eventHandler = {
                     teljesitettFeltetelek: esemeny.teljesitettFeltetelek
                 });
             }
-            gameState.state.megoldasDontes = null;
+            gameState.state.megoldasDontes = undefined;
         },
         "küldetésmegoldás": function(esemeny) {
             gameState.state.eventSor.push({
@@ -264,6 +237,47 @@ eventHandler = {
                 });
             }
         },
+        "csatolás": function(esemeny) {
+            if (!esemeny.hova.csatoltlapok) {
+                esemeny.hova.csatoltlapok = [];
+            }
+            esemeny.hova.csatoltlapok.push(esemeny.lap);
+            esemeny.lap.csatoltHely = esemeny.hova;
+        },
+        "akadálylapcsatolás": function(esemeny) {
+            if (gameEffect.akadalylapCsatolasValidalas(esemeny.hova)) {
+                gameState.state.eventSor.push({
+                    tipus: "csatolás",
+                    lap: esemeny.lap,
+                    hova: esemeny.hova
+                });
+                return;
+            }
+        },
+        "sebzés": function(esemeny) {
+            for (const card of esemeny.hataskor) {
+                card.sebzes = (card.sebzes || 0) + esemeny.sebzes;
+            }
+        },
+        "lapérvényesülés": function(esemeny) {
+            if (!(esemeny.forras.laptipus === "Akadálylap" && esemeny.forras.akadalylapmod === "csatolás") && esemeny.hatas && esemeny.hatas.szoveg) {
+                gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.forras);
+            }
+        },
+        "képességlaphatásérvényesülés": function(esemeny) {
+            gameEffect[esemeny.hatas.szoveg].ervenyesul(esemeny.hatas)
+        },
+        "lapleidézés": function(esemeny) {
+            esemeny.lap.fizetes(esemeny.player);
+            gameState.state.eventSor.push({
+                tipus: "kártyamozgatás",
+                player: esemeny.player,
+                honnan: esemeny.honnan,
+                hova: "idofonal",
+                hataskor: [esemeny.lap]
+            });
+            gameFlow.idofonalNyitas();
+        },
         "időfonalvisszafejtés": function(esemeny) {
             const fazis = gameState.state.fazis;
             const idofonal = fazis.idofonal;
@@ -271,6 +285,15 @@ eventHandler = {
                 aktualisHatas = idofonal.hatasok.at(-1);
                 console.log(aktualisHatas)
                 if (aktualisHatas.isCard) {
+                    if (aktualisHatas.laptipus === 'Akadálylap' && aktualisHatas.akadalylapmod === "csatolás") {
+                        gameState.state.eventSor.push({
+                            tipus: "akadálylapcsatolás",
+                            lap: aktualisHatas,
+                            hova: aktualisHatas.csatolas
+                        });
+                    }
+
+                     // TODO akadálylap múltba menjen, ha nem lehet csatolni
                     gameState.state.eventSor.push({
                         tipus: "kártyamozgatás",
                         player: aktualisHatas.tulajdonos,

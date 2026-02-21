@@ -52,9 +52,9 @@ gameEffect = {
         kivalasztas = gameState.state.playerAttributes[player].kivalasztas;
         if (hatas.isCard){
             if (hatas.laptipus === 'Akciólap' && hatas.sebzes !== undefined) {
-                    if (!gameEffect.sebzoAkciolapCelpontValidalas(kivalasztas)) return false;
-                    hatas.sebzesCelpont = kivalasztas[0];
-                    kivalasztas = kivalasztas.slice(1);
+                if (!gameEffect.sebzoAkciolapCelpontValidalas(kivalasztas)) return false;
+                hatas.sebzesCelpont = kivalasztas[0];
+                kivalasztas = kivalasztas.slice(1);
             }
 
             ervenyesuloHatas = helper.ervenyesuloHatas(hatas);
@@ -72,6 +72,26 @@ gameEffect = {
             }
         }
         return false;
+    },
+
+    akadalylapCsatolasSetup: function(card, player) {
+        const kivalasztas = gameState.state.playerAttributes[player].kivalasztas;
+        if (card.laptipus !== 'Akadálylap') return true;
+        if (card.laptipus === 'Akadálylap' && card.akadalylapmod === "csatolás" &&
+                kivalasztas.length > 0 && this.akadalylapCsatolasValidalas(kivalasztas[0])) {
+            card.csatolas = kivalasztas[0];
+            return true;
+        }
+        return false;
+    },
+
+    akadalylapCsatolasValidalas: function(hova) {
+        if (!hova || !hova.hatasok) return false;
+        const akadalyokHatas = hova.hatasok.find(h => h.szoveg && /^AKADÁLYOK \d+$/.test(h.szoveg));
+        if (!akadalyokHatas) return false;
+        const maxAkadalyok = parseInt(akadalyokHatas.szoveg.match(/\d+/)[0]);
+        const jelenlegiAkadalyok = (hova.csatoltlapok || []).length;
+        return jelenlegiAkadalyok < maxAkadalyok;
     },
 
     "Célpont kalandozó kap 1 alapszintet." : {

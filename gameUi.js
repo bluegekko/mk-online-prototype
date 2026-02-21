@@ -18,6 +18,12 @@ gameUi = {
                 ${card.fal != null ? `<div class="fal">FAL: ${helper.getValue(card, "fal")}</div>` : ''}
                 ${card.helyzet ? `<div class="helyzet">Helyzet: ${card.helyzet}</div>` : ''}
                 ${card.dp != null ? `<div class="dp">DP: ${helper.getValue(card, "dp")}</div>` : ''}
+                ${card.csatoltlapok && card.csatoltlapok.length > 0 ? `
+                    <div class="csatolt-lapok" onclick="gameUi.showCsatoltLapokPanel(event, '${card.id}')">
+                        Csatolt lapok (${card.csatoltlapok.length}):<br>
+                        ${card.csatoltlapok.map(lap => lap.nev).join('<br>')}
+                    </div>
+                ` : ''}
             </div>
         `;
 
@@ -118,13 +124,12 @@ gameUi = {
             }
             
             // Megoldásdöntés UI
-            const megoldasDontes = gameState.state.megoldasDontes;
-            if (megoldasDontes && megoldasDontes.kuldetes === card) {
+            if (gameState.state.megoldasDontes === null && gameState.state.fazis.manover.szinhely === card) {
                 const megoldBtn = document.createElement('button');
                 megoldBtn.textContent = 'Megoldja';
                 megoldBtn.onclick = (e) => {
                     e.stopPropagation();
-                    megoldasDontes.dontes = true;
+                    gameState.state.megoldasDontes = true;
                 };
                 cardDiv.appendChild(megoldBtn);
                 
@@ -132,7 +137,7 @@ gameUi = {
                 nemMegoldBtn.textContent = 'Nem oldja meg';
                 nemMegoldBtn.onclick = (e) => {
                     e.stopPropagation();
-                    megoldasDontes.dontes = false;
+                    gameState.state.megoldasDontes = false;
                 };
                 cardDiv.appendChild(nemMegoldBtn);
             }
@@ -195,6 +200,37 @@ gameUi = {
             <div class="card-header">${hatas.kiirtnev || 'Hatás'}</div>
         `;
         return hatasDiv;
+    },
+
+    showCsatoltLapokPanel: function(event, cardId) {
+        event.stopPropagation();
+        const card = this.findCardById(cardId);
+        if (!card || !card.csatoltlapok) return;
+        
+        const title = `Csatolt lapok - ${card.nev} (${card.csatoltlapok.length})`;
+        
+        // Toggle működés
+        const existingPanel = document.querySelector('.space-panel');
+        if (existingPanel) {
+            const existingTitle = existingPanel.querySelector('.space-panel-title').textContent;
+            if (existingTitle.startsWith(`Csatolt lapok - ${card.nev}`)) {
+                existingPanel.remove();
+                return;
+            }
+        }
+        
+        this.showPanel(title, card.csatoltlapok, card.tulajdonos, 'panel');
+    },
+
+    findCardById: function(cardId) {
+        for (const player of gameState.players) {
+            for (const space of Object.keys(gameState.baseSpaces)) {
+                const cards = gameState.state.playerSpaces[player][space];
+                const card = cards.find(c => c.id === cardId);
+                if (card) return card;
+            }
+        }
+        return null;
     },
 
     render: function() {    
@@ -380,6 +416,75 @@ gameUi = {
         })
     },
 
+    showPanel: function(title, cards, player, spaceName) {
+        // Meglévő panel eltávolítása
+        const existingPanel = document.querySelector('.space-panel');
+        if (existingPanel) {
+            existingPanel.remove();
+        }
+        
+        // Új panel létrehozása
+        const panel = document.createElement('div');
+        panel.className = 'space-panel';
+        
+        const header = document.createElement('div');
+        header.className = 'space-panel-header';
+        
+        const titleElement = document.createElement('h4');
+        titleElement.className = 'space-panel-title';
+        titleElement.textContent = title;
+        
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'space-panel-close';
+        closeBtn.textContent = '×';
+        closeBtn.onclick = () => {
+            panel.remove();
+            gameUi.render();
+        };
+        
+        header.appendChild(titleElement);
+        header.appendChild(closeBtn);
+        panel.appendChild(header);
+        
+        const cardsContainer = document.createElement('div');
+        cardsContainer.className = 'space-panel-cards';
+        
+        if (cards.length === 0) {
+            const emptyMsg = document.createElement('p');
+            emptyMsg.className = 'space-panel-empty';
+            emptyMsg.textContent = 'Nincs lap ebben a területben.';
+            cardsContainer.appendChild(emptyMsg);
+        } else {
+            cards.forEach(card => {
+                const cardElement = this.createCardElement(card, player, spaceName);
+                if (spaceName !== 'panel') {
+                    const originalOnClick = cardElement.onclick;
+                    cardElement.onclick = () => {
+                        originalOnClick();
+                        setTimeout(() => this.refreshPanelCards(cardsContainer, cards, player, spaceName), 10);
+                    };
+                }
+                cardsContainer.appendChild(cardElement);
+            });
+        }
+        
+        panel.appendChild(cardsContainer);
+        document.body.appendChild(panel);
+        
+        // Panel bezárása kattintásra a játék területén
+        const closeOnClickOutside = (e) => {
+            if (e.target && e.target.nodeType === Node.ELEMENT_NODE && !panel.contains(e.target)) {
+                panel.remove();
+                document.querySelector('.container').removeEventListener('click', closeOnClickOutside);
+                gameUi.render();
+            }
+        };
+        
+        setTimeout(() => {
+            document.querySelector('.container').addEventListener('click', closeOnClickOutside);
+        }, 100);
+    },
+
     loadDeckFromText: function() {
         const deckText = document.getElementById('deckTextarea').value;
         const lines = deckText.split('\n').filter(line => line.trim());
@@ -418,91 +523,19 @@ gameUi = {
     showSpaceCards: function(player, spaceName, displayName) {
         const cards = gameState.state.playerSpaces[player][spaceName];
         const playerName = player === 'player' ? 'Saját' : 'Ellenfél';
+        const title = `${playerName} - ${displayName} (${cards.length})`;
         
-        // Meglévő panel eltávolítása
+        // Toggle működés
         const existingPanel = document.querySelector('.space-panel');
         if (existingPanel) {
             const existingTitle = existingPanel.querySelector('.space-panel-title').textContent;
-            const currentTitle = `${playerName} - ${displayName} (${cards.length})`;
             if (existingTitle.startsWith(`${playerName} - ${displayName}`)) {
                 existingPanel.remove();
                 return;
             }
-            existingPanel.remove();
         }
         
-        // Új panel létrehozása
-        const panel = document.createElement('div');
-        panel.className = 'space-panel';
-        
-        const header = document.createElement('div');
-        header.className = 'space-panel-header';
-        
-        const title = document.createElement('h4');
-        title.className = 'space-panel-title';
-        title.textContent = `${playerName} - ${displayName} (${cards.length})`;
-        
-        const closeBtn = document.createElement('button');
-        closeBtn.className = 'space-panel-close';
-        closeBtn.textContent = '×';
-        closeBtn.onclick = () => {
-            panel.remove();
-            gameUi.render();
-        };
-        
-        header.appendChild(title);
-        header.appendChild(closeBtn);
-        panel.appendChild(header);
-        
-        const cardsContainer = document.createElement('div');
-        cardsContainer.className = 'space-panel-cards';
-        
-        if (cards.length === 0) {
-            const emptyMsg = document.createElement('p');
-            emptyMsg.className = 'space-panel-empty';
-            emptyMsg.textContent = 'Nincs lap ebben a területben.';
-            cardsContainer.appendChild(emptyMsg);
-        } else {
-            cards.forEach(card => {
-                const cardElement = this.createCardElement(card, player, spaceName);
-                // Panel frissítése kiválasztás után
-                const originalOnClick = cardElement.onclick;
-                cardElement.onclick = () => {
-                    originalOnClick();
-                    // Panel tartalomának frissítése
-                    setTimeout(() => {
-                        cardsContainer.innerHTML = '';
-                        cards.forEach(c => {
-                            const updatedElement = this.createCardElement(c, player, spaceName);
-                            const updatedOriginalOnClick = updatedElement.onclick;
-                            updatedElement.onclick = () => {
-                                updatedOriginalOnClick();
-                                setTimeout(() => this.refreshPanelCards(cardsContainer, cards, player, spaceName), 10);
-                            };
-                            cardsContainer.appendChild(updatedElement);
-                        });
-                    }, 10);
-                };
-                cardsContainer.appendChild(cardElement);
-            });
-        }
-        
-        panel.appendChild(cardsContainer);
-        document.body.appendChild(panel);
-        
-        // Panel bezárása kattintásra a játék területén
-        const closeOnClickOutside = (e) => {
-            if (e.target && e.target.nodeType === Node.ELEMENT_NODE && !panel.contains(e.target)) {
-                panel.remove();
-                document.querySelector('.container').removeEventListener('click', closeOnClickOutside);
-                gameUi.render();
-            }
-        };
-        
-        // Kis késleltetés, hogy ne zárja be azonnal
-        setTimeout(() => {
-            document.querySelector('.container').addEventListener('click', closeOnClickOutside);
-        }, 100);
+        this.showPanel(title, cards, player, spaceName);
     },
 
     refreshPanelCards: function(container, cards, player, spaceName) {

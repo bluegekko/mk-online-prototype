@@ -56,8 +56,14 @@ gameAction = {
         console.log("lap kijátszása: ", card)
         if (!card.leidezheto(player)) return;
 
+        if (card.laptipus === "Akadálylap") {
+            card.akadalylapmod = "csatolás";
+        }
+
         // Hatás célpont választás ellenőrzése
-        if (!gameEffect.celpontValasztas(card, player)) {
+        // Célpont beállítása
+        if ((card.laptipus !== "Akadálylap" && !gameEffect.celpontValasztas(card, player)) || !gameEffect.akadalylapCsatolasSetup(card, player)) {
+            card.akadalylapmod = undefined;
             return;
         }
 
