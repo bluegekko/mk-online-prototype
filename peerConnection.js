@@ -18,6 +18,7 @@ const peerConnection = {
             
             conn.on('data', (data) => {
                 console.log('Received:', data);
+                messaging.processMessageWithRender(data);
             });
             
             conn.on('open', () => {
@@ -36,10 +37,14 @@ const peerConnection = {
             
             this.connection.on('open', () => {
                 console.log('Successfully connected to host:', hostId);
+                gameState.state.aktualisJatekos = 'opponent';
+                console.log('Set aktualisJatekos to:', gameState.state.aktualisJatekos);
+                gameUi.render();
             });
             
             this.connection.on('data', (data) => {
                 console.log('Received from host:', data);
+                messaging.processMessageWithRender(data);
             });
             
             this.connection.on('error', (err) => {
@@ -50,7 +55,10 @@ const peerConnection = {
     
     sendMessage: function(data) {
         if (this.connection && this.connection.open) {
+            console.log('Sending message:', data);
             this.connection.send(data);
+        } else {
+            console.warn('Cannot send message - no active connection:', data);
         }
     },
     

@@ -63,17 +63,20 @@ messaging = {
     },
 
     // Create message for selection update
-    createKivalasztasUpdateMessage: function(player, cardIds) {
+    createKivalasztasUpdateMessage: function(player, cardIds, leidezo) {
         return {
             type: this.messageTypes.KIVALASZTAS_UPDATE,
             player: player,
-            cardIds: cardIds,
+            cardIds: cardIds.map(card => card.id),
+            leidezoPeerId: leidezo ? leidezo.id : null,
             sequence: ++this.sequenceNumber
         };
     },
 
     // Process incoming message
     processMessage: function(message) {
+        console.log('Processing message:', message.type, message);
+        
         if (message.sequence !== this.expectedSequence) {
             console.error(`Message sequence error. Expected: ${this.expectedSequence}, Got: ${message.sequence}`);
             return false;
@@ -83,36 +86,55 @@ messaging = {
         
         switch(message.type) {
             case this.messageTypes.LEIDEZESKEZ:
-                gameAction.leidezesKezbol(message.player, message.cardId);
+                const leidezesCard = this.findCardById(message.cardId);
+                if (leidezesCard) {
+                    console.log('Executing leidezesKezbol for:', message.player, leidezesCard.nev);
+                    gameAction.leidezesKezbol(message.player, leidezesCard);
+                }
                 break;
             case this.messageTypes.HATAS_AKTIVIZALAS:
                 const card = this.findCardById(message.cardId);
                 const hatas = card?.hatasok?.[message.hatasIndex];
                 if (card && hatas) {
+                    console.log('Executing hatasAktivizalas for:', message.player, card.nev);
                     gameAction.hatasAktivizalas(message.player, card, hatas);
                 }
                 break;
             case this.messageTypes.OSTROM:
                 const ostromCard = this.findCardById(message.cardId);
                 if (ostromCard) {
+                    console.log('Executing ostrom for:', message.player, ostromCard.nev);
                     gameAction.ostrom(message.player, ostromCard);
                 }
                 break;
             case this.messageTypes.KULDETESMEGOLDAS:
                 const questCard = this.findCardById(message.cardId);
                 if (questCard) {
+                    console.log('Executing kuldetesMegoldas for:', message.player, questCard.nev);
                     gameAction.kuldetesMegoldas(message.player, questCard);
                 }
                 break;
             case this.messageTypes.PASSZ:
-                gameAction.passz();
+                console.log('Executing passz for:', message.player);
+                gameFlow.passz();
                 break;
             case this.messageTypes.KIVALASZTAS_UPDATE:
-                this.updateKivalasztas(message.player, message.cardIds);
+                console.log('Updating kivalasztas for:', message.player);
+                this.updateKivalasztas(message.player, message.cardIds, message.leidezoPeerId);
                 break;
         }
         
+        console.log('Message processed successfully');
         return true;
+    },
+    
+    // Process message and trigger UI update
+    processMessageWithRender: function(message) {
+        const result = this.processMessage(message);
+        if (result) {
+            gameUi.render();
+        }
+        return result;
     },
 
     // Helper function to find card by ID
@@ -128,8 +150,15 @@ messaging = {
     },
 
     // Update player selection
-    updateKivalasztas: function(player, cardIds) {
+    updateKivalasztas: function(player, cardIds, leidezoPeerId) {
         const cards = cardIds.map(id => this.findCardById(id)).filter(card => card);
         gameState.state.playerAttributes[player].kivalasztas = cards;
+        
+        if (leidezoPeerId) {
+            const leidezoPeer = this.findCardById(leidezoPeerId);
+            gameState.state.playerAttributes[player].leidezo = leidezoPeer;
+        } else {
+            gameState.state.playerAttributes[player].leidezo = null;
+        }
     }
 };

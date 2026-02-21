@@ -35,9 +35,10 @@ abilityFunctions = {
     },
 
     hasznalhatoAktualisFazisban: function(hatas) {
+        /*
         if (gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos) {
             return false;
-        }
+        }*/
 
         if (hatas.isCard) {
             fazis = hatas.fazis ? hatas.fazis : abilityFunctions.fazis(helper.ervenyesuloHatas(hatas));

@@ -27,11 +27,17 @@
     // Kártya hozzáadása kézhez
     function kartyaHozzaadas() {
         const input = document.getElementById('cardNameInput');
-        const cardName = input.value.trim();
-        if (cardName) {
-            gameAction.kartyaHozzaadas(cardName, gameState.state.aktualisJatekos, 'kez')
+        const partialName = input.value.trim();
+        if (partialName) {
+            const fullCardName = cardNameHelper.findCardByPartialName(partialName);
+            if (fullCardName) {
+                input.value = fullCardName;
+                gameAction.kartyaHozzaadas(fullCardName, gameState.state.aktualisJatekos, 'kez');
+                input.value = '';
+            } else {
+                console.warn('Card not found:', partialName);
+            }
         }
-        input.value = '';
         gameUi.render();
     }
 

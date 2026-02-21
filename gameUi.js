@@ -55,7 +55,7 @@ gameUi = {
             button.disabled = !card.leidezheto(player);
             button.onclick = (e) => {
                 e.stopPropagation();
-                gameAction.leidezesKezbol(player, card.id);
+                playerActionWrapper.executeAction('leidezesKezbol', player, card);
             };
             cardDiv.appendChild(button);
         }
@@ -72,7 +72,7 @@ gameUi = {
                         })
                 ostromButton.onclick = (e) => {
                     e.stopPropagation();
-                    gameAction.ostrom(gameState.state.aktualisJatekos, card);
+                    playerActionWrapper.executeAction('ostrom', gameState.state.aktualisJatekos, card);
                 };
                 cardDiv.appendChild(ostromButton);
             }
@@ -87,7 +87,7 @@ gameUi = {
             });
             kuldetesButton.onclick = (e) => {
                 e.stopPropagation();
-                gameAction.kuldetesMegoldas(gameState.state.aktualisJatekos, card);
+                playerActionWrapper.executeAction('kuldetesMegoldas', gameState.state.aktualisJatekos, card);
             };
             cardDiv.appendChild(kuldetesButton);
             
@@ -157,7 +157,7 @@ gameUi = {
                         || (gameEffect[hatas.szoveg] && !gameEffect[hatas.szoveg].celpontValidalas(kivalasztas));
                     effectButton.onclick = (e) => {
                         e.stopPropagation();
-                        gameAction.hatasAktivizalas(player, card, hatas);
+                        playerActionWrapper.executeAction('hatasAktivizalas', player, card, hatas);
                     };
                     cardDiv.appendChild(effectButton);
                 }
@@ -247,9 +247,17 @@ gameUi = {
                                gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos;
         }
         
+        // Player switch button visibility
+        const playerSwitchBtn = document.getElementById('playerSwitchBtn');
+        if (playerSwitchBtn) {
+            playerSwitchBtn.style.display = gameState.state.mode === 'online' ? 'none' : 'block';
+        }
+        
         // AI check
-        enemyAI.checkAndAct();
-
+        if (gameState.state.mode === 'ai') {
+            enemyAI.checkAndAct();
+        }
+        
         // Nyitott panel frissítése
         const existingPanel = document.querySelector('.space-panel');
         if (existingPanel) {
@@ -320,13 +328,13 @@ gameUi = {
             
             // Pass button and space key handling
             document.getElementById('passBtn').onclick = () => {
-                gameAction.passz();
+                playerActionWrapper.executeAction('passz', gameState.state.aktualisJatekos);
             };
             
             document.addEventListener('keydown', (e) => {
-                if (e.code === 'Space') {
+                if (e.code === 'Space' && !e.target.matches('input, textarea')) {
                     e.preventDefault();
-                    gameAction.passz();
+                    playerActionWrapper.executeAction('passz', gameState.state.aktualisJatekos);
                 }
             });
             
@@ -362,6 +370,7 @@ gameUi = {
                     btn.classList.add('active');
                     gameState.state.mode = btn.dataset.mode;
                     this.updateOnlineButtons();
+                    this.render();
                 };
             });
             
@@ -636,9 +645,10 @@ gameUi = {
                         joinBtn.classList.remove('pressed');
                         joinBtn.textContent = 'Csatlakozás';
                         hostBtn.classList.add('pressed');
-                        const gameId = this.generateGameId();
-                        const displayId = gameId.replace('mk-online-', '');
-                        hostBtn.textContent = `Hoszt (${displayId})`;
+                        const randomIndex = Math.floor(Math.random() * cardLibrary.length);
+                        const originalCardName = cardLibrary[randomIndex].nev;
+                        const gameId = 'mk-online-' + this.removeAccents(originalCardName);
+                        hostBtn.textContent = `Hoszt (${originalCardName})`;
                         peerConnection.startHost(gameId);
                     }
                 };
@@ -668,7 +678,13 @@ gameUi = {
     
     generateGameId: function() {
         const randomIndex = Math.floor(Math.random() * cardLibrary.length);
-        return 'mk-online-' + cardLibrary[randomIndex].nev;
+        const cardName = cardLibrary[randomIndex].nev;
+        const normalizedName = this.removeAccents(cardName);
+        return 'mk-online-' + normalizedName;
+    },
+    
+    removeAccents: function(str) {
+        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     },
     
     showHostList: function() {
@@ -693,17 +709,31 @@ gameUi = {
         
         document.body.appendChild(panel);
         
+        // Focus on input
+        setTimeout(() => {
+            document.getElementById('gameIdInput').focus();
+        }, 100);
+        
         document.getElementById('connectBtn').onclick = () => {
-            const gameId = document.getElementById('gameIdInput').value.trim();
-            if (gameId) {
-                const fullId = 'mk-online-' + gameId;
-                console.log('Attempting to join game:', fullId);
-                peerConnection.joinGame(fullId);
-                panel.remove();
+            const input = document.getElementById('gameIdInput');
+            const partialName = input.value.trim();
+            if (partialName) {
+                const fullCardName = cardNameHelper.findCardByPartialName(partialName);
+                if (fullCardName) {
+                    const normalizedName = gameUi.removeAccents(fullCardName);
+                    input.value = fullCardName;
+                    const fullId = 'mk-online-' + normalizedName;
+                    console.log('Attempting to join game with normalized name:', fullId);
+                    peerConnection.joinGame(fullId);
+                    panel.remove();
+                } else {
+                    console.warn('Card not found:', partialName);
+                }
             }
         };
         
         document.getElementById('gameIdInput').addEventListener('keypress', (e) => {
+            e.stopPropagation();
             if (e.key === 'Enter') {
                 document.getElementById('connectBtn').click();
             }

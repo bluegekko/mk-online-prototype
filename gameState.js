@@ -58,6 +58,9 @@ window.gameState = {
             egypassz: false,
         };
 
+        this.state.fazis.aktualisFazis = gameFlow.manoverekFazisa;
+        this.state.fazis.idofonal.folyamatban = false;
+
         this.state.aktualisJatekos = 'player',
         this.state.eventSor = [];
         this.state.figyelok = [];

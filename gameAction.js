@@ -51,9 +51,7 @@ gameAction = {
 
     // Kártya kijátszása kézből
     // playeraction
-    leidezesKezbol: function(player, cardId) {
-        // TODO kell, hogy cardId legyen?
-        card = gameState.state.playerSpaces[player].kez.find(c => c.id === cardId);
+    leidezesKezbol: function(player, card) {
         console.log("lap kijátszása: ", card)
         if (!card.leidezheto(player)) return;
 
@@ -96,7 +94,6 @@ gameAction = {
         hatas.forras = card;
 
         gameFlow.idofonalNyitas(hatas)
-        gameUi.render();
     },
 
     manoverKivalasztasValidalas: function(kivalasztas, limit) {
@@ -186,8 +183,9 @@ gameAction = {
     
     // playeraction
     passz: function() {
-        if (gameState.state.valasztasFolyamatban || gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos) return;
+        if (gameState.state.valasztasFolyamatban 
+        //    || gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos
+        ) return;
         gameFlow.passz();
-        gameUi.render();
     }
 }
