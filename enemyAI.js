@@ -1,18 +1,28 @@
 enemyAI = {
-    isWaiting: false,
+    running: false,
     
-    checkAndAct: function() {
-        if (gameState.state.mode !== 'ai') return;
-        if (this.isWaiting) return;
+    start: function() {
+        if (this.running) return;
+        this.running = true;
+        this.loop();
+    },
+    
+    stop: function() {
+        this.running = false;
+    },
+    
+    loop: function() {
+        if (!this.running) return;
         
-        const aiPlayer = helper.ellenfel(gameState.state.aktualisJatekos);
-        
-        if (gameState.state.fazis.prioritas === aiPlayer) {
-            this.isWaiting = true;
-            setTimeout(() => {
+        if (gameState.state.mode === 'ai') {
+            const aiPlayer = helper.ellenfel(gameState.state.aktualisJatekos);
+            
+            if (gameState.state.fazis.prioritas === aiPlayer) {
                 gameFlow.passz();
-                this.isWaiting = false;
-            }, 1);
+                gameUi.render();
+            }
         }
+        
+        setTimeout(() => this.loop(), 1);
     }
 }

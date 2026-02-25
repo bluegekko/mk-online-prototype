@@ -167,7 +167,7 @@ gameEffect = {
                 tipus: "helyzetbeállítás",
                 forras: hatas.isCard ? hatas : hatas.forras,
                 hataskor: kalandozok,
-                helyzet: "pihenő"
+                helyzet: "Pihenő"
             });
         },
 
@@ -667,6 +667,7 @@ gameEffect = {
             
             gameState.state.eventSor.push({
                 tipus: "kártyaválasztás",
+                player: hatas.forras.tulajdonos,
                 szam: 1,
                 hataskor: varazslatok,
                 forrasesemeny: {
@@ -719,6 +720,7 @@ gameEffect = {
                         if (kalandozok.length > 0) {
                             gameState.state.eventSor.push({
                                 tipus: "kártyaválasztás",
+                                player: player,
                                 szam: 1,
                                 hataskor: kalandozok,
                                 forrasesemeny: {

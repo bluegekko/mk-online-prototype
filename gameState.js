@@ -21,7 +21,7 @@ window.gameState = {
 
     // Játékállapot
     state: {
-        mode: 'local',
+        mode: 'ai',
         playerSpaces: {},
         playerAttributes: {},
         fazis: {
@@ -31,7 +31,6 @@ window.gameState = {
                 hatasok: [],
                 valasztasfolyamatban: true,
             },
-            valasztas: false,
             prioritas: 'player',
             legutobbiMpKotottManover: null,
             egypassz: false,
@@ -65,6 +64,14 @@ window.gameState = {
         this.state.eventSor = [];
         this.state.figyelok = [];
         this.state.szamolasModositok = [];
+        this.state.valasztas = {
+                tipus: null,
+                folyamatban: false,
+                min: null,
+                max: null,
+                opciok: [],
+                valasztott: [],
+        },
 
         // Játékterek inicializálása minden játékosnak
         this.players.forEach(player => {
@@ -125,7 +132,7 @@ window.gameState = {
                 tipus: "kártyahozzáadás",
                 nev: nev,
                 player: 'opponent',
-                hova: 'sor'
+                hova: 'manover'
             });
         });
 
@@ -156,6 +163,16 @@ window.gameState = {
             });
         });
 
+        ['Lángtáncoltatás'].forEach(nev => {
+            this.state.eventSor.push({
+                tipus: "kártyahozzáadás",
+                nev: nev,
+                player: 'player',
+                hova: 'mult'
+            });
+        });
+
+
         // Toronyszintek beállítása mindkét játékosnak
         this.players.forEach(player => {
             ['Pénzesház', 'Pihenőszoba', 'Pihenőszoba'].forEach(nev => {
@@ -175,6 +192,13 @@ window.gameState = {
                 });
             });
         });
+
+        // Start AI loop if AI mode
+        if (this.state.mode === 'ai') {
+            enemyAI.start();
+        } else {
+            enemyAI.stop();
+        }
 
         jatekszabalyFigyelok.inicializalas();
 

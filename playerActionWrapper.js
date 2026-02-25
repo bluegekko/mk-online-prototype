@@ -1,6 +1,6 @@
 const playerActionWrapper = {
     // Execute player action with messaging and UI update
-    executeAction: function(actionType, player, ...params) {
+    executeAction: async function(actionType, player, ...params) {
         let message = null;
         let selectionMessage = null;
         
@@ -47,6 +47,12 @@ const playerActionWrapper = {
                 gameAction.passz();
                 if (gameState.state.mode === 'online') {
                     message = messaging.createPasszMessage(player);
+                }
+                break;
+            case 'opciovalasztas':
+                await gameAction.opciovalasztas(player);
+                if (gameState.state.mode === 'online' && player === gameState.state.aktualisJatekos) {
+                    message = messaging.createValasztasUpdateMessage(gameState.state.valasztas.valasztott);
                 }
                 break;
         }

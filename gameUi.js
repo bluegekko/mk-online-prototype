@@ -33,7 +33,8 @@ gameUi = {
             console.log("kivalasztott", card)
         }
         
-        const valaszthatoKartyak = gameState.state.valaszthatoKartyak || [];
+        const valaszthatoKartyak = gameState.state.valasztas && gameState.state.valasztas.tipus === 'kártyaválasztás' ? 
+            gameState.state.valasztas.opciok : [];
         if (valaszthatoKartyak.includes(card)) {
             cardDiv.classList.add('selectable');
         }
@@ -91,55 +92,50 @@ gameUi = {
             };
             cardDiv.appendChild(kuldetesButton);
             
-            // Feltételválasztás UI manőver közben
-            const feltetelValasztas = gameState.state.feltetelValasztas;
-            if (feltetelValasztas && card.feltetel && gameState.state.fazis.manover.szinhely === card) {
-                const feltetelek = card.feltetel;
-                const manoverCsapat = gameState.state.playerSpaces[gameState.state.fazis.manover.kezdemenyezoJatekos].manover;
+            // Feltételválasztás és Megoldásdöntés UI
+            if (gameState.state.valasztas && gameState.state.aktualisJatekos === gameState.state.valasztas.player && gameState.state.fazis.manover.szinhely === card) {
+                const valasztas = gameState.state.valasztas;
                 
-                feltetelek.forEach((feltetelStr, index) => {
-                    const teljesul = feltetel.teljesul(feltetelStr, manoverCsapat);
-                    const valasztva = feltetelValasztas.valasztott.includes(index);
+                if (valasztas.tipus === 'feltételválasztás') {
+                    const manoverCsapat = gameState.state.playerSpaces[gameState.state.fazis.manover.kezdemenyezoJatekos].manover;
                     
-                    const feltetelBtn = document.createElement('button');
-                    feltetelBtn.textContent = feltetelStr + (teljesul ? ' ✓' : ' ✗');
-                    feltetelBtn.disabled = !teljesul || valasztva;
-                    feltetelBtn.onclick = (e) => {
+                    valasztas.opciok.forEach((opcio, index) => {
+                        const teljesul = feltetel.teljesul(opcio, manoverCsapat);
+                        const valasztva = valasztas.valasztott.includes(opcio);
+                        
+                        const opcioBtn = document.createElement('button');
+                        opcioBtn.textContent = opcio + (teljesul ? ' ✓' : ' ✗');
+                        opcioBtn.disabled = !teljesul || valasztva;
+                        opcioBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            if (!valasztva) {
+                                valasztas.valasztott.push(opcio);
+                                gameUi.render();
+                            }
+                        };
+                        cardDiv.appendChild(opcioBtn);
+                    });
+                    
+                    const keszBtn = document.createElement('button');
+                    keszBtn.textContent = 'Kész';
+                    keszBtn.onclick = (e) => {
                         e.stopPropagation();
-                        if (!valasztva) {
-                            feltetelValasztas.valasztott.push(index);
-                            gameUi.render();
-                        }
+                        valasztas.kesz = true;
                     };
-                    cardDiv.appendChild(feltetelBtn);
-                });
-                
-                const keszBtn = document.createElement('button');
-                keszBtn.textContent = 'Kész';
-                keszBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    feltetelValasztas.kesz = true;
-                };
-                cardDiv.appendChild(keszBtn);
-            }
-            
-            // Megoldásdöntés UI
-            if (gameState.state.megoldasDontes === null && gameState.state.fazis.manover.szinhely === card) {
-                const megoldBtn = document.createElement('button');
-                megoldBtn.textContent = 'Megoldja';
-                megoldBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    gameState.state.megoldasDontes = true;
-                };
-                cardDiv.appendChild(megoldBtn);
-                
-                const nemMegoldBtn = document.createElement('button');
-                nemMegoldBtn.textContent = 'Nem oldja meg';
-                nemMegoldBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    gameState.state.megoldasDontes = false;
-                };
-                cardDiv.appendChild(nemMegoldBtn);
+                    cardDiv.appendChild(keszBtn);
+                } else if (valasztas.tipus === 'megoldásdöntés') {
+                    valasztas.opciok.forEach(opcio => {
+                        const opcioBtn = document.createElement('button');
+                        opcioBtn.textContent = opcio;
+                        opcioBtn.disabled = valasztas.valasztott.includes(opcio);
+                        opcioBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            valasztas.valasztott = [opcio];
+                            gameUi.render();
+                        };
+                        cardDiv.appendChild(opcioBtn);
+                    });
+                }
             }
         }
 
@@ -251,11 +247,6 @@ gameUi = {
         const playerSwitchBtn = document.getElementById('playerSwitchBtn');
         if (playerSwitchBtn) {
             playerSwitchBtn.style.display = gameState.state.mode === 'online' ? 'none' : 'block';
-        }
-        
-        // AI check
-        if (gameState.state.mode === 'ai') {
-            enemyAI.checkAndAct();
         }
         
         // Nyitott panel frissítése
@@ -370,6 +361,14 @@ gameUi = {
                     btn.classList.add('active');
                     gameState.state.mode = btn.dataset.mode;
                     this.updateOnlineButtons();
+                    
+                    // Start AI loop if AI mode
+                    if (btn.dataset.mode === 'ai') {
+                        enemyAI.start();
+                    } else {
+                        enemyAI.stop();
+                    }
+                    
                     this.render();
                 };
             });

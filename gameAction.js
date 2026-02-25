@@ -119,6 +119,31 @@ gameAction = {
         return { kalandozok, felszerelesek };
     },
 
+    opciovalasztas: async function(player) {
+        gameState.state.valasztasFolyamatban = true;
+        gameUi.render();
+
+        const min = gameState.state.valasztas.min;
+        const max = gameState.state.valasztas.max;
+        const tipus = gameState.state.valasztas.tipus;
+        let feltetel;
+        
+        if (tipus === 'kártyaválasztás') {
+            // TODO ha min nem max, akkor ez nem jó. ui support is kell
+            feltetel = () => gameState.state.playerAttributes[player].kivalasztas.length < min;
+        } else if (min && max && min === max) {
+            feltetel = () => gameState.state.valasztas.valasztott.length < min;
+        } else {
+            feltetel = () => !gameState.state.valasztas.kesz;
+        }
+        
+        while (feltetel() && gameState.state.valasztasFolyamatban) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        gameState.state.valasztasFolyamatban = false;
+    },
+
     // playeraction
     ostrom: function(player, card) {
         if (gameState.state.playerAttributes[player].mp < 2) return;

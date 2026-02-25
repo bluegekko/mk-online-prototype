@@ -9,7 +9,8 @@ messaging = {
         OSTROM: 'ostrom',
         KULDETESMEGOLDAS: 'kuldetesmegoldas',
         PASSZ: 'passz',
-        KIVALASZTAS_UPDATE: 'kivalasztas_update'
+        KIVALASZTAS_UPDATE: 'kivalasztas_update',
+        VALASZTAS_UPDATE: 'valasztas_update'
     },
 
     // Create message for card play from hand
@@ -73,6 +74,15 @@ messaging = {
         };
     },
 
+    // Create message for valasztas update
+    createValasztasUpdateMessage: function(valasztott) {
+        return {
+            type: this.messageTypes.VALASZTAS_UPDATE,
+            valasztott: valasztott,
+            sequence: ++this.sequenceNumber
+        };
+    },
+
     // Process incoming message
     processMessage: function(message) {
         console.log('Processing message:', message.type, message);
@@ -121,6 +131,13 @@ messaging = {
             case this.messageTypes.KIVALASZTAS_UPDATE:
                 console.log('Updating kivalasztas for:', message.player);
                 this.updateKivalasztas(message.player, message.cardIds, message.leidezoPeerId);
+                break;
+            case this.messageTypes.VALASZTAS_UPDATE:
+                console.log('Updating valasztas.valasztott:', message.valasztott);
+                if (gameState.state.valasztas) {
+                    gameState.state.valasztas.valasztott = message.valasztott;
+                }
+                gameState.state.valasztasFolyamatban = false;
                 break;
         }
         

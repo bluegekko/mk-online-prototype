@@ -112,55 +112,56 @@ eventHandler = {
             }
         },
         "kártyaválasztás": async function(esemeny) {
-            const kivalasztas = gameState.state.playerAttributes['player'].kivalasztas;
-            const kezdetiSzam = kivalasztas.length;
-            
-            gameState.state.valasztasFolyamatban = true;
-            gameState.state.valaszthatoKartyak = esemeny.hataskor || [];
-            gameUi.render();
-            
-            while (kivalasztas.length < kezdetiSzam + esemeny.szam) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-            }
-            gameState.state.valasztasFolyamatban = false;
-            gameState.state.valaszthatoKartyak = [];
-            
-            esemeny.forrasesemeny.hataskor = kivalasztas.slice(kezdetiSzam);
-            gameState.state.eventSor.push(esemeny.forrasesemeny);
-        },
-        "feltételválasztás": async function(esemeny) {
-            gameState.state.valasztasFolyamatban = true;
-            gameState.state.feltetelValasztas = {
-                feltetelek: esemeny.feltetelek,
+            gameState.state.valasztas = {
+                tipus: "kártyaválasztás",
+                player: esemeny.player,
+                min: esemeny.szam,
+                max: esemeny.szam,
+                opciok: esemeny.hataskor || [],
                 valasztott: [],
                 kesz: false
             };
-            gameUi.render();
+            await playerActionWrapper.executeAction('opciovalasztas', esemeny.player);
             
-            while (!gameState.state.feltetelValasztas.kesz) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-            }
-            gameState.state.valasztasFolyamatban = false;
+            esemeny.forrasesemeny.hataskor = gameState.state.playerAttributes[esemeny.player].kivalasztas;
+            gameState.state.valasztas = null;
+            gameState.state.eventSor.push(esemeny.forrasesemeny);
+        },
+        "feltételválasztás": async function(esemeny) {
+            const manoverCsapat = gameState.state.playerSpaces[esemeny.player].manover;
+            const teljesulheto = esemeny.feltetelek.filter(f => feltetel.teljesul(f, manoverCsapat));
             
-            esemeny.forrasesemeny.teljesitettFeltetelek = gameState.state.feltetelValasztas.valasztott;
-            gameState.state.feltetelValasztas = null;
+            gameState.state.valasztas = {
+                tipus: "feltételválasztás",
+                player: esemeny.player,
+                min: 0,
+                max: teljesulheto.length,
+                opciok: esemeny.feltetelek,
+                valasztott: [],
+                kesz: false
+            };
+            await playerActionWrapper.executeAction('opciovalasztas', esemeny.player);
+            
+            esemeny.forrasesemeny.teljesitettFeltetelek = gameState.state.valasztas.valasztott;
+            gameState.state.valasztas = null;
             gameState.state.eventSor.push(esemeny.forrasesemeny);
         },
         "megoldásdöntés": async function(esemeny) {
             kuldetes = gameState.state.fazis.manover.szinhely;
             if (esemeny.teljesitettFeltetelek.length === 0) return;
             if (gameState.state.playerAttributes[esemeny.player].mp < helper.getValue(kuldetes, "mp")) return;
+
+            gameState.state.valasztas = {
+                tipus: "megoldásdöntés",
+                player: esemeny.player,
+                min: 1,
+                max: 1,
+                opciok: ["Megoldom", "Nem oldom meg"],
+                valasztott: []
+            };
+            await playerActionWrapper.executeAction('opciovalasztas', esemeny.player);
             
-            gameState.state.valasztasFolyamatban = true;
-            gameState.state.megoldasDontes = null;
-            gameUi.render();
-            
-            while (gameState.state.megoldasDontes === null) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-            }
-            gameState.state.valasztasFolyamatban = false;
-            
-            if (gameState.state.megoldasDontes === true) {
+            if (gameState.state.valasztas.valasztott.includes("Megoldom")) {
                 gameState.state.eventSor.push({
                     tipus: "küldetésmegoldás",
                     player: esemeny.player,
@@ -168,7 +169,7 @@ eventHandler = {
                     teljesitettFeltetelek: esemeny.teljesitettFeltetelek
                 });
             }
-            gameState.state.megoldasDontes = undefined;
+            gameState.state.valasztas = null;
         },
         "küldetésmegoldás": function(esemeny) {
             gameState.state.eventSor.push({

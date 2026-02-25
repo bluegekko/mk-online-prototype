@@ -81,6 +81,7 @@ helper = {
             manoverezoJatekos: null,
             szinhely: null,
             sikeresJatekos: null,
+            harciKorokVege: true,
         };
     },
 
