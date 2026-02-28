@@ -9,7 +9,7 @@ eventHandler = {
             eventHandler.figyelokUtoAktivalasa(esemeny);
         }
         
-        gameState.state.playerAttributes['player'].kivalasztas = [];
+        gameState.state.playerAttributes[gameState.state.aktualisJatekos].kivalasztas = [];
         gameUi.render();
     },
 
@@ -185,6 +185,26 @@ eventHandler = {
                 hataskor: [esemeny.kuldetes]
             });
         },
+        "küldetésfolytatásdöntés": async function(esemeny) {
+            gameState.state.valasztas = {
+                tipus: "küldetésfolytatásdöntés",
+                player: esemeny.player,
+                min: 1,
+                max: 1,
+                opciok: ["Folytatom", "Nem folytatom"],
+                valasztott: []
+            };
+            await playerActionWrapper.executeAction('opciovalasztas', esemeny.player);
+            
+            const manoverState = gameState.state.fazis.manover;
+            if (gameState.state.valasztas.valasztott.includes("Folytatom")) {
+                manoverState.kuldetesFolytatas = true;
+                manoverState.manoverezoJatekos = esemeny.player;
+            } else {
+                manoverState.kuldetesFolytatas = false;
+            }
+            gameState.state.valasztas = null;
+        },
         "kártyahozzáadás": function(esemeny) {
             gameAction.kartyaHozzaadas(esemeny.nev, esemeny.player, esemeny.hova, esemeny.helyzet);
         },
@@ -241,6 +261,39 @@ eventHandler = {
                     hova: "sor",
                     hataskor: [card],
                     ujHelyzet: "Pihenő",
+                });
+            });
+
+            const masikJatekos = helper.ellenfel(esemeny.player);
+            if (gameState.state.playerSpaces[masikJatekos].manover.length === 0) {
+                gameState.state.fazis.manover = helper.resetManoverState();
+            }
+        },
+        "akadályozócsapatválasztás": async function(esemeny){
+            const eberKalandozok = gameState.state.playerSpaces[esemeny.player].sor.filter(card => card.helyzet === 'Éber');
+
+            gameState.state.valasztas = {
+                tipus: "kártyaválasztás",
+                player: esemeny.player,
+                min: 0,
+                max: null,
+                opciok: eberKalandozok,
+                valasztott: []
+            };
+            await playerActionWrapper.executeAction('opciovalasztas', esemeny.player);
+            gameState.state.playerAttributes[esemeny.player].akadalyozocsapat = [...gameState.state.valasztas.valasztott];
+            gameState.state.valasztas = null;
+        },
+        "akadályozócsapatsorelhagyás": function(esemeny) {
+            const akadalyozocsapat = gameState.state.playerAttributes[esemeny.player].akadalyozocsapat || [];
+            akadalyozocsapat.forEach(card => {
+                gameState.state.eventSor.push({
+                    tipus: "kártyamozgatás",
+                    forras: "szabály",
+                    player: esemeny.player,
+                    honnan: "sor",
+                    hova: "manover",
+                    hataskor: [card]
                 });
             });
         },

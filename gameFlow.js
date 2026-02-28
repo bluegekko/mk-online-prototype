@@ -50,13 +50,14 @@ gameFlow = {
         return fazis.nev == "Manőverek fázisa" || fazis.nev == "Harci körök";
     },
 
-    kovetkezoFazis: function() {
-        gameState.state.fazis.aktualisFazis.fazisVege();
+    kovetkezoFazis: async function() {
+        await gameState.state.fazis.aktualisFazis.fazisVege();
         gameFlow.idofonalZaras();
         eventHandler.resolve();
-        gameState.state.fazis.aktualisFazis = gameState.state.fazis.aktualisFazis.kovetkezoFazis();
-        gameState.state.fazis.aktualisFazis.fazisEleje();
-        eventHandler.resolve();
+        const kovetkezoFazis = await gameState.state.fazis.aktualisFazis.kovetkezoFazis();
+        gameState.state.fazis.aktualisFazis = kovetkezoFazis;
+        await gameState.state.fazis.aktualisFazis.fazisEleje();
+        await eventHandler.resolve();
     },
 
     idofonalNyitas: function(effect) {
@@ -187,24 +188,60 @@ gameFlow = {
 
     akadalyozoCsapatSorElhagyas: {
         nev: "Akadályozó csapat sorelhagyása",
-        kovetkezoFazis: function() {
+        kovetkezoFazis: async function() {
             const manoverState = gameState.state.fazis.manover;
-            const aktualisManover = manoverState.aktualisManover;;
+            const aktualisManover = manoverState.aktualisManover;
             const kezdemenyezoJatekos = manoverState.kezdemenyezoJatekos;
+            const akadalyozoJatekos = helper.ellenfel(kezdemenyezoJatekos);
             const playerSpaces = gameState.state.playerSpaces;
+            
             if (playerSpaces[kezdemenyezoJatekos].manover.length > 0 &&
-                playerSpaces[helper.ellenfel(kezdemenyezoJatekos)].manover.length > 0) {
+                playerSpaces[akadalyozoJatekos].manover.length > 0) {
                 return gameFlow.harcElokeszites;
             }
-            if (aktualisManover === 'küldetés' && manoverState.kuldetesFolytatas) {
-                return gameFlow.akadalylapokAktivizalasa;
-            } else {
-                // FELTÉTELEZÉS: csak manőverek fázisában lehet manőverezni.
-                gameFlow.manoverVege(kezdemenyezoJatekos);
-                return gameFlow.manoverekFazisa;
+            
+            if (aktualisManover === 'küldetés') {
+                if (playerSpaces[akadalyozoJatekos].manover.length === 0) {
+                    return gameFlow.akadalylapokAktivizalasa;
+                }
+                
+                // Nem az igazi itt, de fontos, hogy azután legyen, hogy a kalandozóknak volt ideje meghalni
+                await eventHandler.resolve({
+                    tipus: "küldetésfolytatásdöntés",
+                    player: akadalyozoJatekos
+                });
+                
+                if (manoverState.kuldetesFolytatas) {
+                    manoverState.manoverezoJatekos = akadalyozoJatekos;
+                    gameState.state.eventSor.push({
+                        tipus: "manővervége",
+                        player: kezdemenyezoJatekos
+                    });
+                    return gameFlow.akadalylapokAktivizalasa;
+                }
             }
+            
+            gameState.state.eventSor.push({
+                tipus: "manővervége",
+                player: kezdemenyezoJatekos
+            });
+            return gameFlow.manoverekFazisa;
         },
-        fazisEleje: function() {
+        fazisEleje: async function() {
+            const manoverState = gameState.state.fazis.manover;
+            const kezdemenyezoJatekos = manoverState.kezdemenyezoJatekos;
+            const akadalyozoJatekos = helper.ellenfel(kezdemenyezoJatekos);
+            const playerAttributes = gameState.state.playerAttributes;
+            if ((playerAttributes[helper.ellenfel(kezdemenyezoJatekos)].akadalyozocsapat || []).length === 0) {
+                    gameState.state.eventSor.push({
+                    tipus: "akadályozócsapatválasztás",
+                    player: akadalyozoJatekos
+                });    
+            }
+            gameState.state.eventSor.push({
+                tipus: "akadályozócsapatsorelhagyás",
+                player: akadalyozoJatekos
+            });
             gameFlow.idofonalNyitas(null);
         },
         fazisVege: function() {
@@ -232,21 +269,28 @@ gameFlow = {
 
             if (aktualisManover === 'küldetés') {
                 return gameFlow.kuldetesFeltetelTeljesites;
-            } else if (playerAttributes[helper.ellenfel(kezdemenyezoJatekos)].akadalyozas) {
+            } else if ((playerAttributes[helper.ellenfel(kezdemenyezoJatekos)].akadalyozocsapat || []).length > 0) {
                 return gameFlow.akadalyozoCsapatSorElhagyas;
             } else {
                 return gameFlow.manoverekFazisa;
             }
         },
         fazisEleje: function() {gameFlow.idofonalNyitas(null)},
-        fazisVege: function() {
+        fazisVege: async function() {
             const manoverState = gameState.state.fazis.manover;
             const aktualisManover = manoverState.aktualisManover;
             const kezdemenyezoJatekos = manoverState.kezdemenyezoJatekos;
             const playerAttributes = gameState.state.playerAttributes;
+
+            if ((aktualisManover == "ostrom" || aktualisManover == "építmény bevétele")) {
+                await eventHandler.resolve({
+                    tipus: "akadályozócsapatválasztás",
+                    player: helper.ellenfel(kezdemenyezoJatekos)
+                });
+            }
             
             if (aktualisManover !== 'küldetés' && 
-                    !playerAttributes[helper.ellenfel(kezdemenyezoJatekos)].akadalyozas) {
+                    playerAttributes[helper.ellenfel(kezdemenyezoJatekos)].akadalyozocsapat.length === 0) {
                 
                 const manoverCards = gameState.state.playerSpaces[kezdemenyezoJatekos].manover;
                 const osszszint = manoverCards.reduce((sum, card) => {
@@ -344,15 +388,24 @@ gameFlow = {
             
             gameFlow.idofonalNyitas(null);
         },
-        fazisVege: function() {
+        fazisVege: async function() {
+            const manoverState = gameState.state.fazis.manover;
+            if (manoverState.harcNyertes && manoverState.aktualisManover === 'küldetés') {
+                const nyertesJatekos = manoverState.harcNyertes;
+                await eventHandler.resolve({
+                    tipus: "küldetésfolytatásdöntés",
+                    player: nyertesJatekos
+                });
+            }
+
             gameState.state.eventSor.push({
                 tipus: "Harc vége"
             });
-            const manoverState = gameState.state.fazis.manover;
+            
             gameState.players.forEach(player => {
                 const nyertesEsKuldetesEsFolytatas = manoverState.harcNyertes === player && 
                     manoverState.aktualisManover === 'küldetés' && 
-                    gameState.state.playerAttributes[player].kuldetesFolytatas;
+                    manoverState.kuldetesFolytatas;
                 
                 if (!nyertesEsKuldetesEsFolytatas) {
                     gameState.state.eventSor.push({
@@ -360,8 +413,7 @@ gameFlow = {
                         player: player
                     });
                 } else {
-                    manoverState.kuldetesFolytatas = true;
-                    manoverState.manoverezoJatekos = player;
+                    manoverState.manoverezoJatekos = manoverState.harcNyertes;
                 }
             });
         },

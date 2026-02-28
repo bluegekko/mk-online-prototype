@@ -128,9 +128,12 @@ gameAction = {
         const tipus = gameState.state.valasztas.tipus;
         let feltetel;
         
-        if (tipus === 'kártyaválasztás') {
-            // TODO ha min nem max, akkor ez nem jó. ui support is kell
+        if (tipus === 'kártyaválasztás' && min && max && min === max) {
+            gameState.state.playerAttributes[player].kivalasztas = [];
             feltetel = () => gameState.state.playerAttributes[player].kivalasztas.length < min;
+        } else if (tipus === 'kártyaválasztás') {
+            gameState.state.playerAttributes[player].kivalasztas = [];
+            feltetel = () => !gameState.state.valasztas.kesz;
         } else if (min && max && min === max) {
             feltetel = () => gameState.state.valasztas.valasztott.length < min;
         } else {

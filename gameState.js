@@ -132,7 +132,7 @@ window.gameState = {
                 tipus: "kártyahozzáadás",
                 nev: nev,
                 player: 'opponent',
-                hova: 'manover'
+                hova: 'sor'
             });
         });
 

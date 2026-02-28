@@ -78,7 +78,9 @@ messaging = {
     createValasztasUpdateMessage: function(valasztott) {
         return {
             type: this.messageTypes.VALASZTAS_UPDATE,
-            valasztott: valasztott,
+            valasztott: Array.isArray(valasztott) && valasztott.length > 0 && typeof valasztott[0] === 'object' && valasztott[0].id
+                ? valasztott.map(item => item.id)
+                : valasztott,
             sequence: ++this.sequenceNumber
         };
     },
@@ -135,7 +137,12 @@ messaging = {
             case this.messageTypes.VALASZTAS_UPDATE:
                 console.log('Updating valasztas.valasztott:', message.valasztott);
                 if (gameState.state.valasztas) {
-                    gameState.state.valasztas.valasztott = message.valasztott;
+                    if (Array.isArray(message.valasztott) && message.valasztott.length > 0 && typeof message.valasztott[0] === 'string') {
+                        const mappedCards = message.valasztott.map(id => this.findCardById(id)).filter(card => card);
+                        gameState.state.valasztas.valasztott = mappedCards.length > 0 ? mappedCards : message.valasztott;
+                    } else {
+                        gameState.state.valasztas.valasztott = message.valasztott;
+                    }
                 }
                 gameState.state.valasztasFolyamatban = false;
                 break;

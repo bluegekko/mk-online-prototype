@@ -135,6 +135,18 @@ gameUi = {
                         };
                         cardDiv.appendChild(opcioBtn);
                     });
+                } else if (valasztas.tipus === 'küldetésfolytatásdöntés') {
+                    valasztas.opciok.forEach(opcio => {
+                        const opcioBtn = document.createElement('button');
+                        opcioBtn.textContent = opcio;
+                        opcioBtn.disabled = valasztas.valasztott.includes(opcio);
+                        opcioBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            valasztas.valasztott = [opcio];
+                            gameUi.render();
+                        };
+                        cardDiv.appendChild(opcioBtn);
+                    });
                 }
             }
         }
@@ -243,6 +255,28 @@ gameUi = {
                                gameState.state.fazis.prioritas !== gameState.state.aktualisJatekos;
         }
         
+        // Kész gomb kártyaválasztáshoz
+        const valasztas = gameState.state.valasztas;
+        let keszBtn = document.getElementById('keszBtn');
+        
+        if (valasztas && valasztas.tipus === 'kártyaválasztás' && valasztas.player === gameState.state.aktualisJatekos && valasztas.max === null) {
+            if (!keszBtn) {
+                keszBtn = document.createElement('button');
+                keszBtn.id = 'keszBtn';
+                keszBtn.textContent = 'Kész';
+                keszBtn.style.cssText = 'margin-left: 10px; padding: 8px 16px; background: #4a90e2; color: white; border: 1px solid #357abd; border-radius: 4px; cursor: pointer;';
+                keszBtn.onclick = () => {
+                    valasztas.valasztott = [...gameState.state.playerAttributes[gameState.state.aktualisJatekos].kivalasztas];
+                    valasztas.kesz = true;
+                };
+                document.querySelector('.statusbar').appendChild(keszBtn);
+            }
+        } else {
+            if (keszBtn) {
+                keszBtn.remove();
+            }
+        }
+
         // Player switch button visibility
         const playerSwitchBtn = document.getElementById('playerSwitchBtn');
         if (playerSwitchBtn) {
@@ -737,5 +771,13 @@ gameUi = {
                 document.getElementById('connectBtn').click();
             }
         });
+    },
+    
+    selectDecision: function(opcio) {
+        const valasztas = gameState.state.valasztas;
+        if (valasztas) {
+            valasztas.valasztott = [opcio];
+            this.render();
+        }
     }
 }
